@@ -1,0 +1,25 @@
+package com.finanzas.app.gastos.application.mapper;
+
+import org.springframework.stereotype.Component;
+
+import com.finanzas.app.gastos.domain.entity.Gasto;
+import com.finanzas.app.gastos.presentation.user.dto.gasto.GastoResponse;
+
+@Component
+public class GastoApplicationMapper {
+	
+    public GastoResponse mapToResponse(Gasto gasto) {
+    	return GastoResponse.of(
+    			gasto.getId(), 
+    			gasto.getCategoriaGastoId(),
+        		gasto.getMonto().getValue(),
+        		gasto.getDescripcion(), 
+        		gasto.getEstado().toString(),
+        		gasto.getFechaCreacion().getValue(), 
+        		
+        		gasto.getFechaCambioEstado() != null
+                ? gasto.getFechaCambioEstado().getValue()
+                : null
+        		);
+    }
+}

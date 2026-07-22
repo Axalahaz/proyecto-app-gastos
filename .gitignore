@@ -1,0 +1,83 @@
+####################################
+# Backend - Spring Boot
+####################################
+backend/.metadata/
+.metadata/
+backend/target/
+backend/**/application-*.properties
+backend/**/application-*.yml
+backend/**/config/
+
+####################################
+# Variables de entorno
+####################################
+backend/**/.env
+frontend/**/.env
+.env
+.env.*
+
+####################################
+# Base de datos local
+####################################
+*.db
+*.mv.db
+*.trace.db
+/data/
+
+####################################
+# Logs
+####################################
+*.log
+logs/
+
+####################################
+# Temporales
+####################################
+tmp/
+temp/
+
+####################################
+# Eclipse / STS
+####################################
+.project
+.classpath
+.settings/
+
+####################################
+# VS Code
+####################################
+.vscode/
+
+####################################
+# Java
+####################################
+*.class
+
+####################################
+# Frontend - Vite + React
+####################################
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.vite/
+
+####################################
+# Frontend logs
+####################################
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+####################################
+# Documentos y comprimidos
+####################################
+documentacion/
+*.doc
+*.docx
+*.zip
+
+####################################
+# Sistema operativo
+####################################
+.DS_Store
+Thumbs.db
