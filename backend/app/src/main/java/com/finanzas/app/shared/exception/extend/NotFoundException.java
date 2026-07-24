@@ -20,6 +20,6 @@ public class NotFoundException extends DomainException {
     }
     
     public static NotFoundException of(String entity, Object id) {
-        return new NotFoundException(entity + " no encontrado con id: " + id);
+        return new NotFoundException("El Recurso " + entity + " con id " + id + " no fue encontrado.");
     }
 }

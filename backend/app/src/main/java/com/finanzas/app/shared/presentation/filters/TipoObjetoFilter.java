@@ -2,7 +2,7 @@ package com.finanzas.app.shared.presentation.filters;
 
 import com.finanzas.app.shared.domain.model.TipoObjeto;
 
-public enum FilterOrigen {
+public enum TipoObjetoFilter {
     TODOS,
     SISTEMA,
     USUARIO;

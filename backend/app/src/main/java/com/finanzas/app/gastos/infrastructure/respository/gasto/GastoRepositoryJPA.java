@@ -14,6 +14,8 @@ import com.finanzas.app.gastos.infrastructure.entity.GastoEntityJPA;
 public interface GastoRepositoryJPA extends JpaRepository<GastoEntityJPA, Long>{
 	
 	List<GastoEntityJPA> findByCategoriaGastoId(Long categoriaGastoId);
+	
+	boolean existsByGastoRecurrenteId(Long gastoRecurrenteId);
 
 	@Query("""
 		    SELECT COUNT(g) > 0

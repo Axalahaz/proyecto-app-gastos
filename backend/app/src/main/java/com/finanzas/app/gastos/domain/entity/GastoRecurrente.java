@@ -1,5 +1,7 @@
 package com.finanzas.app.gastos.domain.entity;
 
+import java.time.LocalDate;
+
 import com.finanzas.app.gastos.domain.vo.Periodicidad;
 import com.finanzas.app.shared.domain.model.Frecuencia;
 import com.finanzas.app.shared.domain.vo.Fecha;
@@ -9,16 +11,16 @@ import com.finanzas.app.shared.exception.extend.ValidationException;
 import lombok.Getter;
 
 /*
- * Usa la plantilla del sistema para crear una plantilla propia del usuario
+ * Puede usar la plantilla del sistema para crear una plantilla propia del usuario
  * */
 @Getter
 public class GastoRecurrente {
 
     private Long id;
+    private Long plantillaId; // puede ser null
     private String descripcion;
     
     private Periodicidad periodicidad;
-    private boolean periodicidadActiva;
     
     private boolean activo;
     private Fecha fechaCreacion;
@@ -29,21 +31,20 @@ public class GastoRecurrente {
     
     private GastoRecurrente(
     		Long id,
+    		Long plantillaId,
     		String descripcion,
     		Periodicidad periodicidad,
-    		boolean periodicidadActiva,
     		boolean activo,
             Fecha fechaCreacion,
             Fecha fechaCambioActivo
     ) {
-        validarPeriodicidad(periodicidadActiva, periodicidad);
     	validarDescripcion(descripcion);
         validarFechaCreacion(fechaCreacion);
 
         this.id = id;
+        this.plantillaId = plantillaId;
         this.descripcion = descripcion;
         this.periodicidad = periodicidad;
-        this.periodicidadActiva = periodicidadActiva;
         this.activo = activo;
         this.fechaCreacion = fechaCreacion;
         this.fechaCambioActivo = fechaCambioActivo;
@@ -53,16 +54,16 @@ public class GastoRecurrente {
     // CREAR
     
     public static GastoRecurrente crear(
+    		Long plantillaId,
     		String descripcion,
     		Periodicidad periodicidad,
-    		boolean periodicidadActiva,
             Fecha fechaCreacion
     ) {
         return new GastoRecurrente(
         		null,
+        		plantillaId,
         		descripcion,
         		periodicidad,
-        		periodicidadActiva,
                 true,
                 fechaCreacion,
                 null
@@ -74,18 +75,18 @@ public class GastoRecurrente {
     
     public static GastoRecurrente reconstruir(
     		Long id,
+    		Long plantillaId,
     		String descripcion,
     		Periodicidad periodicidad,
-    		boolean periodicidadActiva,
             boolean activo,
             Fecha fechaCreacion,
             Fecha fechaCambioActivo
     ) {
         return new GastoRecurrente(
         		id,
+        		plantillaId,
         		descripcion,
         		periodicidad,
-        		periodicidadActiva,
                 activo,
                 fechaCreacion,
                 fechaCambioActivo
@@ -116,34 +117,13 @@ public class GastoRecurrente {
     }
     
     // ----------------------------------------------------
-    // ESTADO PERIOCIDAD
-    
-    public void quitarPeriodicidad() {
-    	validarPeriodicidadEstaActiva();
-        this.periodicidadActiva = false;
-    }
-
-    public void agregarPeriodicidad(
-    		Frecuencia nuevaFrecuencia,
-    		Integer nuevoDiaVencimiento,
-            Integer nuevoMesVencimiento
-        ) {
-    	validarPeriodicidadEstaInactiva();
-    	
-    	this.periodicidadActiva = true;
-    	this.periodicidad = new Periodicidad(
-    			nuevaFrecuencia,
-    			nuevoDiaVencimiento,
-    			nuevoMesVencimiento
-    			);
-    }
+    // MODIFICAR PERIOCIDAD
     
     public void modificarPeriodicidad(
     		Frecuencia nuevaFrecuencia,
     		Integer nuevoDiaVencimiento,
             Integer nuevoMesVencimiento
         ) {
-    	validarPeriodicidadEstaActiva();
     	this.periodicidad = calcularNuevaPeriodicidad(
     			nuevaFrecuencia,
     			nuevoDiaVencimiento,
@@ -151,25 +131,26 @@ public class GastoRecurrente {
     			);
     }
     
-    public boolean estaPeriodicidadActiva() {
-        return this.periodicidadActiva && this.periodicidad != null;
-    }
-    
-    public boolean estaPeriodicidadInactiva() {
-        return !this.periodicidadActiva && this.periodicidad != null;
-    }
-    
     // ----------------------------------------------------
     // EDITAR
 
-    public void editarBasico(String descripcion ) {
-    	validarRecurrenciaEstaActiva();
-    	
-    	if (descripcion != null) actualizarDescripcion(descripcion);
+    public void editarBasico(String descripcion) {
+
+        if (descripcion == null) {
+            return;
+        }
+
+        if (this.descripcion.equals(descripcion)) {
+            return;
+        }
+
+        validarDescripcion(descripcion);
+
+        this.descripcion = descripcion;
     }
 
     // ----------------------------------------------------
-    // ACTUALIZAR ATRIBUTOS
+    // ACTUALIZAR ATRIBUTOS PERIODICIDAD
 
     private Periodicidad calcularNuevaPeriodicidad(
             Frecuencia nuevaFrecuencia,
@@ -197,13 +178,6 @@ public class GastoRecurrente {
         return new Periodicidad(frecuenciaFinal, diaFinal, mesFinal);
     }
 
-    private void actualizarDescripcion(String descripcion) {
-    	if (this.descripcion.equals(descripcion)) {
-            return;
-        }
-    	validarDescripcion(descripcion);
-    	this.descripcion = descripcion;
-    }
     // ----------------------------------------------------
     // VALIDACION
     // ----------------------------------------------------
@@ -225,30 +199,19 @@ public class GastoRecurrente {
         }
     }
     
-    // VALIDACION DE ESTADO PERIOCIDAD
+    // VALIDACION DE ELIMINACION
     
-    private void validarPeriodicidadEstaInactiva() {
-    	if (this.periodicidadActiva)  {
-            throw new ConflictException(
-            		"No se puede operar con periodicidad activa");
-        }
-    }
-    
-    public void validarPeriodicidadEstaActiva() {
-    	if (!this.periodicidadActiva)  {
-            throw new ConflictException(
-            		"No se puede operar con periodicidad inactiva");
-        }
+    public void validarEliminacion(LocalDate tiempo) {
+    	validarRecurrenciaEstaActiva();
+    	if (!this.fechaCreacion.getValue().toLocalDate().equals(tiempo)) {
+    		throw new ConflictException(
+    				"Solo se pueden eliminar Gastos Recurrentes creados hoy"
+    				);
+    	}
     }
     
     // VALIDACION DE DATOS
 
-    private static void validarPeriodicidad(boolean periodicidadActiva, Periodicidad periodicidad) {
-    	if (periodicidadActiva && periodicidad == null) {
-    		throw ValidationException.of("La periodicidad es obligatoria");
-    	}
-    }
-    
     private void validarDescripcion(String descripcion) {
         if (descripcion == null || descripcion.isBlank()) {
             throw ValidationException.of(

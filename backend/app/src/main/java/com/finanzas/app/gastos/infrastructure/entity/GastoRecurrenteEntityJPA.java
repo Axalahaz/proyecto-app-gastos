@@ -25,6 +25,9 @@ public class GastoRecurrenteEntityJPA {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	@Column()
+	private Long plantillaId; 
 
 	@Column(nullable = false)
 	private String descripcion; 
@@ -40,9 +43,6 @@ public class GastoRecurrenteEntityJPA {
     private Frecuencia frecuencia;
     
     @Column(nullable = false)
-    private boolean periodicidadActiva;
-    
-    @Column(nullable = false)
     private boolean activo;
     
     @Column(name = "fecha_creacion", nullable = false)
@@ -56,11 +56,11 @@ public class GastoRecurrenteEntityJPA {
     
     public static GastoRecurrenteEntityJPA of(
     		Long id,
+    		Long plantillaId,
     		String descripcion,
             Integer diaVencimiento,
             Integer mesVencimiento,
             Frecuencia frecuencia,
-            boolean periodicidadActiva,
             boolean activo,
     		LocalDateTime fechaCreacion,
     		LocalDateTime fechaCambioActivo
@@ -68,11 +68,11 @@ public class GastoRecurrenteEntityJPA {
     	GastoRecurrenteEntityJPA entity = new GastoRecurrenteEntityJPA();
     	
     	entity.id = id;
+    	entity.plantillaId = plantillaId;
     	entity.descripcion = descripcion;
     	entity.diaVencimiento = diaVencimiento;
     	entity.mesVencimiento = mesVencimiento;
     	entity.frecuencia = frecuencia;
-    	entity.periodicidadActiva = periodicidadActiva;
     	entity.activo = activo;
     	entity.fechaCreacion = fechaCreacion;
     	entity.fechaCambioActivo = fechaCambioActivo;

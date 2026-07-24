@@ -14,13 +14,12 @@ import com.finanzas.app.gastos.application.service.gasto.ListarGastosPorCategori
 import com.finanzas.app.gastos.application.service.gasto.ObtenerGastoService;
 import com.finanzas.app.gastos.application.service.gasto.RegistrarGastoDesdeRecurrenteService;
 import com.finanzas.app.gastos.application.service.gasto.RegistrarGastoService;
-import com.finanzas.app.gastos.application.service.gasto.VolverRecurrenteConPeriodicidadService;
 import com.finanzas.app.gastos.application.service.gasto.VolverRecurrenteService;
 import com.finanzas.app.gastos.presentation.dto.gasto.ActualizarGastoRequest;
 import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.gastos.presentation.dto.gasto.RegistrarGastoDesdeRecurrenteRequest;
 import com.finanzas.app.gastos.presentation.dto.gasto.RegistrarGastoRequest;
-import com.finanzas.app.gastos.presentation.dto.gasto.VolverRecurrenteConPeriodicidadRequest;
+import com.finanzas.app.gastos.presentation.dto.gasto.VolverRecurrenteRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/gasto")
 public class GastoController {
 	
-	private final VolverRecurrenteConPeriodicidadService volverRecurrenteConPeriodicidadService;
 	private final VolverRecurrenteService volverRecurrenteService;
 	private final AnularGastoService anularGastoService;
 	private final EditarGastoService editarGastoService;
@@ -92,22 +90,13 @@ public class GastoController {
 	
 	// ----------------------------------------------------
 	// VOLVER RECURRENTE
-	
-	@PatchMapping("/{id}/volver-recurrente")
-	public ResponseEntity<GastoResponse> volverRecurrenteBasico(
-			@PathVariable("id") Long gastoId) {
-		
-		GastoResponse response = volverRecurrenteService.ejecutar(gastoId);
-		
-		return ResponseEntity.ok(response);
-	}
 
-	@PatchMapping("/{id}/volver-recurrente-con-periodicidad")
+	@PatchMapping("/{id}/volver-recurrente")
 	public ResponseEntity<GastoResponse> volverRecurrenteConPeriodicidad(
 			@PathVariable("id") Long gastoId,
-			@Valid @RequestBody VolverRecurrenteConPeriodicidadRequest request) {
+			@Valid @RequestBody VolverRecurrenteRequest request) {
 		
-		GastoResponse response = volverRecurrenteConPeriodicidadService.ejecutar(
+		GastoResponse response = volverRecurrenteService.ejecutar(
 				gastoId,
 				request.getDiaVencimiento(),
 				request.getMesVencimiento(),
@@ -145,7 +134,7 @@ public class GastoController {
 	// OBTENER
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<GastoResponse> obtenerGasto(
+	public ResponseEntity<GastoResponse> obtener(
 			@PathVariable("id") Long gastoId) {
 		
 		GastoResponse response = obtenerGastoService.ejecutar(gastoId);

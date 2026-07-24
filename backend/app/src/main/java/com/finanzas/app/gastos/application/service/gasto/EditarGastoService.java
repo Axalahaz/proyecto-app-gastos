@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
+import com.finanzas.app.gastos.application.queryService.CategoriaGastoQueryService;
+import com.finanzas.app.gastos.application.queryService.GastoQueryService;
 import com.finanzas.app.gastos.domain.entity.Gasto;
-import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
 import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Money;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EditarGastoService {
 
+	private final CategoriaGastoQueryService categoriaQueryService;
+
+	private final GastoQueryService gastoQueryService;
     private final GastoRepository gastoRepository;
-    private final CategoriaGastoRepository categoriaRepository;
     private final GastoApplicationMapper mapper;
     
     public GastoResponse ejecutar(
@@ -31,20 +33,11 @@ public class EditarGastoService {
             String descripcion
     		) {
 
-        Gasto gasto = gastoRepository
-                .buscarPorId(gastoId)
-                .orElseThrow(() ->
-                        NotFoundException.of("Gasto", gastoId));
+        Gasto gasto = gastoQueryService.obtenerPorId(gastoId);
         
         if (nuevaCategoriaId != null) {
         	if (!gasto.getCategoriaGastoId().equals(nuevaCategoriaId)) {
-        		
-        		boolean categoriaNueva = categoriaRepository
-        				.existePorId(nuevaCategoriaId);
-        		
-        		if (!categoriaNueva) {
-        			throw NotFoundException.of("Categoría", nuevaCategoriaId);
-        		}
+            	categoriaQueryService.existePorId(nuevaCategoriaId);
         	}
         }
         

@@ -20,7 +20,7 @@ import com.finanzas.app.gastos.application.service.categoriaGasto.ObtenerCategor
 import com.finanzas.app.gastos.application.service.categoriaGasto.RegistrarCategoriaGastoService;
 import com.finanzas.app.gastos.presentation.dto.categoriaGasto.RegistrarCategoriaGastoRequest;
 import com.finanzas.app.shared.dto.context.CategoriaResponse;
-import com.finanzas.app.shared.presentation.filters.FilterOrigen;
+import com.finanzas.app.shared.presentation.filters.TipoObjetoFilter;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -77,9 +77,9 @@ public class CategoriaGastoController {
 	
 	@GetMapping()
 	public ResponseEntity<List<CategoriaResponse>> Listar(
-			@RequestParam(defaultValue = "TODOS") FilterOrigen filter){
+			@RequestParam(defaultValue = "TODOS") TipoObjetoFilter filtro){
 		
-		List<CategoriaResponse> response = listarCategoriasService.ejecutar(filter);
+		List<CategoriaResponse> response = listarCategoriasService.ejecutar(filtro);
 		return ResponseEntity.ok(response);
 	}
 

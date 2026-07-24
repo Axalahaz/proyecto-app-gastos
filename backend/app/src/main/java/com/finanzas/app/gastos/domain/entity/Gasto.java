@@ -147,12 +147,12 @@ public class Gasto extends Movimiento {
     
     public void validarEliminacion(LocalDate tiempo) {
     	validarEstadoNoAnulado();
-    	if (!fechaCreacion.getValue().toLocalDate().equals(tiempo)) {
+    	if (!this.fechaCreacion.getValue().toLocalDate().equals(tiempo)) {
     		throw new ConflictException(
     				"Solo se pueden eliminar gastos creados hoy"
     				);
     	}
-    	if (gastoRecurrenteId != null) {
+    	if (this.gastoRecurrenteId != null) {
     	    throw new ConflictException(
     	            "Los gastos generados desde recurrentes solo pueden anularse"
     	    );

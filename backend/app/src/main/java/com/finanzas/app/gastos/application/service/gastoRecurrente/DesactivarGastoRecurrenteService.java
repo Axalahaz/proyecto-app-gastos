@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finanzas.app.gastos.application.queryService.GastoRecurrenteQueryService;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
 import com.finanzas.app.shared.domain.vo.Fecha;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DesactivarGastoRecurrenteService {
 
+	private final GastoRecurrenteQueryService gastoRecurrenteQueryService;
+
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
 
     public void ejecutar(Long gastoRecurrenteId) {
 
-        GastoRecurrente gastoRecurrente = gastoRecurrenteRepository
-                .buscar(gastoRecurrenteId)
-                .orElseThrow(() ->
-                        NotFoundException.of("Gasto Recurrente", gastoRecurrenteId));
+        GastoRecurrente gastoRecurrente = gastoRecurrenteQueryService.obtenerPorId(gastoRecurrenteId);
 
         Fecha fechaCambioActivo = new Fecha(LocalDateTime.now());
         

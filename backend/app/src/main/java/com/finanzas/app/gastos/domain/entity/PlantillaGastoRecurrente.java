@@ -67,18 +67,20 @@ public class PlantillaGastoRecurrente {
     // ----------------------------------------------------
     // EDICION
     
-    private void actualizarDescripcion(String descripcion) {
-    	if (this.descripcion.equals(descripcion)) {
+    public void editar(String descripcion) {
+
+        if (descripcion == null) {
             return;
         }
-    	validarDescripcion(descripcion);
-    	this.descripcion = descripcion;
-    }
-    
-    public void editar(String descripcion) {
-    	if (descripcion != null) actualizarDescripcion(descripcion);
-    }
 
+        if (this.descripcion.equals(descripcion)) {
+            return;
+        }
+
+        validarDescripcion(descripcion);
+
+        this.descripcion = descripcion;
+    }
     
     // ----------------------------------------------------
     // VALIDACION

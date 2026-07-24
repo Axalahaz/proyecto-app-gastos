@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
 @Getter
-public class VolverRecurrenteConPeriodicidadRequest {
+public class VolverRecurrenteRequest {
 
 	@NotNull(message = "El dia de vto es obligatoria")
 	@Positive(message = "La dia de vto debe ser positivo")

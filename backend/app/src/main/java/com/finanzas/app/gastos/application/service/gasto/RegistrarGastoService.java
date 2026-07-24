@@ -7,13 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
+import com.finanzas.app.gastos.application.queryService.CategoriaGastoQueryService;
 import com.finanzas.app.gastos.domain.entity.Gasto;
-import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
 import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RegistrarGastoService {
 
-    private final CategoriaGastoRepository categoriaRepository;
+	private final CategoriaGastoQueryService categoriaQueryService;
     private final GastoRepository gastoRepository;
     private final GastoApplicationMapper gastoApplicationMapper;
 
@@ -41,10 +40,7 @@ public class RegistrarGastoService {
     		) {
     	
     	// control de consistencia
-        boolean existe = categoriaRepository
-                .existePorId(categoriaGastoId);
-        
-        if (!existe) throw NotFoundException.of("Categoría", categoriaGastoId);
+    	categoriaQueryService.existePorId(categoriaGastoId);
         
         Money money = new Money(monto);
         Fecha fechaCreacion = new Fecha(LocalDateTime.now());

@@ -4,10 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.CategoriaGastoApplicationMapper;
+import com.finanzas.app.gastos.application.queryService.CategoriaGastoQueryService;
 import com.finanzas.app.gastos.domain.entity.CategoriaGasto;
-import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.shared.dto.context.CategoriaResponse;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,16 +15,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ObtenerCategoriaGastoService {
 
-	private final CategoriaGastoRepository categoriaRepository;
+	private final CategoriaGastoQueryService categoriaQueryService;
     private final CategoriaGastoApplicationMapper applicationMapper;
 
     public CategoriaResponse ejecutar(Long categoriaGastoId) {
     	
-    	CategoriaGasto categoria;
-    	
-	    categoria = categoriaRepository.buscarPorId(categoriaGastoId)
-	    		.orElseThrow(() -> NotFoundException.of("Categoria de Gasto", categoriaGastoId));
-	   
+    	CategoriaGasto categoria = categoriaQueryService.obtenerPorId(categoriaGastoId);
+	    		
     	return applicationMapper.mapToResponse(categoria);
     }
 }

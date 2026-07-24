@@ -6,15 +6,19 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class RegistrarGastoRecurrenteConPlantillaRequest {
+public class RegistrarGastoRecurrenteRequest {
 	
-	@NotNull(message = "La plantilla de recurrente es obligatoria")
     private Long plantillaGastoRecurrenteId;
 	
-	@NotNull(message = "La dia de vto es obligatori")
+	@NotNull(message = "La descripcion es obligatorio")
+	@Size(max = 50, message = "Máximo 50 caracteres")
+    private String descripcion;
+	
+	@NotNull(message = "La dia de vto es obligatoria")
     @Positive(message = "La dia de vto debe ser positivo")
 	@Min(1)
 	@Max(31)

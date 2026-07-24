@@ -16,6 +16,8 @@ public interface GastoRepository {
     
     void eliminar(Long gastoId);
 
+    boolean existePorGastoRecurrenteId(Long gastoRecurrenteId);
+    		
     boolean existePagoActivoEnPeriodo(
     		Long gastoRecurrenteId,
 			LocalDateTime fechaInicio,

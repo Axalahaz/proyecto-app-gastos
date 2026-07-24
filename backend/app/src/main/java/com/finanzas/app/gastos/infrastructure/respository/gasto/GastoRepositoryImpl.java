@@ -54,6 +54,11 @@ public class GastoRepositoryImpl implements GastoRepository{
 	}
 
 	@Override
+	public boolean existePorGastoRecurrenteId(Long gastoRecurrenteId) {
+		return jpaRepository.existsByGastoRecurrenteId(gastoRecurrenteId);
+	}
+
+	@Override
 	public void eliminar(Long gastoId) {
 		jpaRepository.deleteById(gastoId);		
 	}

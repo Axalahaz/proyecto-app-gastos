@@ -14,27 +14,24 @@ import com.finanzas.app.shared.domain.vo.Fecha;
 public class GastoRecurrenteFactory {
 
     public GastoRecurrente of(
+    		Long plantillaId,
             String descripcion,
             Frecuencia frecuencia,
             Integer diaVencimiento,
             Integer mesVencimiento,
-            boolean periodicidadActiva,
             Fecha fechaCreacion
     ) {
 
-    	Periodicidad periodicidad = null;
-    	if(periodicidadActiva) {
-    		periodicidad = new Periodicidad(
+    	Periodicidad periodicidad =  new Periodicidad(
     				frecuencia,
     				diaVencimiento,
     				mesVencimiento
     				);
-    	}
 
         return GastoRecurrente.crear(
+        		plantillaId,
                 descripcion,
                 periodicidad,
-                periodicidadActiva,
                 fechaCreacion
         );
     }

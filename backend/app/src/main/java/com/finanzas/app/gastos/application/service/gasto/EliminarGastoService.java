@@ -5,9 +5,9 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finanzas.app.gastos.application.queryService.GastoQueryService;
 import com.finanzas.app.gastos.domain.entity.Gasto;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class EliminarGastoService {
 
+	private final GastoQueryService gastoQueryService;
     private final GastoRepository gastoRepository;
 
     public void ejecutar(Long gastoId) {
 
-        Gasto gasto = gastoRepository
-                .buscarPorId(gastoId)
-                .orElseThrow(() ->
-                        NotFoundException.of("Gasto", gastoId));
+        Gasto gasto = gastoQueryService.obtenerPorId(gastoId);
         
         LocalDate tiempoLimite = LocalDate.now();
         

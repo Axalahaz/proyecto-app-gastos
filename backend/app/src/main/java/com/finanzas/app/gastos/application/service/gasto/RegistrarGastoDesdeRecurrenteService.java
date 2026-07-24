@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
+import com.finanzas.app.gastos.application.queryService.GastoRecurrenteQueryService;
 import com.finanzas.app.gastos.domain.entity.CategoriaGasto;
 import com.finanzas.app.gastos.domain.entity.Gasto;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
-import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
 import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
@@ -35,12 +35,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RegistrarGastoDesdeRecurrenteService {
 
+	private final GastoRecurrenteQueryService gastoRecurrenteQueryService;
+
 	private final CategoriaGastoRepository categoriaRepository;
 
 	private final GastoRepository gastoRepository;
     private final GastoApplicationMapper gastoApplicationMapper;
 
-    private final GastoRecurrenteRepository gastoRecurrenteRepository;
     
     public GastoResponse ejecutar(
     		BigDecimal monto, 
@@ -53,10 +54,7 @@ public class RegistrarGastoDesdeRecurrenteService {
     			.orElseThrow(() ->
     			NotFoundException.of("Categoria Gasto", categoriaGastoId));
 
-    	GastoRecurrente gastoRecurrente =
-                gastoRecurrenteRepository.buscar(gastoRecurrenteId)
-                        .orElseThrow(() ->
-                                NotFoundException.of("Gasto Recurrente", gastoRecurrenteId));
+        GastoRecurrente gastoRecurrente = gastoRecurrenteQueryService.obtenerPorId(gastoRecurrenteId);
 
     	gastoRecurrente.validarRecurrenciaEstaActiva();
     	

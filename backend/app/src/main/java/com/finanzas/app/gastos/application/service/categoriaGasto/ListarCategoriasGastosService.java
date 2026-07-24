@@ -9,7 +9,7 @@ import com.finanzas.app.gastos.application.mapper.CategoriaGastoApplicationMappe
 import com.finanzas.app.gastos.domain.entity.CategoriaGasto;
 import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.shared.dto.context.CategoriaResponse;
-import com.finanzas.app.shared.presentation.filters.FilterOrigen;
+import com.finanzas.app.shared.presentation.filters.TipoObjetoFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,9 +21,9 @@ public class ListarCategoriasGastosService {
 	private final CategoriaGastoRepository repository;
     private final CategoriaGastoApplicationMapper categoriaGastoMapper;
 
-    public List<CategoriaResponse> ejecutar(FilterOrigen filter) {
+    public List<CategoriaResponse> ejecutar(TipoObjetoFilter filter) {
 
-    	List<CategoriaGasto> lista = (filter == FilterOrigen.TODOS)
+    	List<CategoriaGasto> lista = (filter == TipoObjetoFilter.TODOS)
                 ? repository.listarAll()
                 : repository.listarPorTipo(filter.toTipoObjeto());
 

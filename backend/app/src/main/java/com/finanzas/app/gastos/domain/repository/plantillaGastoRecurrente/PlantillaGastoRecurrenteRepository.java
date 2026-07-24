@@ -14,6 +14,8 @@ public interface PlantillaGastoRecurrenteRepository {
 	PlantillaGastoRecurrente guardar(PlantillaGastoRecurrente plantillaGastoRecurrente);
 	
 	boolean existePorDescripcion(String descripcion);
+
+	boolean existePorId(Long plantillaId);
     
     List<PlantillaGastoRecurrente> listar(); 
 

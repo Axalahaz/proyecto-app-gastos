@@ -5,7 +5,7 @@ import com.finanzas.app.shared.exception.DomainException;
 
 public class ConflictException extends DomainException {
 
-    public ConflictException(String message) {
+	public ConflictException(String message) {
         super(message, ErrorType.CONFLICT);
     }
 }

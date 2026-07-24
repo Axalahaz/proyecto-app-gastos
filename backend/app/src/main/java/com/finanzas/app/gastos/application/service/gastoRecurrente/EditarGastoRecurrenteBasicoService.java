@@ -3,12 +3,12 @@ package com.finanzas.app.gastos.application.service.gastoRecurrente;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.finanzas.app.gastos.application.exception.GastoRecurrenteDuplicadoException;
 import com.finanzas.app.gastos.application.mapper.GastoRecurrenteApplicationMapper;
+import com.finanzas.app.gastos.application.queryService.GastoRecurrenteQueryService;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
 import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
+import com.finanzas.app.shared.exception.global.RecursoDuplicadoException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EditarGastoRecurrenteBasicoService {
+
+	private final GastoRecurrenteQueryService gastoRecurrenteQueryService;
 
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
     private final GastoRecurrenteApplicationMapper mapper;
@@ -25,17 +27,11 @@ public class EditarGastoRecurrenteBasicoService {
             String descripcion
     		) {
 
-        GastoRecurrente gastoRecurrente = gastoRecurrenteRepository
-                .buscar(gastoRecurrenteId)
-                .orElseThrow(() ->
-                        NotFoundException.of("Gasto Recurrente", gastoRecurrenteId));
-        
+        GastoRecurrente gastoRecurrente = gastoRecurrenteQueryService.obtenerPorId(gastoRecurrenteId);
+
         // ya existe un gasto recurrente igual?
-    	boolean existe = gastoRecurrenteRepository
-             		.existePorDescripcion(descripcion);
-         
-        if (existe) {
-        	throw new GastoRecurrenteDuplicadoException();
+        if (gastoRecurrenteRepository.existePorDescripcion(descripcion)) {
+        	throw new RecursoDuplicadoException("Gasto Recurrente.");
         }
         
         // que parametro llego con valor para editar?

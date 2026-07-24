@@ -4,11 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoRecurrenteApplicationMapper;
+import com.finanzas.app.gastos.application.queryService.GastoRecurrenteQueryService;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
 import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
 import com.finanzas.app.shared.domain.model.Frecuencia;
-import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EditarGastoRecurrenteConPeriodicidadService {
 
-    private final GastoRecurrenteRepository gastoRecurrenteRepository;
+	private final GastoRecurrenteQueryService gastoRecurrenteQueryService;
+
+	private final GastoRecurrenteRepository gastoRecurrenteRepository;
     private final GastoRecurrenteApplicationMapper mapper;
 
     public GastoRecurrenteResponse ejecutar(
@@ -27,12 +29,8 @@ public class EditarGastoRecurrenteConPeriodicidadService {
             Frecuencia nuevaFrecuencia
     		) {
 
-        GastoRecurrente gastoRecurrente = gastoRecurrenteRepository
-                .buscar(gastoRecurrenteId)
-                .orElseThrow(() ->
-                        NotFoundException.of("Gasto Recurrente", gastoRecurrenteId));
+        GastoRecurrente gastoRecurrente = gastoRecurrenteQueryService.obtenerPorId(gastoRecurrenteId);
   
-        
         // que parametro llego con valor para editar?
         
         gastoRecurrente.modificarPeriodicidad(
