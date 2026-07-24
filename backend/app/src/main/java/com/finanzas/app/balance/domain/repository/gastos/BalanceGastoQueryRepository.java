@@ -16,24 +16,28 @@ public interface BalanceGastoQueryRepository {
 	// TOTAL PAGOS POR FECHA
 	
 	BigDecimal obtenerTotalPagos(
-			Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<EstadoMovimiento> estados, List<Boolean> recurrente);
+			LocalDateTime fechaInicio, LocalDateTime fechaFin, 
+			List<EstadoMovimiento> estados, List<Boolean> recurrente);
 	
 	// ---------------------------------------------------------------
 	// DETALLE PAGOS RECURRENTES POR FECHA
 	
 	List<GastoRecurrentesPagosDto> obtenerDetallePagosRealizados(
-			Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<EstadoMovimiento> estados, List<Boolean> recurrente);
+			LocalDateTime fechaInicio, 
+			LocalDateTime fechaFin, List<EstadoMovimiento> estados, List<Boolean> recurrente);
 	
 	// ---------------------------------------------------------------
 	// TOTAL GASTOS POR FECHA
 	
 	BigDecimal obtenerTotal(
-			Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<EstadoMovimiento> estados);
+			LocalDateTime fechaInicio, 
+			LocalDateTime fechaFin, List<EstadoMovimiento> estados);
    
 	// ---------------------------------------------------------------
 	// TOTAL GASTOS POR CATEGORIA
 	
 	List<GastoTotalPorCategoriaDto> obtenerTotalPorCategoria(
-			Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<EstadoMovimiento> estados);
+			LocalDateTime fechaInicio, 
+			LocalDateTime fechaFin, List<EstadoMovimiento> estados);
 	
 }

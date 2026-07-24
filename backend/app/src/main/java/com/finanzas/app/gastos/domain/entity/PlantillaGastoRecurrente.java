@@ -1,7 +1,6 @@
 package com.finanzas.app.gastos.domain.entity;
 
 import com.finanzas.app.shared.domain.vo.Fecha;
-import com.finanzas.app.shared.exception.extend.ConflictException;
 import com.finanzas.app.shared.exception.extend.ValidationException;
 
 import lombok.Getter;
@@ -14,7 +13,6 @@ public class PlantillaGastoRecurrente {
 
     private Long id;
     private String descripcion;
-    private boolean activo;
     private Fecha fechaCreacion;
 
     // ----------------------------------
@@ -23,7 +21,6 @@ public class PlantillaGastoRecurrente {
     private PlantillaGastoRecurrente(
     		Long id,
     		String descripcion,
-    		boolean activo,
     		Fecha fechaCreacion
     ) {
     	validarDescripcion(descripcion);
@@ -31,7 +28,6 @@ public class PlantillaGastoRecurrente {
 
         this.id = id;
         this.descripcion = descripcion;
-        this.activo = activo;
         this.fechaCreacion = fechaCreacion;
     }
     
@@ -40,13 +36,11 @@ public class PlantillaGastoRecurrente {
     
     public static PlantillaGastoRecurrente crear(
     		String descripcion,
-    		boolean activo,
     		Fecha fechaCreacion
     ) {
         return new PlantillaGastoRecurrente(
         		null,
         		descripcion,
-        		activo,
         		fechaCreacion
         );
     }
@@ -57,13 +51,11 @@ public class PlantillaGastoRecurrente {
     public static PlantillaGastoRecurrente reconstruir(
     		Long id,
     		String descripcion,
-    		boolean activo,
     		Fecha fechaCreacion
     ) {
         return new PlantillaGastoRecurrente(
         		id,
         		descripcion,
-        		activo,
         		fechaCreacion
         );
     }
@@ -71,23 +63,6 @@ public class PlantillaGastoRecurrente {
     // **********************************************************************************************
     // <<<<<<<< COMPORTAMIENTO DE DOMINIO >>>>>>>>>
     // **********************************************************************************************
-    
-    // ----------------------------------------------------
-    // ESTADO
-    
-    public void desactivar() {
-    	validarPlantillaEstaActiva();
-        this.activo = false;
-    }
-
-    public void activar() {
-    	validarPlantillaEstaInactiva();
-        this.activo = true;
-    }
-    
-    public boolean estaActiva() {
-        return this.activo;
-    }
     
     // ----------------------------------------------------
     // EDICION
@@ -108,23 +83,6 @@ public class PlantillaGastoRecurrente {
     // ----------------------------------------------------
     // VALIDACION
     // ----------------------------------------------------
-    
-    // VALIDACION DE ESTADO RECURRENCIA
-    
-    public void validarPlantillaEstaActiva() {
-    	if (!this.activo)  {
-    		throw new ConflictException(
-    				"No se puede operar sobre una Plantilla inactiva");
-    	}
-    }
-
-    public void validarPlantillaEstaInactiva() {
-    	if (this.activo)  {
-            throw new ConflictException(
-            		"No se puede operar sobre una Plantilla activa");
-        }
-    }
-    
     
     // VALIDACION DE DATOS
     

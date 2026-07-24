@@ -4,11 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoRecurrenteApplicationMapper;
-import com.finanzas.app.gastos.domain.entity.Frecuencia;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
-import com.finanzas.app.gastos.presentation.user.dto.gastoRecurrente.GastoRecurrenteResponse;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
+import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
+import com.finanzas.app.shared.domain.model.Frecuencia;
 import com.finanzas.app.shared.exception.extend.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ public class EditarGastoRecurrenteConPeriodicidadService {
 
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
     private final GastoRecurrenteApplicationMapper mapper;
-    private final UsuarioAutenticado usuarioAutenticado;
 
     public GastoRecurrenteResponse ejecutar(
             Long gastoRecurrenteId,
@@ -29,10 +27,8 @@ public class EditarGastoRecurrenteConPeriodicidadService {
             Frecuencia nuevaFrecuencia
     		) {
 
-        Long userId = usuarioAutenticado.obtenerId();
-
         GastoRecurrente gastoRecurrente = gastoRecurrenteRepository
-                .buscar(gastoRecurrenteId, userId)
+                .buscar(gastoRecurrenteId)
                 .orElseThrow(() ->
                         NotFoundException.of("Gasto Recurrente", gastoRecurrenteId));
   

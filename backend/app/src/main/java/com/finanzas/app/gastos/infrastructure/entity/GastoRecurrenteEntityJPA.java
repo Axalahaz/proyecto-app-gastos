@@ -2,7 +2,7 @@ package com.finanzas.app.gastos.infrastructure.entity;
 
 import java.time.LocalDateTime;
 
-import com.finanzas.app.gastos.domain.entity.Frecuencia;
+import com.finanzas.app.shared.domain.model.Frecuencia;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,7 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -20,30 +19,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(
-	    name = "gastos_recurrentes",
-	    indexes = {
-	        @Index(
-	            name = "idx_gasto_rec_categoria",
-	            columnList = "categoria_gasto_id"
-	        )
-	    }
-	)
+@Table(name = "gastos_recurrentes")
 public class GastoRecurrenteEntityJPA {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
-	@Column(name = "usuario_id")
-	private Long usuarioId;
-	
+
 	@Column(nullable = false)
 	private String descripcion; 
 
-	@Column(name = "categoria_gasto_id", nullable = false)
-	private Long categoriaGastoId;
-	
 	@Column()
     private Integer diaVencimiento;
 
@@ -71,9 +56,7 @@ public class GastoRecurrenteEntityJPA {
     
     public static GastoRecurrenteEntityJPA of(
     		Long id,
-    		Long usuarioId,
     		String descripcion,
-    		Long categoriaGastoId,
             Integer diaVencimiento,
             Integer mesVencimiento,
             Frecuencia frecuencia,
@@ -85,9 +68,7 @@ public class GastoRecurrenteEntityJPA {
     	GastoRecurrenteEntityJPA entity = new GastoRecurrenteEntityJPA();
     	
     	entity.id = id;
-    	entity.usuarioId = usuarioId;
     	entity.descripcion = descripcion;
-    	entity.categoriaGastoId = categoriaGastoId;
     	entity.diaVencimiento = diaVencimiento;
     	entity.mesVencimiento = mesVencimiento;
     	entity.frecuencia = frecuencia;

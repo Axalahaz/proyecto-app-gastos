@@ -27,9 +27,6 @@ public class PlantillaGastoRecurrenteEntityJPA {
 	private String descripcion; 
 	
 	@Column(nullable = false)
-	private boolean activo;
-	
-	@Column(nullable = false)
     private LocalDateTime fechaCreacion;
 	
     // ----------------------------------
@@ -38,14 +35,12 @@ public class PlantillaGastoRecurrenteEntityJPA {
     public static PlantillaGastoRecurrenteEntityJPA of(
     		Long id,
     		String descripcion,
-    		boolean activo,
     		LocalDateTime fechaCreacion
     		) {
     	PlantillaGastoRecurrenteEntityJPA entity = new PlantillaGastoRecurrenteEntityJPA();
     	
     	entity.id = id;
     	entity.descripcion = descripcion;
-    	entity.activo = activo;
     	entity.fechaCreacion = fechaCreacion;
     	return entity;
     }

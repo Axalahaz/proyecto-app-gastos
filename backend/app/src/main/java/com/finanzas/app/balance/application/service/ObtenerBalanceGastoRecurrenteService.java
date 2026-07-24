@@ -14,7 +14,6 @@ import com.finanzas.app.balance.application.filtrosEnum.FiltroEstadoMovimiento;
 import com.finanzas.app.balance.application.filtrosEnum.FiltroEstadoRecurrente;
 import com.finanzas.app.balance.application.filtrosEnum.FiltroFrecuenciaGastoRecurrente;
 import com.finanzas.app.balance.domain.repository.gastos.BalanceGastoQueryRepository;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
 import com.finanzas.app.shared.domain.model.EstadoMovimiento;
 import com.finanzas.app.shared.exception.extend.ValidationException;
 
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class ObtenerBalanceGastoRecurrenteService {
 
     private final BalanceGastoQueryRepository repository;
-    private final UsuarioAutenticado usuarioAutenticado;
 
     public BalanceGastosRecurrentesResponse ejecutar(
     		LocalDate fecha, 
@@ -36,8 +34,6 @@ public class ObtenerBalanceGastoRecurrenteService {
     		FiltroEstadoRecurrente filtroRecurrente
     		) {
 
-        Long userId = usuarioAutenticado.obtenerId();
-        
         LocalDateTime fechaInicio;
         LocalDateTime fechaFin;
         
@@ -57,10 +53,10 @@ public class ObtenerBalanceGastoRecurrenteService {
 
         List<Boolean> recurrente = filtroRecurrente.obtenerEstados();
         
-        BigDecimal total = repository.obtenerTotalPagos(userId, fechaInicio, fechaFin, estados, recurrente);
+        BigDecimal total = repository.obtenerTotalPagos(fechaInicio, fechaFin, estados, recurrente);
         
         List<GastoRecurrentesPagosDto> porPagos =
-                repository.obtenerDetallePagosRealizados(userId, fechaInicio, fechaFin, estados, recurrente);
+                repository.obtenerDetallePagosRealizados(fechaInicio, fechaFin, estados, recurrente);
 
         return BalanceGastosRecurrentesResponse.of(total, porPagos);
     }

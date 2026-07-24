@@ -1,6 +1,6 @@
 package com.finanzas.app.gastos.domain.vo;
 
-import com.finanzas.app.gastos.domain.entity.Frecuencia;
+import com.finanzas.app.shared.domain.model.Frecuencia;
 import com.finanzas.app.shared.exception.extend.ValidationException;
 
 import lombok.Getter;

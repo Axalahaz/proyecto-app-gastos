@@ -1,6 +1,7 @@
 package com.finanzas.app.gastos.domain.entity;
 
 import com.finanzas.app.gastos.domain.vo.Periodicidad;
+import com.finanzas.app.shared.domain.model.Frecuencia;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.exception.extend.ConflictException;
 import com.finanzas.app.shared.exception.extend.ValidationException;
@@ -14,9 +15,7 @@ import lombok.Getter;
 public class GastoRecurrente {
 
     private Long id;
-    private Long userId;
     private String descripcion;
-    private Long categoriaGastoId;
     
     private Periodicidad periodicidad;
     private boolean periodicidadActiva;
@@ -30,25 +29,19 @@ public class GastoRecurrente {
     
     private GastoRecurrente(
     		Long id,
-    		Long usuarioId,
     		String descripcion,
-    		Long categoriaGastoId,
     		Periodicidad periodicidad,
     		boolean periodicidadActiva,
     		boolean activo,
             Fecha fechaCreacion,
             Fecha fechaCambioActivo
     ) {
-    	validarUsuario(usuarioId);
         validarPeriodicidad(periodicidadActiva, periodicidad);
     	validarDescripcion(descripcion);
-    	validarCategoria(categoriaGastoId);
         validarFechaCreacion(fechaCreacion);
 
         this.id = id;
-        this.userId = usuarioId;
         this.descripcion = descripcion;
-        this.categoriaGastoId = categoriaGastoId;
         this.periodicidad = periodicidad;
         this.periodicidadActiva = periodicidadActiva;
         this.activo = activo;
@@ -60,18 +53,14 @@ public class GastoRecurrente {
     // CREAR
     
     public static GastoRecurrente crear(
-    		Long usuarioId,
     		String descripcion,
-    		Long categoriaGastoId,
     		Periodicidad periodicidad,
     		boolean periodicidadActiva,
             Fecha fechaCreacion
     ) {
         return new GastoRecurrente(
         		null,
-        		usuarioId,
         		descripcion,
-        		categoriaGastoId,
         		periodicidad,
         		periodicidadActiva,
                 true,
@@ -85,9 +74,7 @@ public class GastoRecurrente {
     
     public static GastoRecurrente reconstruir(
     		Long id,
-    		Long userId,
     		String descripcion,
-    		Long categoriaGastoId,
     		Periodicidad periodicidad,
     		boolean periodicidadActiva,
             boolean activo,
@@ -96,9 +83,7 @@ public class GastoRecurrente {
     ) {
         return new GastoRecurrente(
         		id,
-        		userId,
         		descripcion,
-        		categoriaGastoId,
         		periodicidad,
         		periodicidadActiva,
                 activo,
@@ -177,15 +162,10 @@ public class GastoRecurrente {
     // ----------------------------------------------------
     // EDITAR
 
-    public void editarBasico(
-    		String descripcion,
-    		Long categoriaGastoId
-    ) {
+    public void editarBasico(String descripcion ) {
     	validarRecurrenciaEstaActiva();
     	
     	if (descripcion != null) actualizarDescripcion(descripcion);
-    	if (categoriaGastoId != null) actualizarCategoria(categoriaGastoId);
-
     }
 
     // ----------------------------------------------------
@@ -224,15 +204,6 @@ public class GastoRecurrente {
     	validarDescripcion(descripcion);
     	this.descripcion = descripcion;
     }
-
-    private void actualizarCategoria(Long categoriaGastoId) {
-    	if (this.categoriaGastoId.equals(categoriaGastoId)) {
-            return;
-        }
-    	validarCategoria(categoriaGastoId);
-        this.categoriaGastoId = categoriaGastoId;
-    }
-    
     // ----------------------------------------------------
     // VALIDACION
     // ----------------------------------------------------
@@ -271,23 +242,11 @@ public class GastoRecurrente {
     }
     
     // VALIDACION DE DATOS
-    
-    private static void validarUsuario(Long usuarioId) {
-        if (usuarioId == null) {
-            throw ValidationException.of("El gasto recurrente debe pertenecer a un usuario");
-        }
-    }
 
     private static void validarPeriodicidad(boolean periodicidadActiva, Periodicidad periodicidad) {
     	if (periodicidadActiva && periodicidad == null) {
     		throw ValidationException.of("La periodicidad es obligatoria");
     	}
-    }
-    
-    private void validarCategoria(Long categoriaGastoId) {
-        if (categoriaGastoId == null) {
-            throw ValidationException.of("El gasto recurrente debe pertenecer a una categoría");
-        }
     }
     
     private void validarDescripcion(String descripcion) {

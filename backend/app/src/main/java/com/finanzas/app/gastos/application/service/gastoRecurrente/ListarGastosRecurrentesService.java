@@ -9,8 +9,7 @@ import com.finanzas.app.gastos.application.FiltroGastoRecurrente;
 import com.finanzas.app.gastos.application.mapper.GastoRecurrenteApplicationMapper;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
-import com.finanzas.app.gastos.presentation.user.dto.gastoRecurrente.GastoRecurrenteResponse;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
+import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,27 +23,14 @@ import lombok.RequiredArgsConstructor;
 public class ListarGastosRecurrentesService {
 
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
-    private final UsuarioAutenticado usuarioAutenticado;
     private final GastoRecurrenteApplicationMapper mapper;
 
     public List<GastoRecurrenteResponse> ejecutar(FiltroGastoRecurrente filtro) {
 
-        Long userId = usuarioAutenticado.obtenerId();
-
-        List<GastoRecurrente> lista = gastoRecurrenteRepository.listarPorEstado(userId);
+        List<GastoRecurrente> lista = (filtro == FiltroGastoRecurrente.TODOS)
+        		? gastoRecurrenteRepository.listarAll()
+        		: gastoRecurrenteRepository.listarPorEstado(filtro.toEstado());
         		
-        switch (filtro) {
-	        case ACTIVOS ->
-	        	lista = lista.stream()
-	        			.filter(GastoRecurrente::estaActiva)
-	        			.toList();
-	        case INACTIVOS ->
-		        lista = lista.stream()
-						.filter(gastoRecurrente -> !gastoRecurrente.estaActiva())
-						.toList();
-		    default -> {}
-		};
-        
         return lista.stream()
                 .map(mapper::mapToResponse)
                 .toList();

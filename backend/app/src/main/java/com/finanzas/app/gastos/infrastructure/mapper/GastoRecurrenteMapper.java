@@ -20,9 +20,7 @@ public class GastoRecurrenteMapper {
     	
         return GastoRecurrenteEntityJPA.of(
         		gastoRecurrente.getId(),
-        		gastoRecurrente.getUserId(),
         		gastoRecurrente.getDescripcion(), 
-        		gastoRecurrente.getCategoriaGastoId(), 
         		gastoRecurrente.getPeriodicidad().getDiaVencimiento(),
         		gastoRecurrente.getPeriodicidad().getMesVencimiento(),
         		gastoRecurrente.getPeriodicidad().getFrecuencia(),
@@ -47,9 +45,7 @@ public class GastoRecurrenteMapper {
     	
     	return GastoRecurrente.reconstruir(
     			entity.getId(),
-    			entity.getUsuarioId(),
     			entity.getDescripcion(),
-    			entity.getCategoriaGastoId(),
     			periodicidad,
     			entity.isPeriodicidadActiva(),
     			entity.isActivo(),

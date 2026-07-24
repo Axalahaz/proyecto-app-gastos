@@ -20,7 +20,6 @@ public class GastoMapper {
     	
         return GastoEntityJPA.of(
         		gasto.getId(),
-        		gasto.getUsuarioId(),
         		gasto.getCategoriaGastoId(), 
         		gasto.getGastoRecurrenteId(), 
         		gasto.getMonto().getValue(),
@@ -39,7 +38,6 @@ public class GastoMapper {
     	
     	return Gasto.reconstruir(
     			entity.getId(),
-    			entity.getUsuarioId(),
     			entity.getCategoriaGastoId(),
     			entity.getGastoRecurrenteId(),
     			new Money(entity.getMonto()),

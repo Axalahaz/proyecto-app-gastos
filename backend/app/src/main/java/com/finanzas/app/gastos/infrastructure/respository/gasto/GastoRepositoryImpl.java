@@ -28,16 +28,16 @@ public class GastoRepositoryImpl implements GastoRepository{
 	}
 
 	@Override
-	public Optional<Gasto> buscarPorIdYUsuarioId(Long gastoId, Long usuarioId) {
-		return jpaRepository.buscarPorIdYUsuario(gastoId, usuarioId)
+	public Optional<Gasto> buscarPorId(Long gastoId) {
+		return jpaRepository.findById(gastoId)
 				.map(gastoMapper::mapToDomain);
 	}
 
 
 
 	@Override
-	public List<Gasto> listarPorCategoriaYUsuario(Long categoriaGastoId, Long usuarioId) {
-		return jpaRepository.buscarPorCategoriaYUsuario(categoriaGastoId, usuarioId)
+	public List<Gasto> listarPorCategoria(Long categoriaGastoId) {
+		return jpaRepository.findByCategoriaGastoId(categoriaGastoId)
 				.stream()
 				.map(gastoMapper::mapToDomain)
 				.toList();
@@ -57,10 +57,4 @@ public class GastoRepositoryImpl implements GastoRepository{
 	public void eliminar(Long gastoId) {
 		jpaRepository.deleteById(gastoId);		
 	}
-
-	@Override
-	public void eliminarTodos(Long usuarioId) {
-		jpaRepository.deleteAllByUsuarioId(usuarioId);		
-	}
-
 }

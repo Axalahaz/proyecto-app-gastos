@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import com.finanzas.app.shared.domain.model.EstadoMovimiento;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
+import com.finanzas.app.shared.exception.extend.ConflictException;
 import com.finanzas.app.shared.exception.extend.ValidationException;
 
 import lombok.Getter;
@@ -17,8 +18,7 @@ import lombok.Getter;
 @Getter
 public class Gasto extends Movimiento {
 
-    private Long id; // tabla BD
-    private Long usuarioId;
+    private Long id;
     private Long categoriaGastoId;
     private Long gastoRecurrenteId;
 
@@ -27,7 +27,6 @@ public class Gasto extends Movimiento {
     
     private Gasto(
     	    Long id,
-    	    Long usuarioId,
     	    Long categoriaGastoId,
     	    Long gastoRecurrenteId,
     	    Money monto, 
@@ -41,7 +40,6 @@ public class Gasto extends Movimiento {
         validarCategoria(categoriaGastoId);
         
         this.id = id;
-        this.usuarioId = usuarioId;
         this.categoriaGastoId = categoriaGastoId;
         this.gastoRecurrenteId = gastoRecurrenteId;
     }
@@ -50,7 +48,6 @@ public class Gasto extends Movimiento {
     // CREAR
     
     public static Gasto crear(
-    		Long usuarioId,
     		Long categoriaGastoId,
     		Long gastoRecurrenteId,
     		Money monto, 
@@ -60,7 +57,6 @@ public class Gasto extends Movimiento {
 
     	return new Gasto(
     			null, 
-    			usuarioId, 
     			categoriaGastoId, 
     			gastoRecurrenteId,
     			monto, 
@@ -76,7 +72,6 @@ public class Gasto extends Movimiento {
     
     public static Gasto reconstruir(
             Long id,
-            Long usuarioId,
             Long categoriaGastoId,
             Long gastoRecurrenteId,
             Money monto,
@@ -88,7 +83,6 @@ public class Gasto extends Movimiento {
     	
         return new Gasto(
                 id,
-                usuarioId,
                 categoriaGastoId,
                 gastoRecurrenteId,
                 monto,
@@ -140,7 +134,7 @@ public class Gasto extends Movimiento {
     // GASTO RECURRENTE
     
     public void asociarAGastoRecurrente(Long nuevoGastoRecurrenteId) {
-    	validarNoAsociadoAGastoRecurrente(this.gastoRecurrenteId);
+    	validarNoAsociadoAGastoRecurrente();
     	this.gastoRecurrenteId = nuevoGastoRecurrenteId;
     }
     
@@ -154,12 +148,12 @@ public class Gasto extends Movimiento {
     public void validarEliminacion(LocalDate tiempo) {
     	validarEstadoNoAnulado();
     	if (!fechaCreacion.getValue().toLocalDate().equals(tiempo)) {
-    		throw ValidationException.of(
+    		throw new ConflictException(
     				"Solo se pueden eliminar gastos creados hoy"
     				);
     	}
     	if (gastoRecurrenteId != null) {
-    	    throw ValidationException.of(
+    	    throw new ConflictException(
     	            "Los gastos generados desde recurrentes solo pueden anularse"
     	    );
     	}
@@ -167,13 +161,13 @@ public class Gasto extends Movimiento {
     
     public void validarEstadoNoAnulado() {
     	if (this.estado == EstadoMovimiento.ANULADO) {
-            throw ValidationException.of("No se puede operar sobre un gasto anulado");
+            throw new ConflictException("No se puede operar sobre un gasto anulado");
         }
     }
     
-    private void validarNoAsociadoAGastoRecurrente(Long gastoRecurrenteId) {
+    private void validarNoAsociadoAGastoRecurrente() {
     	if (this.gastoRecurrenteId != null) {
-    		throw ValidationException.of(
+    		throw new ConflictException(
     				"El gasto ya esta asociado a un gasto recurrente"
     				); 
     	}

@@ -10,7 +10,6 @@ import lombok.Getter;
 public class CategoriaGasto {
 
     private Long id;
-    private Long usuarioId; // puede ser NULL
     private String nombre;
     private TipoObjeto tipo;
     private Fecha fechaCreacion;
@@ -20,7 +19,6 @@ public class CategoriaGasto {
 
     private CategoriaGasto(
     		Long id,
-    		Long usuarioId, 
     		String nombre,
     		TipoObjeto tipo,
     		Fecha fechaCreacion
@@ -29,7 +27,6 @@ public class CategoriaGasto {
         validarNombre(nombre);
 
         this.id = id;
-        this.usuarioId = usuarioId;
         this.nombre = nombre;
         this.tipo = tipo;
         this.fechaCreacion = fechaCreacion;
@@ -39,15 +36,12 @@ public class CategoriaGasto {
     // CREAR
     
     public static CategoriaGasto crear(
-    		Long usuarioId, 
     		String nombre,
     		TipoObjeto tipo,
     		Fecha fechaCreacion
     		) {
-    	validarUsuario(usuarioId);
     	return new CategoriaGasto(
     			null, 
-    			usuarioId, 
     			nombre, 
     			tipo, 
     			fechaCreacion
@@ -59,19 +53,17 @@ public class CategoriaGasto {
     
     public static CategoriaGasto reconstruir(
     		Long id,
-    		Long usuarioId, 
     		String nombre,
     		TipoObjeto tipo,
     		Fecha fechaCreacion
     		) {
     	return new CategoriaGasto(
     			id, 
-    			usuarioId, 
     			nombre, 
     			tipo, 
     	fechaCreacion);
     }
-    
+
     // ----------------------------------
     // MODIFICAR
 
@@ -83,10 +75,8 @@ public class CategoriaGasto {
     // ----------------------------------
     // VALIDACIONES
     
-    private static void validarUsuario(Long usuarioId) {
-        if (usuarioId == null) {
-            throw ValidationException.of("La categoría debe pertenecer a un usuario");
-        }
+    public boolean esTipo(TipoObjeto tipo) {
+        return this.tipo == tipo;
     }
 
     private void validarNombre(String nombre) {

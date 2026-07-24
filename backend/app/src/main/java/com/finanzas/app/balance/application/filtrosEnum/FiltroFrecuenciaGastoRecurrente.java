@@ -2,7 +2,7 @@ package com.finanzas.app.balance.application.filtrosEnum;
 
 import java.util.List;
 
-import com.finanzas.app.gastos.domain.entity.Frecuencia;
+import com.finanzas.app.shared.domain.model.Frecuencia;
 
 public enum FiltroFrecuenciaGastoRecurrente {
 

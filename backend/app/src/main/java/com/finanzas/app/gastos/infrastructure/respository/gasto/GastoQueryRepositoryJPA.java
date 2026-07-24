@@ -25,15 +25,13 @@ public interface GastoQueryRepositoryJPA extends JpaRepository<GastoEntityJPA, L
 			FROM GastoEntityJPA g
 			JOIN GastoRecurrenteEntityJPA gr
 		        ON gr.id = g.gastoRecurrenteId
-			WHERE g.usuarioId = :usuarioId
-				AND g.estado IN :estados
+			WHERE  g.estado IN :estados
 				AND g.gastoRecurrenteId IS NOT NULL
 				AND g.fechaCreacion >= :fechaInicio
 				AND g.fechaCreacion < :fechafin
 				AND gr.activo IN :recurrente
 			""")
 	BigDecimal consultarTotalPagos(
-			@Param("usuarioId") Long usuarioId, 
 			@Param("fechaInicio") LocalDateTime fechaInicio,
 			@Param("fechafin") LocalDateTime fechafin,
 			@Param("estados") List<EstadoMovimiento> estados,
@@ -50,8 +48,7 @@ public interface GastoQueryRepositoryJPA extends JpaRepository<GastoEntityJPA, L
 		        ON c.id = g.categoriaGastoId
 		    JOIN GastoRecurrenteEntityJPA gr
 		        ON gr.id = g.gastoRecurrenteId
-		    WHERE g.usuarioId = :usuarioId
-			    AND g.estado IN :estados
+		    WHERE g.estado IN :estados
 			    AND g.gastoRecurrenteId IS NOT NULL
 			    AND g.fechaCreacion >= :fechaInicio
 				AND g.fechaCreacion < :fechafin
@@ -60,7 +57,6 @@ public interface GastoQueryRepositoryJPA extends JpaRepository<GastoEntityJPA, L
 				g.fechaCreacion DESC
 		""")
 	List<Object[]> consultarDetallePagosRealizados(
-			@Param("usuarioId") Long usuarioId, 
 			@Param("fechaInicio") LocalDateTime fechaInicio,
 			@Param("fechafin") LocalDateTime fechafin,
 			@Param("estados") List<EstadoMovimiento> estados,
@@ -73,13 +69,11 @@ public interface GastoQueryRepositoryJPA extends JpaRepository<GastoEntityJPA, L
 	@Query("""
 		    SELECT COALESCE(SUM(g.monto), 0)
 		    FROM GastoEntityJPA g
-		    WHERE g.usuarioId = :usuarioId
-			    AND g.estado IN :estados
+		    WHERE g.estado IN :estados
 			    AND g.fechaCreacion >= :fechaInicio
 				AND g.fechaCreacion < :fechafin
 		""")
 	BigDecimal consultarTotalGastos(
-			@Param("usuarioId") Long usuarioId, 
 			@Param("fechaInicio") LocalDateTime fechaInicio,
 		    @Param("fechafin") LocalDateTime fechafin,
 			@Param("estados") List<EstadoMovimiento> estados);
@@ -93,15 +87,13 @@ public interface GastoQueryRepositoryJPA extends JpaRepository<GastoEntityJPA, L
 		    FROM GastoEntityJPA g
 		    JOIN CategoriaGastoEntityJPA c
 		        ON c.id = g.categoriaGastoId
-		    WHERE g.usuarioId = :usuarioId
-			    AND g.estado IN :estados
+		    WHERE g.estado IN :estados
 			    AND g.fechaCreacion >= :fechaInicio
 				AND g.fechaCreacion < :fechafin
 			GROUP BY c.id, c.nombre
 			ORDER BY c.nombre ASC
 		""")
 	List<Object[]> consultarTotalesPorCategoria(
-			@Param("usuarioId") Long usuarioId, 
 			@Param("fechaInicio") LocalDateTime fechaInicio,
 		    @Param("fechafin") LocalDateTime fechafin,
 		    @Param("estados") List<EstadoMovimiento> estados);

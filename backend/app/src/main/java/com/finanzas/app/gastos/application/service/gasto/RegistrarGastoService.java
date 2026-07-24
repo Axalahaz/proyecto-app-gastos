@@ -10,8 +10,7 @@ import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
 import com.finanzas.app.gastos.domain.entity.Gasto;
 import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
-import com.finanzas.app.gastos.presentation.user.dto.gasto.GastoResponse;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
+import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
 import com.finanzas.app.shared.exception.extend.NotFoundException;
@@ -32,7 +31,6 @@ public class RegistrarGastoService {
 
     private final CategoriaGastoRepository categoriaRepository;
     private final GastoRepository gastoRepository;
-    private final UsuarioAutenticado usuarioAutenticado;
     private final GastoApplicationMapper gastoApplicationMapper;
 
     
@@ -41,12 +39,10 @@ public class RegistrarGastoService {
     		String descripcion, 
     		Long categoriaGastoId
     		) {
-
-    	Long userId = usuarioAutenticado.obtenerId();
     	
     	// control de consistencia
         boolean existe = categoriaRepository
-                .existePorIdYUsuarioId(categoriaGastoId, userId);
+                .existePorId(categoriaGastoId);
         
         if (!existe) throw NotFoundException.of("Categoría", categoriaGastoId);
         
@@ -54,7 +50,6 @@ public class RegistrarGastoService {
         Fecha fechaCreacion = new Fecha(LocalDateTime.now());
 
         Gasto gasto = Gasto.crear(
-        		userId,
         		categoriaGastoId,
         		null,
                 money,

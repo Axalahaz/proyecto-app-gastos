@@ -40,9 +40,6 @@ public class GastoEntityJPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(name = "usuario_id", nullable = false)
-	private Long usuarioId;
-	
 	@Column(name = "categoria_gasto_id", nullable = false)
 	private Long categoriaGastoId;
 
@@ -70,7 +67,6 @@ public class GastoEntityJPA {
     
     public static GastoEntityJPA of(
     		Long id,
-    		Long usuarioId,
     		Long categoriaGastoId,
     		Long gastoRecurrenteId,
     		BigDecimal monto,
@@ -82,7 +78,6 @@ public class GastoEntityJPA {
     	GastoEntityJPA entity = new GastoEntityJPA();
     	
     	entity.id = id;
-    	entity.usuarioId = usuarioId;
     	entity.categoriaGastoId = categoriaGastoId;
     	entity.gastoRecurrenteId = gastoRecurrenteId;
     	entity.monto = monto;

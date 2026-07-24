@@ -3,7 +3,7 @@ package com.finanzas.app.gastos.application.mapper;
 import org.springframework.stereotype.Component;
 
 import com.finanzas.app.gastos.domain.entity.Gasto;
-import com.finanzas.app.gastos.presentation.user.dto.gasto.GastoResponse;
+import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 
 @Component
 public class GastoApplicationMapper {

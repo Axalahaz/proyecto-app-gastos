@@ -2,9 +2,9 @@ package com.finanzas.app.gastos.domain.factory;
 
 import org.springframework.stereotype.Component;
 
-import com.finanzas.app.gastos.domain.entity.Frecuencia;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.vo.Periodicidad;
+import com.finanzas.app.shared.domain.model.Frecuencia;
 import com.finanzas.app.shared.domain.vo.Fecha;
 
 /*
@@ -14,9 +14,7 @@ import com.finanzas.app.shared.domain.vo.Fecha;
 public class GastoRecurrenteFactory {
 
     public GastoRecurrente of(
-    		Long usuarioId,
             String descripcion,
-            Long categoriaId,
             Frecuencia frecuencia,
             Integer diaVencimiento,
             Integer mesVencimiento,
@@ -34,9 +32,7 @@ public class GastoRecurrenteFactory {
     	}
 
         return GastoRecurrente.crear(
-        		usuarioId,
                 descripcion,
-                categoriaId,
                 periodicidad,
                 periodicidadActiva,
                 fechaCreacion

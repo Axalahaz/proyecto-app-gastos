@@ -9,16 +9,16 @@ import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 
 public interface GastoRecurrenteRepository {
 	
-	Optional<GastoRecurrente> buscar(Long gastoRecurrenteId, Long userId);
+	Optional<GastoRecurrente> buscar(Long gastoRecurrenteId);
 	
 	GastoRecurrente guardar(GastoRecurrente gastoRecurrente);
     
     void eliminar(Long gastoRecurrenteId);
     
-    void eliminarTodos(Long usuarioId);
+    List<GastoRecurrente> listarAll();
 
-    List<GastoRecurrente> listarPorEstado(Long userId);
+    List<GastoRecurrente> listarPorEstado(boolean estado);
 
-    boolean existePorDescripcionYCategoriaGastoId(String descripcion, Long categoriaId);
+    boolean existePorDescripcion(String descripcion);
 
 }

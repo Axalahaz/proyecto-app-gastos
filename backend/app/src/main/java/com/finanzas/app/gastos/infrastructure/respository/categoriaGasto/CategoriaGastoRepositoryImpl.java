@@ -21,31 +21,15 @@ public class CategoriaGastoRepositoryImpl implements CategoriaGastoRepository {
 	private final CategoriaGastoMapper categoriaGastoMapper;
 	
 	@Override
-	public Optional<CategoriaGasto> buscarPorIdYUsuario(Long categoriaId, Long usuarioId) {
-		return jpaRepository.findByIdAndUsuarioId(categoriaId, usuarioId)
+	public Optional<CategoriaGasto> buscarPorId(Long categoriaId) {
+		return jpaRepository.findById(categoriaId)
 				.map(categoriaGastoMapper::mapToDomain);
 	}
 
-	@Override
-	public Optional<CategoriaGasto> buscarDisponible(Long categoriaId, Long usuarioId) {
-		return jpaRepository.buscarDisponible(categoriaId, usuarioId)
-				.map(categoriaGastoMapper::mapToDomain);
-	}
-	
-	@Override
-	public Optional<CategoriaGasto> buscarPorIdYTipo(Long categoriaId, TipoObjeto tipo) {
-		return jpaRepository.findByIdAndTipo(categoriaId, tipo)
-				.map(categoriaGastoMapper::mapToDomain);
-	}
 
 	@Override
-	public boolean existePorIdYUsuarioId(Long categoriaId, Long usuarioId) {
-		return jpaRepository.existsByIdAndUsuarioId(categoriaId, usuarioId);
-	}
-
-	@Override
-	public List<CategoriaGasto> listarPorUsuario(Long usuarioId) {
-		return jpaRepository.findByUsuarioId(usuarioId)
+	public List<CategoriaGasto> listarAll() {
+		return jpaRepository.findAllByOrderByNombreAsc()
 				.stream()
 				.map(categoriaGastoMapper::mapToDomain)
 				.toList();
@@ -53,7 +37,7 @@ public class CategoriaGastoRepositoryImpl implements CategoriaGastoRepository {
 
 	@Override
 	public List<CategoriaGasto> listarPorTipo(TipoObjeto tipo) {
-		return jpaRepository.findByTipo(tipo)
+		return jpaRepository.findByTipoOrderByNombreAsc(tipo)
 				.stream()
 				.map(categoriaGastoMapper::mapToDomain)
 				.toList();
@@ -73,8 +57,13 @@ public class CategoriaGastoRepositoryImpl implements CategoriaGastoRepository {
 	}
 
 	@Override
-	public void eliminarTodos(Long usuarioId) {
-		jpaRepository.deleteAllByUsuarioId(usuarioId);		
+	public boolean existePorNombre(String nombre) {
+		return jpaRepository.existsByNombre(nombre);
+	}
+	
+	@Override
+	public boolean existePorId(Long categoriaId) {
+		return jpaRepository.existsById(categoriaId);
 	}
 
 }

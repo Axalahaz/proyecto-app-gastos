@@ -13,7 +13,6 @@ import com.finanzas.app.balance.application.dto.gasto.GastoTotalPorCategoriaDto;
 import com.finanzas.app.balance.application.filtrosEnum.FiltroEstadoMovimiento;
 import com.finanzas.app.balance.application.filtrosEnum.FiltroTipoFechaBalance;
 import com.finanzas.app.balance.domain.repository.gastos.BalanceGastoQueryRepository;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
 import com.finanzas.app.shared.domain.model.EstadoMovimiento;
 import com.finanzas.app.shared.exception.extend.ValidationException;
 
@@ -32,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 public class ObtenerBalanceGastoService {
 
     private final BalanceGastoQueryRepository repository;
-    private final UsuarioAutenticado usuarioAutenticado;
 
     public BalanceGastosResponse ejecutar(
     		LocalDate fecha, 
@@ -40,8 +38,6 @@ public class ObtenerBalanceGastoService {
     		FiltroEstadoMovimiento filtroEstado
     		) {
 
-        Long userId = usuarioAutenticado.obtenerId();
-        
         LocalDateTime fechaInicio;
         LocalDateTime fechaFin;
         
@@ -63,10 +59,10 @@ public class ObtenerBalanceGastoService {
         
         List<EstadoMovimiento> estados = filtroEstado.obtenerEstados();
         
-        BigDecimal total = repository.obtenerTotal(userId, fechaInicio, fechaFin, estados);
+        BigDecimal total = repository.obtenerTotal(fechaInicio, fechaFin, estados);
         
         List<GastoTotalPorCategoriaDto> porCategoria =
-                repository.obtenerTotalPorCategoria(userId, fechaInicio, fechaFin, estados);
+                repository.obtenerTotalPorCategoria(fechaInicio, fechaFin, estados);
 
         return BalanceGastosResponse.of(total, porCategoria);
     }

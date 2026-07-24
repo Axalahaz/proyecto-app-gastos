@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
-import com.finanzas.app.gastos.presentation.user.dto.gastoRecurrente.GastoRecurrenteResponse;
+import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
 
 @Component
 public class GastoRecurrenteApplicationMapper {
@@ -18,7 +18,6 @@ public class GastoRecurrenteApplicationMapper {
     	return GastoRecurrenteResponse.of(
     			gastoRecurrente.getId(), 
     			gastoRecurrente.getDescripcion(),
-    			gastoRecurrente.getCategoriaGastoId(),
         		gastoRecurrente.getPeriodicidad().getDiaVencimiento(),
         		gastoRecurrente.getPeriodicidad().getMesVencimiento(),
         		gastoRecurrente.getPeriodicidad().getFrecuencia().toString(),

@@ -22,15 +22,21 @@ public class BalanceGastoQueryRepositoryImpl implements BalanceGastoQueryReposit
 
     @Override
     public BigDecimal obtenerTotal(
-    		Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<EstadoMovimiento> estados) {
-        return gastoJPA.consultarTotalGastos(userId, fechaInicio, fechaFin, estados);
+    		LocalDateTime fechaInicio, 
+    		LocalDateTime fechaFin, 
+    		List<EstadoMovimiento> estados
+    ) {
+        return gastoJPA.consultarTotalGastos(fechaInicio, fechaFin, estados);
     }
 
 	@Override
 	public List<GastoTotalPorCategoriaDto> obtenerTotalPorCategoria(
-			Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin, List<EstadoMovimiento> estados) {
+			LocalDateTime fechaInicio, 
+			LocalDateTime fechaFin, 
+			List<EstadoMovimiento> estados
+	) {
 		
-		return gastoJPA.consultarTotalesPorCategoria(userId, fechaInicio, fechaFin, estados)
+		return gastoJPA.consultarTotalesPorCategoria(fechaInicio, fechaFin, estados)
 	            .stream()
 	            .map(obj -> GastoTotalPorCategoriaDto.of(
 	                    (String) obj[0],
@@ -40,15 +46,23 @@ public class BalanceGastoQueryRepositoryImpl implements BalanceGastoQueryReposit
 	}
 
 	@Override
-	public BigDecimal obtenerTotalPagos(Long userId, LocalDateTime fechaInicio, LocalDateTime fechaFin,
-			List<EstadoMovimiento> estados, List<Boolean> recurrente) {
-		return gastoJPA.consultarTotalPagos(userId, fechaInicio, fechaFin, estados, recurrente);
+	public BigDecimal obtenerTotalPagos(
+			LocalDateTime fechaInicio, 
+			LocalDateTime fechaFin,
+			List<EstadoMovimiento> estados, 
+			List<Boolean> recurrente
+	) {
+		return gastoJPA.consultarTotalPagos(fechaInicio, fechaFin, estados, recurrente);
 	}
 
 	@Override
-	public List<GastoRecurrentesPagosDto> obtenerDetallePagosRealizados(Long userId, LocalDateTime fechaInicio,
-			LocalDateTime fechaFin, List<EstadoMovimiento> estados, List<Boolean> recurrente) {
-		return gastoJPA.consultarDetallePagosRealizados(userId, fechaInicio, fechaFin, estados, recurrente)
+	public List<GastoRecurrentesPagosDto> obtenerDetallePagosRealizados(
+			LocalDateTime fechaInicio,
+			LocalDateTime fechaFin, 
+			List<EstadoMovimiento> estados, 
+			List<Boolean> recurrente
+	) {
+		return gastoJPA.consultarDetallePagosRealizados(fechaInicio, fechaFin, estados, recurrente)
 	            .stream()
 	            .map(obj -> GastoRecurrentesPagosDto.of(
 	                    (String) obj[0],

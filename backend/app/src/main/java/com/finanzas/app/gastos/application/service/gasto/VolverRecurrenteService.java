@@ -12,8 +12,7 @@ import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.factory.GastoRecurrenteFactory;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
-import com.finanzas.app.gastos.presentation.user.dto.gasto.GastoResponse;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
+import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.exception.extend.NotFoundException;
 import com.finanzas.app.shared.exception.extend.ValidationException;
@@ -26,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class VolverRecurrenteService {
 
     private final GastoRepository gastoRepository;
-    private final UsuarioAutenticado usuarioAutenticado;
     private final GastoApplicationMapper mapper;
     
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
@@ -34,10 +32,8 @@ public class VolverRecurrenteService {
     
     public GastoResponse ejecutar(Long gastoId) {
 
-        Long userId = usuarioAutenticado.obtenerId();
-
         Gasto gasto = gastoRepository
-                .buscarPorIdYUsuarioId(gastoId, userId)
+                .buscarPorId(gastoId)
                 .orElseThrow(() ->
                         NotFoundException.of("Gasto", gastoId));
         
@@ -48,10 +44,7 @@ public class VolverRecurrenteService {
         		"El gasto ya esa asociado a recurrente id " + gasto.getGastoRecurrenteId());
         
         boolean existe = gastoRecurrenteRepository
-        		.existePorDescripcionYCategoriaGastoId(
-        				gasto.getDescripcion(),
-        				gasto.getCategoriaGastoId()
-        				);
+        		.existePorDescripcion(gasto.getDescripcion());
         
         if (existe) {
         	throw new GastoRecurrenteDuplicadoException();
@@ -60,9 +53,7 @@ public class VolverRecurrenteService {
         Fecha fechaCreacion = new Fecha(LocalDateTime.now());
 
         GastoRecurrente gastoRecurrente = factory.of(
-        		userId,
         		gasto.getDescripcion(), 
-        		gasto.getCategoriaGastoId(),
         		null,
         		null,
         		null,

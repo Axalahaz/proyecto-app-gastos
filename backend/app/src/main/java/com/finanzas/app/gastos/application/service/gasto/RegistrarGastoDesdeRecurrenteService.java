@@ -8,14 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
+import com.finanzas.app.gastos.domain.entity.CategoriaGasto;
 import com.finanzas.app.gastos.domain.entity.Gasto;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
+import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
-import com.finanzas.app.gastos.presentation.user.dto.gasto.GastoResponse;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
+import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
+import com.finanzas.app.shared.exception.extend.ConflictException;
 import com.finanzas.app.shared.exception.extend.NotFoundException;
 import com.finanzas.app.shared.exception.extend.ValidationException;
 
@@ -33,21 +35,26 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RegistrarGastoDesdeRecurrenteService {
 
-    private final GastoRepository gastoRepository;
-    private final UsuarioAutenticado usuarioAutenticado;
+	private final CategoriaGastoRepository categoriaRepository;
+
+	private final GastoRepository gastoRepository;
     private final GastoApplicationMapper gastoApplicationMapper;
 
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
     
     public GastoResponse ejecutar(
     		BigDecimal monto, 
-    		Long gastoRecurrenteId
+    		Long gastoRecurrenteId,
+    		Long categoriaGastoId
     		) {
 
-    	Long userId = usuarioAutenticado.obtenerId();
-    	
+    	CategoriaGasto categoria =
+    			categoriaRepository.buscarPorId(categoriaGastoId)
+    			.orElseThrow(() ->
+    			NotFoundException.of("Categoria Gasto", categoriaGastoId));
+
     	GastoRecurrente gastoRecurrente =
-                gastoRecurrenteRepository.buscar(gastoRecurrenteId, userId)
+                gastoRecurrenteRepository.buscar(gastoRecurrenteId)
                         .orElseThrow(() ->
                                 NotFoundException.of("Gasto Recurrente", gastoRecurrenteId));
 
@@ -76,17 +83,16 @@ public class RegistrarGastoDesdeRecurrenteService {
     		    fechaInicio,
     			fechaFin);
 
-    	if (existePago) throw ValidationException.of(
+    	if (existePago) throw new ConflictException(
     		    "El gasto recurrente ya fue registrado para este período"
-    			);
+    	);
     	
     	// creo el pago/gasto
     	Money money = new Money(monto);
         Fecha fechaCreacion = new Fecha(LocalDateTime.now());
 
         Gasto gasto = Gasto.crear(
-        		userId,
-        		gastoRecurrente.getCategoriaGastoId(),
+        		categoria.getId(),
         		gastoRecurrente.getId(),
                 money,
                 gastoRecurrente.getDescripcion(),

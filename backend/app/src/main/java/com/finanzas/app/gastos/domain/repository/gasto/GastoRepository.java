@@ -10,19 +10,17 @@ import com.finanzas.app.gastos.domain.entity.Gasto;
 
 public interface GastoRepository {
 	
-	Optional<Gasto> buscarPorIdYUsuarioId(Long gastoId, Long usuarioId);
+	Gasto guardar(Gasto gasto);
 	
-    Gasto guardar(Gasto gasto);
+	Optional<Gasto> buscarPorId(Long gastoId);
     
     void eliminar(Long gastoId);
-
-    void eliminarTodos(Long usuarioId);
 
     boolean existePagoActivoEnPeriodo(
     		Long gastoRecurrenteId,
 			LocalDateTime fechaInicio,
 			LocalDateTime fechaFin);
 
-    List<Gasto> listarPorCategoriaYUsuario(Long categoriaGastoId, Long usuarioId);
+    List<Gasto> listarPorCategoria(Long categoriaGastoId);
 
 }

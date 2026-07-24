@@ -27,32 +27,34 @@ public class GastoRecurrenteRepositoryImpl implements GastoRecurrenteRepository{
 	}
 
 	@Override
-	public Optional<GastoRecurrente> buscar(Long gastoRecurrenteId, Long usuarioId) {
-		return jpaRepository.findByIdAndUsuarioId(gastoRecurrenteId, usuarioId)
+	public Optional<GastoRecurrente> buscar(Long gastoRecurrenteId) {
+		return jpaRepository.findById(gastoRecurrenteId)
 				.map(gastoRecurrenteMapper::mapToDomain);
 	}
 
 	@Override
-	public List<GastoRecurrente> listarPorEstado(Long usuarioId) {
-		return jpaRepository.findByUsuarioIdOrUsuarioIdNull(usuarioId)
+	public List<GastoRecurrente> listarAll() {
+		return jpaRepository.findAll()
 				.stream()
 				.map(gastoRecurrenteMapper::mapToDomain)
 				.toList();
 	}
 	
 	@Override
-	public boolean existePorDescripcionYCategoriaGastoId(String descripcion, Long categoriaId) {
-		return jpaRepository.existsByDescripcionAndCategoriaGastoId(descripcion, categoriaId);
+	public List<GastoRecurrente> listarPorEstado(boolean estado) {
+		return jpaRepository.findByActivo(estado)
+				.stream()
+				.map(gastoRecurrenteMapper::mapToDomain)
+				.toList();
+	}
+	
+	@Override
+	public boolean existePorDescripcion(String descripcion) {
+		return jpaRepository.existsByDescripcion(descripcion);
 	}
 	
 	@Override
 	public void eliminar(Long gastoRecurrenteId) {
 		jpaRepository.deleteById(gastoRecurrenteId);		
 	}
-
-	@Override
-	public void eliminarTodos(Long usuarioId) {
-		jpaRepository.deleteAllByUsuarioId(usuarioId);			
-	}
-
 }

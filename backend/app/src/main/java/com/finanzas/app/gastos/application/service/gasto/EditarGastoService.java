@@ -9,8 +9,7 @@ import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
 import com.finanzas.app.gastos.domain.entity.Gasto;
 import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
-import com.finanzas.app.gastos.presentation.user.dto.gasto.GastoResponse;
-import com.finanzas.app.shared.domain.UsuarioAutenticado;
+import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.shared.domain.vo.Money;
 import com.finanzas.app.shared.exception.extend.NotFoundException;
 
@@ -23,7 +22,6 @@ public class EditarGastoService {
 
     private final GastoRepository gastoRepository;
     private final CategoriaGastoRepository categoriaRepository;
-    private final UsuarioAutenticado usuarioAutenticado;
     private final GastoApplicationMapper mapper;
     
     public GastoResponse ejecutar(
@@ -33,10 +31,8 @@ public class EditarGastoService {
             String descripcion
     		) {
 
-        Long userId = usuarioAutenticado.obtenerId();
-
         Gasto gasto = gastoRepository
-                .buscarPorIdYUsuarioId(gastoId, userId)
+                .buscarPorId(gastoId)
                 .orElseThrow(() ->
                         NotFoundException.of("Gasto", gastoId));
         
@@ -44,7 +40,7 @@ public class EditarGastoService {
         	if (!gasto.getCategoriaGastoId().equals(nuevaCategoriaId)) {
         		
         		boolean categoriaNueva = categoriaRepository
-        				.existePorIdYUsuarioId(nuevaCategoriaId, userId);
+        				.existePorId(nuevaCategoriaId);
         		
         		if (!categoriaNueva) {
         			throw NotFoundException.of("Categoría", nuevaCategoriaId);
