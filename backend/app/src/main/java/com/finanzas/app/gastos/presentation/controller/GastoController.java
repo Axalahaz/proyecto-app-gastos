@@ -11,11 +11,12 @@ import com.finanzas.app.gastos.application.service.gasto.AnularGastoService;
 import com.finanzas.app.gastos.application.service.gasto.EditarGastoService;
 import com.finanzas.app.gastos.application.service.gasto.EliminarGastoService;
 import com.finanzas.app.gastos.application.service.gasto.ListarGastosPorCategoriaService;
+import com.finanzas.app.gastos.application.service.gasto.ListarGastosTodosService;
 import com.finanzas.app.gastos.application.service.gasto.ObtenerGastoService;
 import com.finanzas.app.gastos.application.service.gasto.RegistrarGastoDesdeRecurrenteService;
 import com.finanzas.app.gastos.application.service.gasto.RegistrarGastoService;
 import com.finanzas.app.gastos.application.service.gasto.VolverRecurrenteService;
-import com.finanzas.app.gastos.presentation.dto.gasto.ActualizarGastoRequest;
+import com.finanzas.app.gastos.presentation.dto.gasto.EditarGastoRequest;
 import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
 import com.finanzas.app.gastos.presentation.dto.gasto.RegistrarGastoDesdeRecurrenteRequest;
 import com.finanzas.app.gastos.presentation.dto.gasto.RegistrarGastoRequest;
@@ -35,6 +36,7 @@ public class GastoController {
 	private final EditarGastoService editarGastoService;
 	private final EliminarGastoService eliminarGastoService;
 	private final ListarGastosPorCategoriaService listarGastosPorCategoriaService;
+	private final ListarGastosTodosService listarGastosTodosService;
 	private final ObtenerGastoService obtenerGastoService;
 	private final RegistrarGastoDesdeRecurrenteService registrarGastoDesdeRecurrenteService;
 	private final RegistrarGastoService registrarGastoService;
@@ -76,7 +78,7 @@ public class GastoController {
 	@PatchMapping("/{id}")
 	public ResponseEntity<GastoResponse> editar(
 			@PathVariable("id") Long gastoId,
-			@Valid @RequestBody ActualizarGastoRequest request) {
+			@Valid @RequestBody EditarGastoRequest request) {
 		
 		GastoResponse response = editarGastoService.ejecutar(
 				gastoId,
@@ -143,7 +145,18 @@ public class GastoController {
 	}
 	
 	// ----------------------------------------------------
-	// LISTAR
+	// LISTAR TODOS
+	
+	@GetMapping()
+	public ResponseEntity<List<GastoResponse>> listarTodos() {
+		
+		List<GastoResponse> response = listarGastosTodosService.ejecutar();
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	// ----------------------------------------------------
+	// LISTAR POR CATEGORIA
 	
 	@GetMapping()
 	public ResponseEntity<List<GastoResponse>> listarPorCategoria(

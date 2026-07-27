@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 
 @Getter
-public class ActualizarPeriodicidadRequest {
+public class EditarPeriodicidadRequest {
 
     @Positive(message = "La dia de vto debe ser positivo")
 	@Min(1)

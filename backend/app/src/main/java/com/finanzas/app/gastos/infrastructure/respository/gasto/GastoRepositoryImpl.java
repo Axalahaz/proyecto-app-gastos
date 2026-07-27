@@ -44,6 +44,14 @@ public class GastoRepositoryImpl implements GastoRepository{
 	}
 
 	@Override
+	public List<Gasto> listarTodos() {
+		return jpaRepository.findAll()
+				.stream()
+				.map(gastoMapper::mapToDomain)
+				.toList();
+	}
+
+	@Override
 	public boolean existePagoActivoEnPeriodo(
 			Long gastoRecurrenteId,
 			LocalDateTime fechaInicio,

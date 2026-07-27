@@ -9,7 +9,7 @@ import com.finanzas.app.gastos.application.mapper.GastoRecurrenteApplicationMapp
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
 import com.finanzas.app.gastos.domain.factory.GastoRecurrenteFactory;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
-import com.finanzas.app.gastos.domain.repository.plantillaGastoRecurrente.PlantillaGastoRecurrenteRepository;
+import com.finanzas.app.gastos.domain.repository.plantillaGasto.PlantillaGastoRepository;
 import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
 import com.finanzas.app.shared.domain.model.Frecuencia;
 import com.finanzas.app.shared.domain.vo.Fecha;
@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RegistrarGastoRecurrenteService {
 
-    private final PlantillaGastoRecurrenteRepository plantillaRepository;
+    private final PlantillaGastoRepository plantillaRepository;
     
     private final GastoRecurrenteFactory factory;
     private final GastoRecurrenteRepository gastoRecurrenteRepository;

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class ActualizarGastoRecurrenteSinPeriodicidadRequest {
+public class EditarGastoRecurrenteSinPeriodicidadRequest {
 
 	@Size(max = 50, message = "Máximo 50 caracteres")
     private String descripcion;

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class ActualizarGastoRequest {
+public class EditarGastoRequest {
 
 	@Positive(message = "El monto debe ser positivo")
 	@Digits(integer = 10, fraction = 2, message = "Máximo 10 enteros y 2 decimales")

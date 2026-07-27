@@ -25,4 +25,6 @@ public interface GastoRepository {
 
     List<Gasto> listarPorCategoria(Long categoriaGastoId);
 
+    List<Gasto> listarTodos();
+
 }

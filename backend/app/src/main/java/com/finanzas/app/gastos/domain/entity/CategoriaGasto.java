@@ -25,6 +25,7 @@ public class CategoriaGasto {
     		) {
         
         validarNombre(nombre);
+        validarFechaCreacion(fechaCreacion);
 
         this.id = id;
         this.nombre = nombre;
@@ -68,6 +69,13 @@ public class CategoriaGasto {
     // MODIFICAR
 
     public void renombrar(String nuevoNombre) {
+    	if (nuevoNombre == null) {
+            return;
+        }
+
+        if (this.nombre.equals(nuevoNombre)) {
+            return;
+        }
         validarNombre(nuevoNombre);
         this.nombre = nuevoNombre;
     }
@@ -86,6 +94,12 @@ public class CategoriaGasto {
 
         if (nombre.length() > 50) {
             throw ValidationException.of("El nombre es demasiado largo");
+        }
+    }
+    private void validarFechaCreacion(Fecha fechaCreacion) {
+        if (fechaCreacion == null) {
+            throw ValidationException.of(
+                "La fecha de creacion es obligatoria");
         }
     }
 }

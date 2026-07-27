@@ -16,8 +16,8 @@ import com.finanzas.app.gastos.application.service.gastoRecurrente.EliminarGasto
 import com.finanzas.app.gastos.application.service.gastoRecurrente.ListarGastosRecurrentesService;
 import com.finanzas.app.gastos.application.service.gastoRecurrente.ObtenerGastoRecurrenteService;
 import com.finanzas.app.gastos.application.service.gastoRecurrente.RegistrarGastoRecurrenteService;
-import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.ActualizarGastoRecurrenteSinPeriodicidadRequest;
-import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.ActualizarPeriodicidadRequest;
+import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.EditarGastoRecurrenteSinPeriodicidadRequest;
+import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.EditarPeriodicidadRequest;
 import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
 import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.RegistrarGastoRecurrenteRequest;
 
@@ -65,7 +65,7 @@ public class GastoRecurrenteController {
 	@PatchMapping("/{id}/basico")
 	public ResponseEntity<GastoRecurrenteResponse> editarBasico(
 			@PathVariable("id") Long gastoRecurrenteId,
-			@Valid @RequestBody ActualizarGastoRecurrenteSinPeriodicidadRequest request) {
+			@Valid @RequestBody EditarGastoRecurrenteSinPeriodicidadRequest request) {
 		
 		GastoRecurrenteResponse response = editarGastoRecurrenteBasicoService.ejecutar(
 				gastoRecurrenteId,
@@ -78,7 +78,7 @@ public class GastoRecurrenteController {
 	@PatchMapping("/{id}/periodicidad")
 	public ResponseEntity<GastoRecurrenteResponse> editarConPeriodicidad(
 			@PathVariable("id") Long gastoRecurrenteId,
-			@Valid @RequestBody ActualizarPeriodicidadRequest request) {
+			@Valid @RequestBody EditarPeriodicidadRequest request) {
 		
 		GastoRecurrenteResponse response = editarGastoRecurrenteConPeriodicidadService.ejecutar(
 				gastoRecurrenteId,
