@@ -1,11 +1,15 @@
 package com.finanzas.app.gastos.infrastructure.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
+
+import com.finanzas.app.shared.domain.model.TipoObjeto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
@@ -17,14 +21,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "plantilla_gastos_recurrentes")
-public class PlantillaGastoRecurrenteEntityJPA {
+public class PlantillaGastoEntityJPA {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name = "categoria_gasto_id")
+	private Long categoriaGastoId;
+	
 	@Column(nullable = false)
 	private String descripcion; 
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private TipoObjeto tipo;
 	
 	@Column(nullable = false)
     private LocalDateTime fechaCreacion;
@@ -32,15 +43,19 @@ public class PlantillaGastoRecurrenteEntityJPA {
     // ----------------------------------
     // OF 
     
-    public static PlantillaGastoRecurrenteEntityJPA of(
+    public static PlantillaGastoEntityJPA of(
     		Long id,
+    		Long categoriaGastoId,
     		String descripcion,
+    		TipoObjeto tipo,
     		LocalDateTime fechaCreacion
     		) {
-    	PlantillaGastoRecurrenteEntityJPA entity = new PlantillaGastoRecurrenteEntityJPA();
+    	PlantillaGastoEntityJPA entity = new PlantillaGastoEntityJPA();
     	
     	entity.id = id;
+    	entity.categoriaGastoId = categoriaGastoId;
     	entity.descripcion = descripcion;
+    	entity.tipo = tipo;
     	entity.fechaCreacion = fechaCreacion;
     	return entity;
     }
