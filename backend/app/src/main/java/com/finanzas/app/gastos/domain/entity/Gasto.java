@@ -20,6 +20,7 @@ public class Gasto extends Movimiento {
 
     private Long id;
     private Long categoriaGastoId;
+    private Long plantillaId;
     private Long gastoRecurrenteId;
 
     // ----------------------------------
@@ -28,6 +29,7 @@ public class Gasto extends Movimiento {
     private Gasto(
     	    Long id,
     	    Long categoriaGastoId,
+    	    Long plantillaId,
     	    Long gastoRecurrenteId,
     	    Money monto, 
     	    String descripcion, 
@@ -41,6 +43,7 @@ public class Gasto extends Movimiento {
         
         this.id = id;
         this.categoriaGastoId = categoriaGastoId;
+        this.plantillaId = plantillaId;
         this.gastoRecurrenteId = gastoRecurrenteId;
     }
     
@@ -49,6 +52,7 @@ public class Gasto extends Movimiento {
     
     public static Gasto crear(
     		Long categoriaGastoId,
+    		Long plantillaId,
     		Long gastoRecurrenteId,
     		Money monto, 
     		String descripcion,
@@ -58,6 +62,7 @@ public class Gasto extends Movimiento {
     	return new Gasto(
     			null, 
     			categoriaGastoId, 
+    			plantillaId,
     			gastoRecurrenteId,
     			monto, 
     			descripcion, 
@@ -73,6 +78,7 @@ public class Gasto extends Movimiento {
     public static Gasto reconstruir(
             Long id,
             Long categoriaGastoId,
+            Long plantillaId,
             Long gastoRecurrenteId,
             Money monto,
             String descripcion,
@@ -84,6 +90,7 @@ public class Gasto extends Movimiento {
         return new Gasto(
                 id,
                 categoriaGastoId,
+                plantillaId,
                 gastoRecurrenteId,
                 monto,
                 descripcion,

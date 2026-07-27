@@ -42,6 +42,9 @@ public class GastoEntityJPA {
 	
 	@Column(name = "categoria_gasto_id", nullable = false)
 	private Long categoriaGastoId;
+	
+	@Column(name = "plantilla_gasto_id")
+	private Long plantillaId; 
 
 	@Column(name = "gasto_recurrente_id")
 	private Long gastoRecurrenteId;
@@ -68,6 +71,7 @@ public class GastoEntityJPA {
     public static GastoEntityJPA of(
     		Long id,
     		Long categoriaGastoId,
+    		Long plantillaId,
     		Long gastoRecurrenteId,
     		BigDecimal monto,
     		String descripcion,
@@ -79,6 +83,7 @@ public class GastoEntityJPA {
     	
     	entity.id = id;
     	entity.categoriaGastoId = categoriaGastoId;
+    	entity.plantillaId = plantillaId;
     	entity.gastoRecurrenteId = gastoRecurrenteId;
     	entity.monto = monto;
     	entity.descripcion = descripcion;

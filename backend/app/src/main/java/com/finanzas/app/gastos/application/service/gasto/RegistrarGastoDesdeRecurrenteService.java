@@ -91,6 +91,7 @@ public class RegistrarGastoDesdeRecurrenteService {
 
         Gasto gasto = Gasto.crear(
         		categoria.getId(),
+        		gastoRecurrente.getPlantillaId(),
         		gastoRecurrente.getId(),
                 money,
                 gastoRecurrente.getDescripcion(),

@@ -51,14 +51,15 @@ public class GastoController {
 		GastoResponse response = registrarGastoService.ejecutar(
 				request.getMonto(),
 				request.getDescripcion(),
-				request.getCategoriaGastoId()
+				request.getCategoriaGastoId(),
+				request.getPlantillaId()
 				);
 		
 		return ResponseEntity.status(HttpStatus.CREATED)
 		        .body(response);
 	}
 	
-	@PostMapping("/gasto-recurrente")
+	@PostMapping("/recurrente")
 	public ResponseEntity<GastoResponse> registrarDesdeRecurrente(
 			@Valid @RequestBody RegistrarGastoDesdeRecurrenteRequest request) {
 		

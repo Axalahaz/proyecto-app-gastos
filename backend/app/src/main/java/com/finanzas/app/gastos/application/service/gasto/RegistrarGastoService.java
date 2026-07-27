@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoApplicationMapper;
 import com.finanzas.app.gastos.application.queryService.CategoriaGastoQueryService;
+import com.finanzas.app.gastos.application.queryService.PlantillaGastoQueryService;
 import com.finanzas.app.gastos.domain.entity.Gasto;
 import com.finanzas.app.gastos.domain.repository.gasto.GastoRepository;
 import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RegistrarGastoService {
 
+	private final PlantillaGastoQueryService plantillaGastoQueryService;
 	private final CategoriaGastoQueryService categoriaQueryService;
     private final GastoRepository gastoRepository;
     private final GastoApplicationMapper gastoApplicationMapper;
@@ -36,17 +38,23 @@ public class RegistrarGastoService {
     public GastoResponse ejecutar(
     		BigDecimal monto, 
     		String descripcion, 
-    		Long categoriaGastoId
+    		Long categoriaGastoId,
+    		Long plantillaId
     		) {
     	
     	// control de consistencia
     	categoriaQueryService.existePorId(categoriaGastoId);
         
+    	if(plantillaId != null) {
+    		plantillaGastoQueryService.existePorId(plantillaId);
+    	}
+    	
         Money money = new Money(monto);
         Fecha fechaCreacion = new Fecha(LocalDateTime.now());
 
         Gasto gasto = Gasto.crear(
         		categoriaGastoId,
+        		plantillaId,
         		null,
                 money,
                 descripcion,

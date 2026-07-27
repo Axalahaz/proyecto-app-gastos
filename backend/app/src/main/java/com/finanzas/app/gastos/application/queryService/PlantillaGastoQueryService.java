@@ -18,6 +18,12 @@ public class PlantillaGastoQueryService {
 
     public PlantillaGasto obtenerPorId(Long id) {
         return plantillaRepository.buscarPorId(id)
-                .orElseThrow(() -> NotFoundException.of("Categoría", id));
+                .orElseThrow(() -> NotFoundException.of("Plantilla Gasto", id));
+    }
+    
+    public void existePorId(Long id) {
+    	if (!plantillaRepository.existePorId(id)) {
+            throw NotFoundException.of("Plantilla Gasto", id);
+        }
     }
 }

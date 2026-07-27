@@ -23,5 +23,7 @@ public class RegistrarGastoRequest {
 	@NotNull(message = "La categoria de gasto es obligatoria")
 	@Positive(message = "La categoria de gasto debe ser positiva")
     private Long categoriaGastoId;
+	
+    private Long plantillaId;
 
 }
