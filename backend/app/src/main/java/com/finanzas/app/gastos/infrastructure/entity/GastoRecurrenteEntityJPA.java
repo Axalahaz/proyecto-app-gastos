@@ -26,16 +26,16 @@ public class GastoRecurrenteEntityJPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column()
+	@Column(name = "plantilla_gasto_id")
 	private Long plantillaId; 
 
 	@Column(nullable = false)
 	private String descripcion; 
 
-	@Column()
+	@Column(name = "dia_vencimiento")
     private Integer diaVencimiento;
 
-	@Column()
+	@Column(name = "mes_vencimiento")
 	private Integer mesVencimiento;
 
     @Enumerated(EnumType.STRING)

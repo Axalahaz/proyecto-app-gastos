@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "plantilla_gastos_recurrentes")
+@Table(name = "plantilla_gastos")
 public class PlantillaGastoEntityJPA {
 
 	@Id
@@ -37,7 +37,7 @@ public class PlantillaGastoEntityJPA {
 	@Column(nullable = false)
 	private TipoObjeto tipo;
 	
-	@Column(nullable = false)
+	@Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 	
     // ----------------------------------

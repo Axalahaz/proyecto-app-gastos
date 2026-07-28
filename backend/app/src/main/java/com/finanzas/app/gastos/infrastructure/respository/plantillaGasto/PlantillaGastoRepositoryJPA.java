@@ -12,9 +12,9 @@ import com.finanzas.app.shared.domain.model.TipoObjeto;
 @Repository
 public interface PlantillaGastoRepositoryJPA extends JpaRepository<PlantillaGastoEntityJPA, Long>{
 	
-	List<PlantillaGastoEntityJPA> findAllByOrderByNombreAsc();
+	List<PlantillaGastoEntityJPA> findAllByOrderByDescripcionAsc();
 	
-	List<PlantillaGastoEntityJPA> findByTipoOrderByNombreAsc(TipoObjeto tipo);
+	List<PlantillaGastoEntityJPA> findByTipoOrderByDescripcionAsc(TipoObjeto tipo);
 
 	boolean existsByDescripcionAndCategoriaGastoId(
 		    String descripcion, Long categoriaGastoId);;

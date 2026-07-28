@@ -29,7 +29,7 @@ public class PlantillaGastoRepositoryImpl implements PlantillaGastoRepository{
 
 	@Override
 	public List<PlantillaGasto> listarAll() {
-		return jpaRepository.findAllByOrderByNombreAsc()
+		return jpaRepository.findAllByOrderByDescripcionAsc()
 				.stream()
 				.map(mapper::mapToDomain)
 				.toList();
@@ -37,7 +37,7 @@ public class PlantillaGastoRepositoryImpl implements PlantillaGastoRepository{
 	
 	@Override
 	public List<PlantillaGasto> listarPorTipo(TipoObjeto tipo) {
-		return jpaRepository.findByTipoOrderByNombreAsc(tipo)
+		return jpaRepository.findByTipoOrderByDescripcionAsc(tipo)
 				.stream()
 				.map(mapper::mapToDomain)
 				.toList();
