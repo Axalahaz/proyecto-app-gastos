@@ -146,26 +146,21 @@ public class GastoController {
 	}
 	
 	// ----------------------------------------------------
-	// LISTAR TODOS
+	// LISTAR 
 	
 	@GetMapping()
-	public ResponseEntity<List<GastoResponse>> listarTodos() {
-		
-		List<GastoResponse> response = listarGastosTodosService.ejecutar();
-		
-		return ResponseEntity.ok(response);
-	}
-	
-	// ----------------------------------------------------
-	// LISTAR POR CATEGORIA
-	
-	@GetMapping()
-	public ResponseEntity<List<GastoResponse>> listarPorCategoria(
-			@RequestParam("categoria") Long categoriaId) {
-		
-		List<GastoResponse> response = listarGastosPorCategoriaService.ejecutar(categoriaId);
-		
-		return ResponseEntity.ok(response);
+	public ResponseEntity<List<GastoResponse>> listar(
+	        @RequestParam(required = false) Long categoria) {
+
+	    List<GastoResponse> response;
+
+	    if (categoria == null) {
+	        response = listarGastosTodosService.ejecutar();
+	    } else {
+	        response = listarGastosPorCategoriaService.ejecutar(categoria);
+	    }
+
+	    return ResponseEntity.ok(response);
 	}
 	
 }
