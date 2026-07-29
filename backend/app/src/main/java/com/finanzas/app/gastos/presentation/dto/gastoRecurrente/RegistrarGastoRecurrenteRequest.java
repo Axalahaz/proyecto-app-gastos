@@ -18,13 +18,14 @@ public class RegistrarGastoRecurrenteRequest {
 	@Size(max = 50, message = "Máximo 50 caracteres")
     private String descripcion;
 	
-	@NotNull(message = "La dia de vto es obligatoria")
+	
     @Positive(message = "La dia de vto debe ser positivo")
 	@Min(1)
 	@Max(31)
     private Integer diaVencimiento;
 
-	@Positive(message = "La mes de vto debe ser positivo")
+    @NotNull(message = "El mes de vto es obligatorio")
+	@Positive(message = "El mes de vto debe ser positivo")
 	@Min(1)
 	@Max(12)
 	private Integer mesVencimiento;

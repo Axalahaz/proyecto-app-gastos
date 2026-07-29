@@ -32,7 +32,7 @@ public class GastoRecurrenteEntityJPA {
 	@Column(nullable = false)
 	private String descripcion; 
 
-	@Column(name = "dia_vencimiento")
+	@Column(name = "dia_vencimiento", nullable = false)
     private Integer diaVencimiento;
 
 	@Column(name = "mes_vencimiento")

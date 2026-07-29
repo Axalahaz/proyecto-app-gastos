@@ -50,9 +50,9 @@ public class Periodicidad {
             Integer mes
     ) {
 
-        validarDia(dia);
+    	validarDia(dia);
 
-        if (frecuencia == Frecuencia.ANUAL) {
+    	if (frecuencia == Frecuencia.ANUAL) {
 
             if (mes == null) {
                 throw ValidationException.of(
