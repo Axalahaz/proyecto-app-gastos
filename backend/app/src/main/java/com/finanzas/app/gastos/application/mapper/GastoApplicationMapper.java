@@ -16,6 +16,7 @@ public class GastoApplicationMapper {
         		gasto.getDescripcion(), 
         		gasto.getEstado().toString(),
         		gasto.getFechaCreacion().getValue(), 
+        		gasto.getFechaVencimiento().getValue(), 
         		
         		gasto.getFechaCambioEstado() != null
                 ? gasto.getFechaCambioEstado().getValue()

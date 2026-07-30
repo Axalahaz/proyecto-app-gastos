@@ -58,7 +58,8 @@ public class RegistrarGastoService {
         		null,
                 money,
                 descripcion,
-                fechaCreacion
+                fechaCreacion,
+                null
         );
 
         Gasto guardado = gastoRepository.guardar(gasto);

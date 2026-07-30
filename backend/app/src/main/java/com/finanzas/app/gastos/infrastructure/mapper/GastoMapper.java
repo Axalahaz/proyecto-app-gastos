@@ -27,6 +27,7 @@ public class GastoMapper {
         		gasto.getDescripcion(), 
         		gasto.getEstado(),
         		gasto.getFechaCreacion().getValue(), 
+        		gasto.getFechaVencimiento().getValue(), 
         		fechaCambioEstado
         );
 
@@ -46,6 +47,7 @@ public class GastoMapper {
     			entity.getDescripcion(),
     			entity.getEstado(),
     			new Fecha(entity.getFechaCreacion()),
+    			new Fecha(entity.getFechaVencimiento()),
     			fechaCambioEstado
     			);
     }

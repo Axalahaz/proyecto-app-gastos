@@ -22,6 +22,7 @@ public class Gasto extends Movimiento {
     private Long categoriaGastoId;
     private Long plantillaId;
     private Long gastoRecurrenteId;
+    private Fecha fechaVencimiento;
 
     // ----------------------------------
     // CONSTRUCTOR
@@ -35,6 +36,7 @@ public class Gasto extends Movimiento {
     	    String descripcion, 
     	    EstadoMovimiento estado,
     	    Fecha fechaCreacion,
+    	    Fecha fechaVencimiento,
     	    Fecha fechaCambioEstado
     	) {
         super(monto, descripcion, estado, fechaCreacion, fechaCambioEstado);
@@ -45,6 +47,7 @@ public class Gasto extends Movimiento {
         this.categoriaGastoId = categoriaGastoId;
         this.plantillaId = plantillaId;
         this.gastoRecurrenteId = gastoRecurrenteId;
+        this.fechaVencimiento = fechaVencimiento;
     }
     
     // ----------------------------------------------------
@@ -56,7 +59,8 @@ public class Gasto extends Movimiento {
     		Long gastoRecurrenteId,
     		Money monto, 
     		String descripcion,
-    	    Fecha fechaCreacion
+    	    Fecha fechaCreacion,
+    	    Fecha fechaVencimiento
     	) {
 
     	return new Gasto(
@@ -68,6 +72,7 @@ public class Gasto extends Movimiento {
     			descripcion, 
     			EstadoMovimiento.ACTIVO,
     			fechaCreacion,
+    			fechaVencimiento,
     			null
     			);
     }
@@ -84,6 +89,7 @@ public class Gasto extends Movimiento {
             String descripcion,
             EstadoMovimiento estado,
             Fecha fechaCreacion,
+            Fecha fechaVencimiento,
             Fecha fechaCambioEstado
     	) {
     	
@@ -96,6 +102,7 @@ public class Gasto extends Movimiento {
                 descripcion,
                 estado,
                 fechaCreacion,
+                fechaVencimiento,
                 fechaCambioEstado
         );
     }

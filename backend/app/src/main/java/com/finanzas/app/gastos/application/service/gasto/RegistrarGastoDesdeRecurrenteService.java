@@ -46,7 +46,8 @@ public class RegistrarGastoDesdeRecurrenteService {
     public GastoResponse ejecutar(
     		BigDecimal monto, 
     		Long gastoRecurrenteId,
-    		Long categoriaGastoId
+    		Long categoriaGastoId,
+    		LocalDateTime fechaVencimiento
     		) {
 
     	CategoriaGasto categoria =
@@ -95,7 +96,8 @@ public class RegistrarGastoDesdeRecurrenteService {
         		gastoRecurrente.getId(),
                 money,
                 gastoRecurrente.getDescripcion(),
-                fechaCreacion
+                fechaCreacion,
+                new Fecha(fechaVencimiento)
         );
 
         Gasto guardado = gastoRepository.guardar(gasto);

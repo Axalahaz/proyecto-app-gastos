@@ -13,6 +13,7 @@ public class GastoResponse {
     private String descripcion;
     private String estado;
     private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaVencimiento;
     private LocalDateTime fechaCambioEstado;
     
     public static GastoResponse of(
@@ -22,6 +23,7 @@ public class GastoResponse {
     		String descripcion,
     		String estado,
     		LocalDateTime fechaCreacion,
+    		LocalDateTime fechaVencimiento,
     		LocalDateTime fechaCambioEstado
     		) {
     	GastoResponse response = new GastoResponse();
@@ -32,6 +34,7 @@ public class GastoResponse {
     	response.descripcion = descripcion;
     	response.estado = estado;
     	response.fechaCreacion = fechaCreacion;
+    	response.fechaVencimiento = fechaVencimiento;
     	response.fechaCambioEstado = fechaCambioEstado;
     	return response;
     }

@@ -2,6 +2,7 @@ package com.finanzas.app.gastos.presentation.dto.gasto;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
@@ -23,4 +24,7 @@ public class RegistrarGastoDesdeRecurrenteRequest {
 	@NotNull(message = "La categoria de gasto es obligatoria")
 	@Positive(message = "La categoria de gasto debe ser positiva")
     private Long categoriaGastoId;
+
+	@NotNull(message = "La fecha de Vencimiento a impactar es obligatoria")
+	private LocalDateTime fechaVencimiento; 
 }
