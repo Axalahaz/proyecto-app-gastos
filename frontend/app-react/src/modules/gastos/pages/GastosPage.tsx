@@ -61,7 +61,7 @@ export const GastosPage = () => {
         cargarGastosRecurrentes();
     }, []);
 
-    console.log("----------------lista gastos: ", gastos); // !!!!!!
+    console.log("---lista gastos: ", gastos); // !!!!!!
 
     // * Filtrado por tiempo
     const { active, selectedDate} = useFilter();
