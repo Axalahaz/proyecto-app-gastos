@@ -62,7 +62,7 @@ public class GastoEntityJPA {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
-    @Column(name = "fecha_creacion")
+    @Column(name = "fecha_vencimiento")
     private LocalDateTime fechaVencimiento;
 
     @Column(name = "fecha_cambio_estado")
@@ -93,7 +93,7 @@ public class GastoEntityJPA {
     	entity.descripcion = descripcion;
     	entity.estado = estado;
     	entity.fechaCreacion = fechaCreacion;
-    	entity.fechaCreacion = fechaVencimiento;
+    	entity.fechaVencimiento = fechaVencimiento;
     	entity.fechaCambioEstado = fechaCambioEstado;
     	return entity;
     }
