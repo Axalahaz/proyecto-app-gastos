@@ -21,13 +21,13 @@ export const MoneyCard = ({
 
   return (
     <div 
-      className={`pt-1 pb-2 
+      className={`py-3 gap-2
         flex flex-col justify-center items-center 
         border-b border-l border-r rounded-b-[20px]`}
       style={{
           backgroundColor: theme.colors[100],
           borderColor: `${theme.colors[500]}50`,
-          boxShadow: `0 5px 5px ${theme.colors[300]}80`,
+          boxShadow: `0 2px 10px ${theme.colors[300]}80`,
       }}
     >
       <p 

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import type { ThemeProps } from "@/shared/theme/themes";
-import { defaultTheme } from "@/shared/theme";
 
 type Item = { 
     icon: React.ElementType; 
@@ -15,11 +14,13 @@ type Item = {
 interface ButtonFooterProps extends ThemeProps {
     item: Item;
     sizeClass?: string;
+    setActive: (i:string) => void;
 }
 
 export const ButtonSidebar = ({
     item,
     sizeClass,
+    setActive,
     theme,
 }: ButtonFooterProps) => {
     // Obtiene el nombre del modulo a redirigir
@@ -29,7 +30,10 @@ export const ButtonSidebar = ({
     // Estado que indica accion de presion de boton
     const [pressed, setPressed] = useState(false);
     const isActive = active || pressed;
-    
+    if(isActive) {
+        setActive(item.label)
+    }
+    // !! tengo que agregarle efecto de seleccion
     return (
         <NavLink
             to={item.module}
@@ -38,14 +42,21 @@ export const ButtonSidebar = ({
             onPointerLeave={() => setPressed(false)}
             onPointerCancel={() => setPressed(false)}
             
-            className={`${sizeClass} transition-all duration-100 
-                ${isActive ? "pb-2" : ""}`
+            className={`${sizeClass} w-full rounded-r-full
+            flex items-center gap-3 px-2
+            transition-all duration-100 active:scale-120
+                ${isActive ? "-ms-2 ps-10" : ""}`
             }
-            >
-                <div className="flex flex-col items-center justify-center">
-                    <item.icon className="w-7 h-7" />
-                    <span>{item.label}</span>
-                </div>
+            style={{
+                background: `${isActive ? theme.colors[500] : ""}`,
+                color: `${isActive ? theme.colors[100] : ""}`,
+                boxShadow: `${isActive ? `2px 2px 3px ${theme.colors[300]}` : ""}`,
+            }}
+        >
+            <div>
+                <item.icon className={`${isActive ? "w-9 h-9" : "w-7 h-7"}`} />
+            </div>
+            <p>{item.label}</p>
         </NavLink>
     );
 };

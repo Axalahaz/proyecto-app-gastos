@@ -6,10 +6,19 @@ import {IconAhorros} from "@/shared/icons/IconAhorros";
 import {IconEstadisticas} from "@/shared/icons/IconEstadisticas";
 import {IconBalance} from "@/shared/icons/IconBalance";
 import {IconGastos} from "@/shared/icons/IconGastos";
-import {IconOk} from "@/shared/icons/IconOk";
-import {IconVolver} from "@/shared/icons/IconVolver";
+//import {IconOk} from "@/shared/icons/IconOk";
+//import {IconVolver} from "@/shared/icons/IconVolver";
 
-
+//    volver: {
+//        icon: IconVolver,
+//        label: "Volver",
+//        module: "/future",
+//    },
+//    ok: {
+//        icon: IconOk,
+//        label: "",
+//        module: "/future",
+//    },
 export type BottomSidebarItemm = {
     icon: ElementType | undefined;
     label: string;
@@ -17,21 +26,12 @@ export type BottomSidebarItemm = {
 };
 
 export const bottomSidebarConfig = {
-    volver: {
-        icon: IconVolver,
-        label: "Volver",
-        module: "/future",
+    balance: {
+        icon: IconBalance,
+        label: "Balance",
+        module: "/balance",
     },
-    ok: {
-        icon: IconOk,
-        label: "",
-        module: "/future",
-    },
-    config: {
-        icon: IconConfig,
-        label: "Config",
-        module: "/future",
-    },
+    
     gastos: {
         icon: IconGastos,
         label: "Gastos",
@@ -52,11 +52,12 @@ export const bottomSidebarConfig = {
         label: "Análisis",
         module: "/future",
     },
-    balance: {
-        icon: IconBalance,
-        label: "Balance",
-        module: "/balance",
+    config: {
+        icon: IconConfig,
+        label: "Config",
+        module: "/future",
     },
+    
 } as const satisfies Record<string, {
     icon: ElementType | undefined;
     label: string;
