@@ -8,7 +8,7 @@ import { Dayjs } from "dayjs";
 export const filtrarFechaFormat = (
     filter: FilterType,
     date1: Dayjs,
-    date2?: Dayjs
+    date2?: Dayjs,
 ) => {
 
     switch (filter) {

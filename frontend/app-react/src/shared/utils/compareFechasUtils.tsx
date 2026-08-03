@@ -10,4 +10,4 @@ export const esMismoAnio = (fecha: Dayjs, hoy: Dayjs): boolean =>
     fecha.isSame(hoy, "year");
 
 export const formatDateInput = (fecha: Dayjs): string =>
-    fecha.format("YYYY-MM-DD");
+    fecha.format("DD/MM/YYYY");
