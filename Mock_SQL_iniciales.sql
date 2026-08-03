@@ -73,8 +73,8 @@ INSERT INTO gastos_recurrentes (
 (2, 2, 'Luz', 10, NULL, 'MENSUAL', TRUE, '2026-01-10 00:00:00', NULL),
 (3, 3, 'Gas', 15, NULL, 'MENSUAL', TRUE, '2026-01-15 00:00:00', '2026-03-01 00:00:00'),
 (4, 4, 'Alquiler', 1, NULL, 'MENSUAL', TRUE, '2026-01-20 00:00:00', NULL),
-(5, NULL, 'Seguro del auto', NULL, 8, 'ANUAL', TRUE,'2026-02-01 00:00:00', '2026-05-10 00:00:00'),
-(6, NULL, 'Patente', NULL, 3, 'ANUAL', FALSE, '2026-02-10 00:00:00', '2026-06-15 00:00:00'),
+(5, NULL, 'Seguro del auto', 22, 8, 'ANUAL', TRUE,'2026-02-01 00:00:00', '2026-05-10 00:00:00'),
+(6, NULL, 'Patente', 7, 3, 'ANUAL', FALSE, '2026-02-10 00:00:00', '2026-06-15 00:00:00'),
 (7, NULL, 'Expensas', 20, NULL, 'MENSUAL', TRUE, '2026-02-20 00:00:00', NULL);
 
 -- ------------------------------------------
@@ -89,18 +89,19 @@ INSERT INTO gastos (
     monto,
     estado,
     fecha_creacion,
+    fecha_vencimiento,
     fecha_cambio_estado
 ) VALUES
-(1, 17, 12, NULL, 'Supermercado', 25430.00, 'ANULADO', '2026-06-25 00:00:00', NULL),
-(2, 8, 5, NULL, 'Netflix', 8990.00, 'ACTIVO', '2026-04-24 00:00:00', '2026-04-24 00:00:00'),
-(3, 15, NULL, NULL, 'Uber', 4200.00, 'ACTIVO', '2026-06-23 00:00:00', NULL),
-(4, 12, NULL, NULL, 'Farmacia', 7850.00, 'ACTIVO', '2026-05-22 00:00:00', NULL),
-(5, 13, NULL, 1, 'Fibertel', 15900.00, 'ACTIVO', '2026-06-21 00:00:00', '2026-06-21 00:00:00'),
-(6, 2, NULL, NULL, 'Café', 3200.00, 'ANULADO', '2026-06-20 00:00:00', NULL),
-(7, 15, NULL, NULL, 'SUBE', 5000.00, 'ACTIVO', '2026-06-19 00:00:00', NULL),
-(8, 15, NULL, NULL, 'SUBE1', 5000.00, 'ANULADO', '2025-06-19 00:00:00', '2025-06-19 00:00:00'),
-(9, 3, 10, NULL, 'ComidaPerro', 5000.00, 'ACTIVO', '2026-07-19 00:00:00', NULL),
-(10, 13, 2, 2, 'Edesur', 5000.00, 'ACTIVO', '2025-07-15 00:00:00', NULL),
-(11, 1, NULL, NULL, 'Sillon', 25430.00, 'ACTIVO', '2026-06-26 00:00:00', NULL),
-(12, 1, NULL, 7, 'Expensas', 25430.00, 'ACTIVO', '2026-06-26 00:00:00', NULL);
+(1, 17, 12, NULL, 'Supermercado', 25430.00, 'ANULADO', '2026-06-25 00:00:00', NULL, NULL),
+(2, 8, 5, NULL, 'Netflix', 8990.00, 'ACTIVO', '2026-04-24 00:00:00', NULL, '2026-04-24 00:00:00'),
+(3, 15, NULL, NULL, 'Uber', 4200.00, 'ACTIVO', '2026-06-23 00:00:00', NULL, NULL),
+(4, 12, NULL, NULL, 'Farmacia', 7850.00, 'ACTIVO', '2026-05-22 00:00:00', NULL, NULL),
+(5, 13, NULL, 1, 'Fibertel', 15900.00, 'ACTIVO', '2026-06-21 00:00:00', '2026-06-05 00:00:00', '2026-06-21 00:00:00'),
+(6, 2, NULL, NULL, 'Café', 3200.00, 'ANULADO', '2026-06-20 00:00:00', NULL, NULL),
+(7, 15, NULL, NULL, 'SUBE', 5000.00, 'ACTIVO', '2026-06-19 00:00:00', NULL, NULL),
+(8, 15, NULL, NULL, 'SUBE1', 5000.00, 'ANULADO', '2025-06-19 00:00:00', NULL, '2025-06-19 00:00:00'),
+(9, 3, 10, NULL, 'ComidaPerro', 5000.00, 'ACTIVO', '2026-07-19 00:00:00', NULL, NULL),
+(10, 13, 2, 2, 'Edesur', 5000.00, 'ACTIVO', '2025-07-15 00:00:00', '2025-07-10 00:00:00', NULL),
+(11, 1, NULL, NULL, 'Sillon', 25430.00, 'ACTIVO', '2026-06-26 00:00:00', NULL, NULL),
+(12, 1, NULL, 7, 'Expensas', 25430.00, 'ACTIVO', '2026-06-26 00:00:00', '2026-06-20 00:00:00', NULL);
 
