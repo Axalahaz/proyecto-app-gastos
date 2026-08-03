@@ -3,82 +3,62 @@ import type { FilterType } from "@/context/typesFilter";
 import { FILTERS } from "@/context/typesFilter";
 
 import type { ThemeProps } from "@/shared/theme/themes";
+import { defaultTheme } from "@/shared/theme/defaultTheme";
 
 import { FilterDateSelector } from "@/shared/components/ModuleFilter/FilterDateSelector"
 
 export const ModuleFilter = ({
     theme,
 }: ThemeProps) => {
+
     // ---------------
     // Obtengo el filtro de Fecha
     const { active, setActive } = useFilter();
 
     // ---------------
     // Establesco referencias y comportamientos de los estilos
-    const buttonMensual = FILTERS.MENSUAL;
     const buttons = [
-        {
-            filter: FILTERS.DIARIO,
-            z: 3,
-            className: "px-5",
-        },
-        {
-            filter: FILTERS.ANUAL,
-            z: 2,
-            className: "-ml-4 ps-6 pe-4",
-        },
-        {
-            filter: FILTERS.PERIODO,
-            z: 1,
-            className: "-ml-4 ps-6 pe-4",
-        },
+        FILTERS.MENSUAL,
+        FILTERS.DIARIO,
+        FILTERS.ANUAL,
+        FILTERS.PERIODO,
     ] as const;
 
     const getStyles = (button: FilterType) => ({
-        borderColor: theme.colors[300],
-        backgroundColor: active === button ? theme.colors[700] : "white",
-        color: active === button ? "white" : theme.colors[700],
+        borderColor: defaultTheme.colors[100],
+        backgroundColor: active === button ? theme.colors[700] : "transparent",
+        color: active === button ? theme.colors[100] : defaultTheme.colors[700] ,
     });
 
     const getScale = (button: FilterType) =>
-        active === button ? "active:scale-120 pb-2 active:rounded-b-[15px]" : "pb-2";
+        active === button 
+            ? "w-[40dvh] rounded-[30px] text-lg" 
+            : "w-[35dvh] text-sm ";
     // ---------------
 
     return (
-        <div className={`flex flex-col gap-1`}>
+        <div className={`w-full py-2 flex flex-col items-center gap-2 `}>
 {/* BOTONES */}
-            <div className= {`flex items-center justify-between px-1 relative z-10`}>
-        {/* BOTON DIARIO */}
-                <div className="flex">
-                    <button 
-                        key={buttonMensual.value}
-                        onClick={() => setActive(buttonMensual.value)}
-                        className={`${getScale(buttonMensual.value)}
-                            text-sm border rounded-t-[15px] px-3 transition-all`}
-                        style={getStyles(buttonMensual.value)}
-                    >
-                        {buttonMensual.label}
-                    </button>
-                </div>
-        {/* RESTO DE BOTONES */}
-                <div className="flex">
-                    {buttons.map(({filter: filter, z, className}) => (
+                {buttons.map((b) => (
+                    <div className={`w-full flex justify-center`}>
                         <button 
-                            key={filter.value}
-                            onClick={() => setActive(filter.value)}
-                            className={`${getScale(filter.value)} ${className} 
-                            text-sm border rounded-t-[15px] transition-all`}
-                            style={{ zIndex: z, ...getStyles(filter.value) }}
+                            key={b.value}
+                            onClick={() => setActive(b.value)}
+                            className={`${getScale(b.value)} 
+                            active:scale-120 border-t border-b py-1 transition-all`}
+                            style={{ ...getStyles(b.value) }}
                         >
-                            {filter.label}
+                            {b.label}
                         </button>
-                    ))}
-                </div>
-            </div>
+                    </div>
+                ))}
 
 {/* CALENDARIO */}
-            <div className="-mt-3 relative z-20">
-                <FilterDateSelector theme={theme} />
+            <div className="">
+                <FilterDateSelector 
+                    filter={active}
+                    theme={theme} 
+                />
             </div>
         </div>
     );

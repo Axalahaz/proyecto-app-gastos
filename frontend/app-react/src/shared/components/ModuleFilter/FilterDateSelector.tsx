@@ -1,82 +1,65 @@
-import { useState } from "react";
-
 import { useFilter } from "@/hooks/useFilter";
+import { Calendario } from "@/shared/components/ModuleFilter/Calendario";
+import { FILTERS } from "@/context/typesFilter";
 
 import { filtrarFechaFormat } from "@/shared/utils/filtrarFechaFormat";
+import { formatDateInput } from "@/shared/utils/compareFechasUtils";
+
+import type { FilterType } from "@/context/typesFilter";
 import type { ThemeProps } from "@/shared/theme/themes";
 
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-import type { Dayjs } from "dayjs";
 import "dayjs/locale/es";
 
-
-// !! --------------------------
-// !! El calendario no es valido para el filtro: Periodo
-// !! --------------------------
+interface Props extends ThemeProps {
+    filter: FilterType;
+}
 
 export const FilterDateSelector = ({
+    filter,
     theme
-}: ThemeProps) => {
+}: Props) => {
     // --------------
     // Obtengo fecha del filtro
-    const { active, selectedDate, setSelectedDate } = useFilter();
-
-    // --------------
-    // Calendario
-    const [open, setOpen] = useState(false);
-    
-    const cambioFecha = (newDate: Dayjs | null) => {
-        if (!newDate) return;
-        setSelectedDate(newDate);
-        setOpen(false);
-    };
+    const { selectedDate, from, to } = useFilter();
 
     return (
-        <div className="flex flex-col px-5 pt-2
-        border-t border-r border-l rounded-t-[20px]"
-        style={{
-            background: theme.colors[100],
-            borderColor: `${theme.colors[500]}50`,
-            boxShadow: `0 -2px 2px ${theme.colors[300]}20`,
-            color: theme.colors[500]
-
-        }}>
-            <button
-            onClick={() => setOpen(true)}
-            className="font-beiruti text-lg font-semibold 
-            tracking-wide leading-none
-            flex items-center justify-center gap-2 
-            "
-            >
-                <CalendarMonthIcon sx={{fontSize: 15}} className="me-2"/> 
-                <div>
-                    {filtrarFechaFormat(active, selectedDate)}  
-                </div>
-                <ArrowDropDownIcon sx={{fontSize: 25}}/>
-            </button>
-
-            <DatePicker
-                label="Fecha"
-                value={selectedDate}
-                open={open}
-                onChange={cambioFecha}
-                onClose={() => setOpen(false)}
-                slotProps={{
-                    textField: {
-                        sx: {
-                            position: "relative",
-                            opacity: 0,
-                            width: 1,
-                            height: 0,
-                            pointerEvents: "none"
-                        }
-                    }
-                }}
-            />
+        <div 
+            className="flex flex-col items-center border rounded-[20px]
+            font-beiruti text-lg font-semibold 
+            tracking-wide leading-none pt-4"
+            style={{
+                background: theme.colors[100],
+                borderColor: `${theme.colors[500]}50`,
+                boxShadow: `0 -2px 2px ${theme.colors[300]}20`,
+                color: theme.colors[700]
+            }}
+        >
+            <CalendarMonthIcon sx={{fontSize: 25}}/> 
+            <div className="py-3 ">
+                { filter === FILTERS.PERIODO.value 
+                    && (    
+                        <div className="flex flex-col gap-1">
+                            <p>
+                                Desde: {formatDateInput(from)}
+                            </p>
+                            <p>
+                                Hasta: {formatDateInput(to)} 
+                            </p>
+                        </div>
+                    )
+                    || <div className="">
+                        {filtrarFechaFormat(filter, selectedDate)}
+                    </div>
+                }
+            </div>
+            <div className="-mt-7 overflow-hidden -me-4 -ms-4 -mb-4">
+                <Calendario 
+                    filter = {filter}
+                    theme={theme}
+                />
+            </div>
         </div>
     );
 };
