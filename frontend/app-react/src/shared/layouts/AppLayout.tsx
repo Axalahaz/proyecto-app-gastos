@@ -1,22 +1,24 @@
 import { Outlet, useMatches } from "react-router-dom";
 
-import type { RouteHandle } from "@/routes/routesTypes";
 import { defaultTheme } from "@/shared/theme";
+import type { RouteHandle } from "@/routes/RouteHandle";
 
-import { SidebarPanel } from "@/shared/components/SidebarPanel";
+import {HeaderWave} from '@/shared/components/HeaderWave';
+
 
 export const AppLayout = () => {
+    console.log("---appLayout---") //!!
     // --------------
     // Obtiene el objeto de la ruta y le establece un id
     const matches = useMatches();
 
     // --------------
-    // ultima ruta
-    const currentRoute = matches[matches.length - 1];
-
-    // --------------
     // Establece si existen configuraciones para la ruta
-    const config = (currentRoute.handle as RouteHandle | undefined)?.layout;
+
+    const config = matches
+        .map(match => match.handle as RouteHandle | undefined)
+        .find(handle => handle?.appLayout)
+        ?.appLayout;
 
     if (!config) {
         return <Outlet />;
@@ -25,34 +27,33 @@ export const AppLayout = () => {
     const {
         header: Header,
         sidebarPrincipal: SidebarPrincipal,
-        sidebarPanel: SidebarPanelConfig,
         theme = defaultTheme,
     } = config ?? { theme: defaultTheme };
 
+    console.log("---appLayout config: ", config) //!!
+    
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen relative">
 
-            <header className="w-full shrink-0">
+            <header className="w-full">
                 <Header theme = {theme}/>
             </header>
 
-            <div className="flex-1 flex overflow-hidden ">
+            <div className="flex-1 grid grid-cols-[180px_1fr] overflow-hidden">
                 
-                <div className="shrink-0">
+                <div className="no-scrollbar overflow-auto">
                     <SidebarPrincipal theme = {theme}/>
                 </div>
 
-                <main className="flex-1 overflow-auto">
+                <main className="no-scrollbar overflow-auto">
                     <Outlet context={{ theme: theme}}/>
                 </main>    
 
-                <div className="shrink-0">
-                    <SidebarPanel 
-                        moduleConfig = {SidebarPanelConfig} 
-                        theme = {theme}
-                    />
-                </div>
             </div>
+
+            <footer className="w-full absolute bottom-0 z-10 ">
+                <HeaderWave color={theme.colors[300]} />
+            </footer>
 
         </div>
     );

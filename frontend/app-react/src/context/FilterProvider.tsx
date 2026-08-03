@@ -16,8 +16,8 @@ export const FilterProvider = ({
     
     const [active, setActive] = useState<FilterType>(FILTERS.MENSUAL.value);
     const [selectedDate, setSelectedDate] = useState(dayjs());
-    const [from, setFrom] = useState<Dayjs | undefined>(undefined);
-    const [to, setTo] = useState<Dayjs | undefined>(undefined);
+    const [from, setFrom] = useState<Dayjs>(dayjs());
+    const [to, setTo] = useState<Dayjs>(dayjs().add(7, "day"));
 
     return (
         <FilterContext.Provider 

@@ -35,10 +35,10 @@ export type FilterContextType = {
     selectedDate: Dayjs;
     setSelectedDate: (fecha: Dayjs) => void;
 
-    from?: Dayjs;
-    setFrom?: (fecha?: Dayjs) => void;
+    from: Dayjs;
+    setFrom: (fecha: Dayjs) => void;
 
-    to?: Dayjs;
-    setTo?: (fecha?: Dayjs) => void;
+    to: Dayjs;
+    setTo: (fecha: Dayjs) => void;
 };
 
