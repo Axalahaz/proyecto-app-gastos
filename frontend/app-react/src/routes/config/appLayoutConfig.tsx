@@ -3,35 +3,25 @@ import { BalanceNavigation } from "@/modules/balance/components/BalanceNavigatio
 
 import { GastosHeader } from "@/modules/gastos/components/GastosHeader";
 import { GastosNavigation } from "@/modules/gastos/components/GastosNavigation";
-import { ModuleFilter } from "@/shared/components/ModuleFilter/ModuleFilter"
 
 import * as themes from "@/shared/theme";
-import type { LayoutConfig } from "@/routes/routesTypes";
-import { CalculadoraGastos } from "@/modules/gastos/components/CalculadoraGastos";
+import type { LayoutConfig } from "@/routes/types/appLayoutTypes";
 
 /*
 * Configuracion centralizada de rutas con sus componentes
 */
 
-export const layoutConfig: Record<string, LayoutConfig> = {
+export const appLayoutConfig: Record<string, LayoutConfig> = {
 
     balance: {
         header: BalanceHeader,
         sidebarPrincipal: BalanceNavigation,
-        sidebarPanel: {
-            filter: ModuleFilter, 
-            calculadora: CalculadoraGastos,
-        },
         theme: themes.balanceTheme,
     },
 
     gastos: {
         header: GastosHeader,
         sidebarPrincipal: GastosNavigation,
-        sidebarPanel: {
-            filter: ModuleFilter, 
-            calculadora: CalculadoraGastos,
-        },
         theme: themes.gastosTheme,
     },
 
@@ -39,10 +29,6 @@ export const layoutConfig: Record<string, LayoutConfig> = {
     future: {
         header: BalanceHeader,
         sidebarPrincipal: BalanceNavigation,
-        sidebarPanel: {
-            filter: ModuleFilter, 
-            calculadora: CalculadoraGastos,
-        },
         theme: themes.balanceTheme,
     },
 };
