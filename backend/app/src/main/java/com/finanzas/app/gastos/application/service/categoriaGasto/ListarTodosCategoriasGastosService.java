@@ -8,30 +8,24 @@ import org.springframework.transaction.annotation.Transactional;
 import com.finanzas.app.gastos.application.mapper.CategoriaGastoApplicationMapper;
 import com.finanzas.app.gastos.domain.entity.CategoriaGasto;
 import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
-import com.finanzas.app.shared.domain.model.TipoObjeto;
 import com.finanzas.app.shared.dto.context.CategoriaResponse;
-import com.finanzas.app.shared.presentation.filters.TipoObjetoFilter;
 
 import lombok.RequiredArgsConstructor;
 
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
-public class ListarCategoriasGastosService {
+public class ListarTodosCategoriasGastosService {
 
 	private final CategoriaGastoRepository repository;
     private final CategoriaGastoApplicationMapper categoriaGastoMapper;
 
-    public List<CategoriaResponse> ejecutar(TipoObjetoFilter filter) {
+    public List<CategoriaResponse> ejecutar() {
 
-        List<CategoriaGasto> lista = switch (filter) {
-            case SISTEMA -> repository.listarPorTipo(TipoObjeto.SISTEMA);
-            case USUARIO -> repository.listarPorTipo(TipoObjeto.USUARIO);
-            case TODOS -> repository.listarAll();
-        };
+    	List<CategoriaGasto> lista = repository.listarAll();
 
         return lista
-                .stream()
+        		.stream()
                 .map(categoriaGastoMapper::mapToResponse)
                 .toList();
     }

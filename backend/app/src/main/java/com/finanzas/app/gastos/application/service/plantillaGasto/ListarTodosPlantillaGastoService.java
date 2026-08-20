@@ -9,27 +9,20 @@ import com.finanzas.app.gastos.application.mapper.PlantillaGastoApplicationMappe
 import com.finanzas.app.gastos.domain.entity.PlantillaGasto;
 import com.finanzas.app.gastos.domain.repository.plantillaGasto.PlantillaGastoRepository;
 import com.finanzas.app.gastos.presentation.dto.plantillaGasto.PlantillaGastoResponse;
-import com.finanzas.app.shared.domain.model.TipoObjeto;
-import com.finanzas.app.shared.presentation.filters.TipoObjetoFilter;
 
 import lombok.RequiredArgsConstructor;
 
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
-public class ListarPlantillaGastoService {
+public class ListarTodosPlantillaGastoService {
 
-	private final PlantillaGastoRepository repository;
+	private final PlantillaGastoRepository plantillaRepository;
 	private final PlantillaGastoApplicationMapper mapper;
 
-    public List<PlantillaGastoResponse> ejecutar(TipoObjetoFilter filter) {
+    public List<PlantillaGastoResponse> ejecutar() {
 
-    	 List<PlantillaGasto> lista = switch (filter) {
-	         case SISTEMA -> repository.listarPorTipo(TipoObjeto.SISTEMA);
-	         case USUARIO -> repository.listarPorTipo(TipoObjeto.USUARIO);
-	         case TODOS -> repository.listarAll();
-	     };
-
+    	List<PlantillaGasto> lista = plantillaRepository.listarAll();
 
         return lista
         		.stream()

@@ -56,7 +56,7 @@ public class GastoEntityJPA {
     private BigDecimal monto;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "estado_movimiento", nullable = false)
     private EstadoMovimiento estado;
     
     @Column(name = "fecha_creacion", nullable = false)

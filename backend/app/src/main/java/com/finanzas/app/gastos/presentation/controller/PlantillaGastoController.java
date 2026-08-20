@@ -23,14 +23,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/plantilla-gastos")
+@RequestMapping("/api/plantilla-gasto")
 public class PlantillaGastoController {
 	
-	private RegistrarPlantillaGastoService registrarPlantillaGastoService;
-	private EditarPlantillaGastoService editarPlantillaGastoService;
-	private EliminarPlantillaGastoService eliminarPlantillaGastoService;
-	private ObtenerPlantillaGastoService obtenerPlantillaGastoService;
-	private ListarPlantillaGastoService listarPlantillaGastoService;
+	private final RegistrarPlantillaGastoService registrarPlantillaGastoService;
+	private final EditarPlantillaGastoService editarPlantillaGastoService;
+	private final EliminarPlantillaGastoService eliminarPlantillaGastoService;
+	private final ObtenerPlantillaGastoService obtenerPlantillaGastoService;
+	private final ListarPlantillaGastoService listarPlantillaGastoService;
 	
 	
 	// ----------------------------------------------------
@@ -94,12 +94,11 @@ public class PlantillaGastoController {
 	// LISTAR
 	
 	@GetMapping()
-	public ResponseEntity<List<PlantillaGastoResponse>> listarPorEstado(
+	public ResponseEntity<List<PlantillaGastoResponse>> listar(
 			@RequestParam(defaultValue = "TODOS") TipoObjetoFilter filtro) {
 		
 		List<PlantillaGastoResponse> response = listarPlantillaGastoService.ejecutar(filtro);
 		
 		return ResponseEntity.ok(response);
 	}
-	
 }

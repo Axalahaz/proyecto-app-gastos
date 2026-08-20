@@ -38,7 +38,7 @@ public class CategoriaGastoController {
 	private final EditarCategoriaGastoService editarCategoriaService;
 	private final EliminarCategoriaGastoService eliminarCategoriaService;
 	private final ObtenerCategoriaGastoService obtenerCategoriaService;
-	private final ListarCategoriasGastosService listarCategoriasService;
+	private final ListarCategoriasGastosService listarCategoriasGastosService;
 
 	
 	// ----------------------------------------------------
@@ -95,11 +95,11 @@ public class CategoriaGastoController {
 	// ----------------------------------------------------
 	// LISTAR POR FILTRO
 	
-	@GetMapping()
-	public ResponseEntity<List<CategoriaResponse>> Listar(
+	@GetMapping("")
+	public ResponseEntity<List<CategoriaResponse>> listar(
 			@RequestParam(defaultValue = "TODOS") TipoObjetoFilter filtro){
 		
-		List<CategoriaResponse> response = listarCategoriasService.ejecutar(filtro);
+		List<CategoriaResponse> response = listarCategoriasGastosService.ejecutar(filtro);
 		return ResponseEntity.ok(response);
 	}
 

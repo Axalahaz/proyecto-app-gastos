@@ -17,6 +17,10 @@ public class GastoMapper {
     	LocalDateTime fechaCambioEstado = gasto.getFechaCambioEstado() != null
     			? gasto.getFechaCambioEstado().getValue()
     			: null;
+
+    	LocalDateTime fechaVencimiento = gasto.getFechaVencimiento() != null
+    			? gasto.getFechaVencimiento().getValue()
+    					: null;
     	
         return GastoEntityJPA.of(
         		gasto.getId(),
@@ -27,7 +31,7 @@ public class GastoMapper {
         		gasto.getDescripcion(), 
         		gasto.getEstado(),
         		gasto.getFechaCreacion().getValue(), 
-        		gasto.getFechaVencimiento().getValue(), 
+        		fechaVencimiento, 
         		fechaCambioEstado
         );
 
@@ -36,6 +40,10 @@ public class GastoMapper {
     public Gasto mapToDomain(GastoEntityJPA entity) {
     	Fecha fechaCambioEstado = entity.getFechaCambioEstado() != null
     			? new Fecha(entity.getFechaCambioEstado())
+    			: null;
+
+    	Fecha fechaVencimiento = entity.getFechaVencimiento() != null
+    			? new Fecha(entity.getFechaVencimiento())
     			: null;
     	
     	return Gasto.reconstruir(
@@ -47,7 +55,7 @@ public class GastoMapper {
     			entity.getDescripcion(),
     			entity.getEstado(),
     			new Fecha(entity.getFechaCreacion()),
-    			new Fecha(entity.getFechaVencimiento()),
+    			fechaVencimiento,
     			fechaCambioEstado
     			);
     }

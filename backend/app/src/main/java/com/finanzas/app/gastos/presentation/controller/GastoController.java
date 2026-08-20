@@ -150,18 +150,20 @@ public class GastoController {
 	// LISTAR 
 	
 	@GetMapping()
-	public ResponseEntity<List<GastoResponse>> listar(
-	        @RequestParam(required = false) Long categoria) {
+	public ResponseEntity<List<GastoResponse>> listarTodos() {
 
-	    List<GastoResponse> response;
-
-	    if (categoria == null) {
-	        response = listarGastosTodosService.ejecutar();
-	    } else {
-	        response = listarGastosPorCategoriaService.ejecutar(categoria);
-	    }
+	    List<GastoResponse> response = listarGastosTodosService.ejecutar();
 
 	    return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/categoria/{id}")
+	public ResponseEntity<List<GastoResponse>> listarPorCategoria(
+			@PathVariable("id") Long categoriaId) {
+		
+		List<GastoResponse> response = listarGastosPorCategoriaService.ejecutar(categoriaId);
+		
+		return ResponseEntity.ok(response);
 	}
 	
 }

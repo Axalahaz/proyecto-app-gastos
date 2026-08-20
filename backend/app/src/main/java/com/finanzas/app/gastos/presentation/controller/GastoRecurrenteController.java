@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 @RestController
-@RequestMapping("/api/gastos-recurrentes")
+@RequestMapping("/api/gasto-recurrente")
 public class GastoRecurrenteController {
 	
 	private final ActivarGastoRecurrenteService activarGastoRecurrenteService;
