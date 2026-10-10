@@ -14,13 +14,14 @@ export const AppHeader = ({
 }: HeaderProps) => {
     return (
         <div 
-            className="grid grid-cols-[180px_1fr_350px] py-2 items-center text-center" 
+            className="grid grid-cols-[180px_1fr_180px] 
+            py-1 items-center text-center text-base" 
             style={{ 
                 background: theme.colors[700] ,
             }}
         >
             <h1 
-                className='tracking-wide font-semi text-lg' 
+                className='tracking-wide font-semi text-base' 
                 style={{
                     WebkitTextStroke: `0.3px ${theme.colors[300]}`,
                     color: "white",
@@ -29,7 +30,7 @@ export const AppHeader = ({
                 {"By JBYCode"} <span className="tracking-wide">{"{}"}</span>
             </h1>
             <h1 
-                className='tracking-wide font-semi text-lg' 
+                className='tracking-wide font-semi' 
                 style={{
                     WebkitTextStroke: `0.3px ${theme.colors[300]}`,
                     color: "white",
@@ -37,17 +38,23 @@ export const AppHeader = ({
             >
                 {title}
             </h1>
-            <Box component="button" className="flex justify-center gap-2 items-center">
-                <p style={{color: theme.colors[100]}}>Cuenta</p>
-                <AccountCircleOutlinedIcon  
-                    sx={{
-                        fontSize: 30,
-                        fill: "transparent",
-                        stroke: "white",
-                        strokeWidth: 1.4,
-                    }}
-                />
-            </Box> 
+            <div
+                className="flex justify-center items-center"
+            >
+                <button 
+                    className="flex items-center gap-2"
+                >
+                    <p style={{color: theme.colors[100]}}>Cuenta</p>
+                    <AccountCircleOutlinedIcon  
+                        sx={{
+                            fontSize: 30,
+                            fill: "transparent",
+                            stroke: "white",
+                            strokeWidth: 1.4,
+                        }}
+                    />
+                </button> 
+            </div>
         </div>
     );
 };

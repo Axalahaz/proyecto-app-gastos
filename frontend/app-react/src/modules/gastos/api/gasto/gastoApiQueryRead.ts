@@ -2,7 +2,7 @@ import { api } from "@/api/axios";
 import { ENDPOINTS } from "@/api/endpoints";
 import type { Gasto } from "@/modules/gastos/dto/gasto/Gasto";
 import type { GastoResponse } from "@/modules/gastos/dto/gasto/GastoResponse";
-import { mapGasto } from "@/modules/gastos/mappers/mapGasto";
+import { mapGasto } from "@/modules/gastos/api/mappers/mapGasto";
 
 export const gastoApiQueryRead = {
 
@@ -16,20 +16,19 @@ export const gastoApiQueryRead = {
 
     async listarTodos(): Promise<Gasto[]> {
         const response = await api.get<GastoResponse[]>(
-            ENDPOINTS.gasto
+            ENDPOINTS.gasto,
         );
 
-        return response.data.map(mapGasto);
+        return response.data
+            .map(g => mapGasto(g));
     },
 
     async listarPorCategoria(categoriaId: number): Promise<Gasto[]> {
         const response = await api.get<GastoResponse[]>(
-            ENDPOINTS.gasto,
-            {
-                params: { categoria: categoriaId },
-            }
+            `${ENDPOINTS.gasto}/categoria/${categoriaId}`
         );
 
-        return response.data.map(mapGasto);
+        return response.data
+            .map(g => mapGasto(g));
     },
 };

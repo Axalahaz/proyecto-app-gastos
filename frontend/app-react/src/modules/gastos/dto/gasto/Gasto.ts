@@ -1,13 +1,14 @@
-import type { estadoMovimiento } from "@/modules/gastos/types/typeGastos";
+import type { estadoMovimiento } from "@/shared/types/typesApp";
 import { Dayjs } from "dayjs";
 
 export interface Gasto {
     id: number;
     categoriaGastoId: number;
-    gastoRecurrenteId: number;
+    plantillaId: number | null;
+    gastoRecurrenteId: number | null;
     monto: number;
     descripcion: string | null;
-    estadoMovimiento: estadoMovimiento;
+    estado: estadoMovimiento;
     fechaCreacion: Dayjs;
     fechaVencimiento: Dayjs | null;
     fechaCambioEstado: Dayjs | null;

@@ -1,11 +1,11 @@
 import { api } from "@/api/axios";
 import { ENDPOINTS } from "@/api/endpoints";
 
-import { mapCategoriaGasto } from "@/modules/gastos/mappers/mapCategoriaGasto";
+import { mapCategoriaGasto } from "@/modules/gastos/api/mappers/mapCategoriaGasto";
 
 import type { CategoriaGasto } from "@/modules/gastos/dto/categoria/CategoriaGasto";
 import type { CategoriaGastoResponse } from "@/modules/gastos/dto/categoria/CategoriaGastoResponse";
-import type { tipoObjeto } from "@/modules/gastos/types/typeGastos";
+import type { tipoObjetoFilter } from "@/shared/types/typesApp";
 
 export const categoriaGastoApiQueryRead = {
 
@@ -17,24 +17,15 @@ export const categoriaGastoApiQueryRead = {
         return mapCategoriaGasto(response.data);
     },
 
-    async listarTodos(): Promise<CategoriaGasto[]> {
-        const response = await api.get<CategoriaGastoResponse[]>(
-            ENDPOINTS.categoria
-        );
-
-        return response.data.map(mapCategoriaGasto);
-    },
-
-    async listarPorTipoObjetivo(
-        tipoObjetivo: tipoObjeto
+    async listar(
+        tipoObjetoFilter: tipoObjetoFilter 
     ): Promise<CategoriaGasto[]> {
         const response = await api.get<CategoriaGastoResponse[]>(
             ENDPOINTS.categoria,
             {
-                params: { filtro: tipoObjetivo },
+                params: { filtro: tipoObjetoFilter },
             }
         );
-
         return response.data.map(mapCategoriaGasto);
     },
 };

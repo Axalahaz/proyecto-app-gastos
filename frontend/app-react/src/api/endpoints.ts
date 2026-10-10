@@ -2,9 +2,9 @@ export const ENDPOINTS = {
 
     gasto: "/gasto",
 
-    gastoRecurrente: "/gastos-recurrentes",
+    gastoRecurrente: "/gasto-recurrente",
 
-    plantillaGasto: "/plantilla-gastos",
+    plantillaGasto: "/plantilla-gasto",
 
     categoria: "/categoria-gasto",
 

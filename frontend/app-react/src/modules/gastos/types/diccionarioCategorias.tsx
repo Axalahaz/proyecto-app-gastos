@@ -10,101 +10,106 @@ import Restaurante from "@/assets/iconsCategorias/restaurante.svg";
 import Salud from "@/assets/iconsCategorias/salud.svg";
 import Servicios from "@/assets/iconsCategorias/servicios.svg";
 import Trabajo from "@/assets/iconsCategorias/trabajo.svg";
-import TransporteAuto from "@/assets/iconsCategorias/transporte_auto.svg";
-import TransporteBus from "@/assets/iconsCategorias/transporte_bus.svg";
-import TransporteMoto from "@/assets/iconsCategorias/transporte_moto.svg";
-import TransporteTren from "@/assets/iconsCategorias/transporte_tren.svg";
+import Transporte from "@/assets/iconsCategorias/transporte.svg";
 import Viajes from "@/assets/iconsCategorias/viajes.svg";
+import Ropa from "@/assets/iconsCategorias/ropa.svg";
+import Image from "@/assets/image.svg";
 
+import { TIPO_OBJETO, type tipoObjeto } from "@/shared/types/typesApp";
+import { defaultTheme } from "@/shared/theme";
+
+type PropsCategoriaIcons = {
+    iconCategoria: string; 
+    bgCategoria: string;
+    borderCategoria: string; 
+}
+
+// --------------------------------------
+// Configuración estática
 export const categoriaIcons = {
-    hogar: { 
-        icon: Hogar, label: "Hogar", 
-        bg: "#f6fdf1", border: "#179b47"
+    Hogar: { 
+        iconCategoria: Hogar,
+        bgCategoria: "#f6fdf1", borderCategoria: "#6ccc8f"
     },
-    servicios: { 
-        icon: Servicios, label: "Servicios", 
-        bg: "#f8f8de", border: "#ffff00"
+    Servicios: { 
+        iconCategoria: Servicios, 
+        bgCategoria: "#f8f8de", borderCategoria: "#c9c903"
     },
-    comida: { 
-        icon: Compras, label: "Comida", 
-        bg: "#fdf1ee", border: "#47050559"
+    Compras: { 
+        iconCategoria: Compras, 
+        bgCategoria: "#fdf1ee", borderCategoria: "#47050559"
     },
-    transporteAuto: { 
-        icon: TransporteAuto, label: "Transporte", 
-        bg: "#fff0da", border: "#492b00"
+    Transporte: { 
+        iconCategoria: Transporte, 
+        bgCategoria: "#fff0da", borderCategoria: "#df8d1a"
     },
-    transporteMoto: { 
-        icon: TransporteMoto, label: "Transporte", 
-        bg: "#fff0da", border: "#492b00"
+    Salud: { 
+        iconCategoria: Salud, 
+        bgCategoria: "#feffda", borderCategoria: "#caa45e"
     },
-    transporteTren: { 
-        icon: TransporteTren, label: "Transporte", 
-        bg: "#fff0da", border: "#492b00"
+    Educacion: { 
+        iconCategoria: Educacion, 
+        bgCategoria: "#eeffee", borderCategoria: "#3AB0FF"
     },
-    transporteBus: { 
-        icon: TransporteBus, label: "Transporte", 
-        bg: "#fff0da", border: "#492b00"
+    Entretenimiento: { 
+        iconCategoria: Entretenimiento, 
+        bgCategoria: "#fff0da", borderCategoria: "#492b00"
     },
-    salud: { 
-        icon: Salud, label: "Salud", 
-        bg: "#fff0da", border: "#492b00"
+    Mascota: { 
+        iconCategoria: Mascota, 
+        bgCategoria: "#fff0da", borderCategoria: "#9b5b02"
     },
-    educacion: { 
-        icon: Educacion, label: "Educación", 
-        bg: "#eeffee", border: "#3AB0FF"
+    Trabajo: { 
+        iconCategoria: Trabajo, 
+        bgCategoria: "#fff0da", borderCategoria: "#492b00"
     },
-    entretenimiento: { 
-        icon: Entretenimiento, label: "Entretenimiento", 
-        bg: "#fff0da", border: "#492b00"
+    Plataformas: { 
+        iconCategoria: Plataformas,
+        bgCategoria: "#ffd6b4", borderCategoria: "#dd7871"
     },
-    mascota: { 
-        icon: Mascota, label: "Mascota", 
-        bg: "#fff0da", border: "#9b5b02"
+    Viajes: { 
+        iconCategoria: Viajes,
+        bgCategoria: "#fff0da", borderCategoria: "#492b00"
     },
-    trabajo: { 
-        icon: Trabajo, label: "Trabajo", 
-        bg: "#fff0da", border: "#492b00"
+    Restaurante: { 
+        iconCategoria: Restaurante, 
+        bgCategoria: "#fff0da", borderCategoria: "#492b00"
     },
-    plataformas: { 
-        icon: Plataformas, label: "Plataformas", 
-        bg: "#fff0da", border: "#492b00"
+    Regalos: { 
+        iconCategoria: Regalos,
+        bgCategoria: "#fff0da", borderCategoria: "#492b00"
     },
-    salidas: { 
-        icon: Hogar, label: "Salidas", 
-        bg: "#fff0da", border: "#492b00"
+    Bar: { 
+        iconCategoria: Bar, 
+        bgCategoria: "#ffffea", borderCategoria: "#575702"
     },
-    viajes: { 
-        icon: Viajes, label: "Viajes", 
-        bg: "#fff0da", border: "#492b00"
+    Ropa: { 
+        iconCategoria: Ropa, 
+        bgCategoria: "#ffffea", borderCategoria: "#575702"
     },
-    restaurante: { 
-        icon: Restaurante, label: "Restaurante", 
-        bg: "#fff0da", border: "#492b00"
-    },
-    regalos: { 
-        icon: Regalos, label: "Regalos", 
-        bg: "#fff0da", border: "#492b00"
-    },
-    bar: { 
-        icon: Bar, label: "Bar", 
-        bg: "#ffffea", border: "#575702"
-    },
-} as const satisfies Record<string, {
-    icon: string; 
-    label: string 
-    bg: string 
-    border: string 
-}>;
+} as const satisfies Record<string, PropsCategoriaIcons>;
 
 export type CategoriaName = keyof typeof categoriaIcons;
 
-export const getCategoriaConfig = (nombre: string) => {
-    return (
-        categoriaIcons[nombre as keyof typeof categoriaIcons] ?? {
-            icon: "📦",
-            label: nombre,
-            bg: "#f5f5f5",
-            border: "#bdbdbd",
+// --------------------------------------
+// Resolución de configuración
+export const getCategoriaConfig = (
+    nombre: string,
+    tipo?: tipoObjeto,
+): PropsCategoriaIcons | null  => {
+
+    if (tipo) {
+        if (tipo === TIPO_OBJETO.USUARIO) {
+            return {
+                iconCategoria: Image,
+                bgCategoria: defaultTheme.colors[100], 
+                borderCategoria: defaultTheme.colors[500], 
+            }
         }
-    );
+        else if (tipo === TIPO_OBJETO.SISTEMA) {
+            return categoriaIcons[nombre as CategoriaName ] ?? null;
+        }
+    }
+
+    return null;
 };

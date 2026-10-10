@@ -5,8 +5,6 @@ export const useGastos = () => {
 
     const context = useContext(GastosContext);
 
-    console.log("---context: ", context); // !!!!!!
-    
     if (!context) {
         throw new Error(
             "useGastos debe utilizarse dentro de GastosProvider"

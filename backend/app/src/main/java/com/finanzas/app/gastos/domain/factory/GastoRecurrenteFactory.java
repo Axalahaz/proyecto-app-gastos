@@ -14,6 +14,7 @@ import com.finanzas.app.shared.domain.vo.Fecha;
 public class GastoRecurrenteFactory {
 
     public GastoRecurrente of(
+    		Long categoriaGastoId,
     		Long plantillaId,
             String descripcion,
             Frecuencia frecuencia,
@@ -29,6 +30,7 @@ public class GastoRecurrenteFactory {
     				);
 
         return GastoRecurrente.crear(
+        		categoriaGastoId,
         		plantillaId,
                 descripcion,
                 periodicidad,

@@ -3,6 +3,8 @@ import { Dayjs } from "dayjs";
 
 export interface GastoRecurrente {
 	id: number;
+	categoriaGastoId: number;
+	plantillaId: number | null;
 	descripcion: string;
 	diaVencimiento: number;
 	mesVencimiento: number | null;

@@ -14,23 +14,21 @@ INSERT INTO categorias_gastos (
     tipo,
     fecha_creacion
 ) VALUES
-(1, 'hogar', 'SISTEMA', '2025-01-10 00:00:00'),
-(2, 'comida', 'SISTEMA', '2025-01-12 00:00:00'),
-(3, 'mascota', 'SISTEMA', '2026-01-15 00:00:00'),
-(4, 'bar', 'SISTEMA', '2026-01-18 00:00:00'),
-(5, 'bienestar', 'SISTEMA', '2026-01-20 00:00:00'),
-(6, 'educacion', 'SISTEMA', '2026-01-22 00:00:00'),
-(7, 'entretenimiento', 'SISTEMA', '2026-01-25 00:00:00'),
-(8, 'plataformas', 'SISTEMA', '2026-01-27 00:00:00'),
-(9, 'regalos', 'USUARIO', '2026-01-30 00:00:00'),
-(10, 'restaurante', 'USUARIO', '2026-02-01 00:00:00'),
-(11, 'ropa', 'USUARIO', '2026-02-03 00:00:00'),
-(12, 'salud', 'USUARIO', '2026-02-05 00:00:00'),
-(13, 'servicios', 'SISTEMA', '2026-02-08 00:00:00'),
-(14, 'trabajo', 'USUARIO', '2026-02-10 00:00:00'),
-(15, 'transporte', 'USUARIO', '2026-02-12 00:00:00'),
-(16, 'viajes', 'USUARIO', '2026-02-15 00:00:00'),
-(17, 'compras', 'SISTEMA', '2025-01-12 00:00:00');
+(1, 'Hogar', 'SISTEMA', '2025-01-10 00:00:00'),
+(2, 'Compras', 'SISTEMA', '2025-01-12 00:00:00'),
+(3, 'Mascota', 'SISTEMA', '2026-01-15 00:00:00'),
+(4, 'Bar', 'SISTEMA', '2026-01-18 00:00:00'),
+(5, 'Transporte', 'SISTEMA', '2026-01-20 00:00:00'),
+(6, 'Educacion', 'SISTEMA', '2026-01-22 00:00:00'),
+(7, 'Entretenimiento', 'SISTEMA', '2026-01-25 00:00:00'),
+(8, 'Plataformas', 'SISTEMA', '2026-01-27 00:00:00'),
+(9, 'Regalos', 'SISTEMA', '2026-01-30 00:00:00'),
+(10, 'Restaurante', 'SISTEMA', '2026-02-01 00:00:00'),
+(11, 'Ropa', 'SISTEMA', '2026-02-03 00:00:00'),
+(12, 'Salud', 'SISTEMA', '2026-02-05 00:00:00'),
+(13, 'Servicios', 'SISTEMA', '2026-02-08 00:00:00'),
+(14, 'Trabajo', 'SISTEMA', '2026-02-10 00:00:00'),
+(15, 'Viajes', 'SISTEMA', '2026-02-15 00:00:00');
 
 -- ------------------------------------------
 -- ENTITY PLANTILLA GASTOS
@@ -48,12 +46,13 @@ INSERT INTO plantilla_gastos (
 (4, 1, 'Alquiler', 'SISTEMA', '2026-01-08 00:00:00'),
 (5, 8, 'Netflix', 'SISTEMA', '2026-01-09 00:00:00'),
 (6, 8, 'Spotify', 'SISTEMA', '2026-01-10 00:00:00'),
-(7, 15, 'SUBE', 'SISTEMA', '2026-01-11 00:00:00'),
-(8, 2, 'Carniceria', 'USUARIO', '2026-01-12 00:00:00'),
-(9, 2, 'Panaderia', 'USUARIO', '2025-01-13 00:00:00'),
-(10, 3, 'ComidaPerro', 'USUARIO', '2026-01-14 00:00:00'),
-(11, 12, 'Anticonseptivas', 'USUARIO', '2026-01-15 00:00:00'),
-(12, 17, 'Supermercado', 'USUARIO', '2025-01-16 00:00:00');
+(7, 5, 'SUBE', 'SISTEMA', '2026-01-11 00:00:00'),
+(8, 2, 'Carniceria', 'SISTEMA', '2026-01-12 00:00:00'),
+(9, 2, 'Panaderia', 'SISTEMA', '2025-01-13 00:00:00'),
+(10, 3, 'ComidaPerro', 'SISTEMA', '2026-01-14 00:00:00'),
+(11, 12, 'Anticonseptivas', 'SISTEMA', '2026-01-15 00:00:00'),
+(12, 2, 'Supermercado', 'SISTEMA', '2025-01-16 00:00:00'),
+(13, 5, 'Nafta', 'SISTEMA', '2025-01-16 00:00:00');
 
 -- ------------------------------------------
 -- ENTITY GASTOS RECURRENTES
@@ -87,16 +86,16 @@ INSERT INTO gastos (
     gasto_recurrente_id,
     descripcion,
     monto,
-    estado,
+    estado_movimiento,
     fecha_creacion,
     fecha_vencimiento,
     fecha_cambio_estado
 ) VALUES
-(1, 17, 12, NULL, 'Supermercado', 25430.00, 'ANULADO', '2026-06-25 00:00:00', NULL, NULL),
+(1, 2, 12, NULL, 'Supermercado', 25430.00, 'ANULADO', '2026-08-15 00:00:00', NULL, NULL),
 (2, 8, 5, NULL, 'Netflix', 8990.00, 'ACTIVO', '2026-04-24 00:00:00', NULL, '2026-04-24 00:00:00'),
-(3, 15, NULL, NULL, 'Uber', 4200.00, 'ACTIVO', '2026-06-23 00:00:00', NULL, NULL),
+(3, 15, NULL, NULL, 'Uber', 4200.00, 'ACTIVO', '2026-08-13 00:00:00', NULL, NULL),
 (4, 12, NULL, NULL, 'Farmacia', 7850.00, 'ACTIVO', '2026-05-22 00:00:00', NULL, NULL),
-(5, 13, NULL, 1, 'Fibertel', 15900.00, 'ACTIVO', '2026-06-21 00:00:00', '2026-06-05 00:00:00', '2026-06-21 00:00:00'),
+(5, 13, 1, 1, 'Fibertel', 15900.00, 'ACTIVO', '2026-08-01 00:00:00', '2026-06-05 00:00:00', '2026-06-21 00:00:00'),
 (6, 2, NULL, NULL, 'Café', 3200.00, 'ANULADO', '2026-06-20 00:00:00', NULL, NULL),
 (7, 15, NULL, NULL, 'SUBE', 5000.00, 'ACTIVO', '2026-06-19 00:00:00', NULL, NULL),
 (8, 15, NULL, NULL, 'SUBE1', 5000.00, 'ANULADO', '2025-06-19 00:00:00', NULL, '2025-06-19 00:00:00'),

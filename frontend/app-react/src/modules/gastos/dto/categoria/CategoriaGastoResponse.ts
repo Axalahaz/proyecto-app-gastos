@@ -1,4 +1,4 @@
-import type { tipoObjeto } from "@/modules/gastos/types/typeGastos";
+import type { tipoObjeto } from "@/shared/types/typesApp";
 
 export interface CategoriaGastoResponse {
 	id: number;

@@ -7,7 +7,6 @@ import {HeaderWave} from '@/shared/components/HeaderWave';
 
 
 export const AppLayout = () => {
-    console.log("---appLayout---") //!!
     // --------------
     // Obtiene el objeto de la ruta y le establece un id
     const matches = useMatches();
@@ -27,31 +26,34 @@ export const AppLayout = () => {
     const {
         header: Header,
         sidebarPrincipal: SidebarPrincipal,
+        filter: Filter,
         theme = defaultTheme,
     } = config ?? { theme: defaultTheme };
 
-    console.log("---appLayout config: ", config) //!!
-    
     return (
-        <div className="flex flex-col h-screen relative">
-
-            <header className="w-full">
+        <div className="relative flex flex-col h-dvh overflow-hidden">
+        {/* Header */}
+            <header className="shrink-0">
                 <Header theme = {theme}/>
             </header>
-
-            <div className="flex-1 grid grid-cols-[180px_1fr] overflow-hidden">
-                
-                <div className="no-scrollbar overflow-auto">
+        {/* Contenido */}
+            <div className="min-h-0 flex-1 grid grid-cols-[180px_1fr] ">
+                <div className="overflow-auto no-scrollbar">
                     <SidebarPrincipal theme = {theme}/>
                 </div>
-
-                <main className="no-scrollbar overflow-auto">
-                    <Outlet context={{ theme: theme}}/>
-                </main>    
-
+                <div className="min-h-0 flex flex-col overflow-auto no-scrollbar">
+                    {Filter && (
+                        <div className="shrink-0">
+                            <Filter theme={theme} />
+                        </div>
+                    )}
+                    <main className="flex-1">
+                        <Outlet context={{ theme: theme}}/>
+                    </main>    
+                </div>
             </div>
-
-            <footer className="w-full absolute bottom-0 z-10 ">
+        {/* Footer */}
+            <footer className="pointer-events-none absolute bottom-0 z-10 w-full">
                 <HeaderWave color={theme.colors[300]} />
             </footer>
 

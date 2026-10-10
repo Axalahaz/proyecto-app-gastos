@@ -9,6 +9,10 @@ createRoot(document.getElementById('root')!).render(
   <LocalizationProvider 
     dateAdapter={AdapterDayjs}
     adapterLocale="es"
+    localeText={{
+      todayButtonLabel: "Hoy",
+      okButtonLabel: "OK",
+    }}
   >
     <App />
   </LocalizationProvider> 

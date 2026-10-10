@@ -12,6 +12,8 @@ import lombok.Getter;
 @Getter
 public class RegistrarGastoRecurrenteRequest {
 	
+    private Long categoriaGastoId;
+	
     private Long plantillaGastoRecurrenteId;
 	
 	@NotNull(message = "La descripcion es obligatorio")

@@ -17,6 +17,7 @@ import lombok.Getter;
 public class GastoRecurrente {
 
     private Long id;
+    private Long categoriaGastoId; // puede ser null
     private Long plantillaId; // puede ser null
     private String descripcion;
     
@@ -31,6 +32,7 @@ public class GastoRecurrente {
     
     private GastoRecurrente(
     		Long id,
+    		Long categoriaGastoId,
     		Long plantillaId,
     		String descripcion,
     		Periodicidad periodicidad,
@@ -54,6 +56,7 @@ public class GastoRecurrente {
     // CREAR
     
     public static GastoRecurrente crear(
+    		Long categoriaGastoId,
     		Long plantillaId,
     		String descripcion,
     		Periodicidad periodicidad,
@@ -61,6 +64,7 @@ public class GastoRecurrente {
     ) {
         return new GastoRecurrente(
         		null,
+        		categoriaGastoId,
         		plantillaId,
         		descripcion,
         		periodicidad,
@@ -75,6 +79,7 @@ public class GastoRecurrente {
     
     public static GastoRecurrente reconstruir(
     		Long id,
+    		Long categoriaGastoId,
     		Long plantillaId,
     		String descripcion,
     		Periodicidad periodicidad,
@@ -84,6 +89,7 @@ public class GastoRecurrente {
     ) {
         return new GastoRecurrente(
         		id,
+        		categoriaGastoId,
         		plantillaId,
         		descripcion,
         		periodicidad,

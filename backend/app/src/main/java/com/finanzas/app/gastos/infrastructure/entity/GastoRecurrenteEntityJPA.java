@@ -26,6 +26,9 @@ public class GastoRecurrenteEntityJPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name = "categoria_gasto_id", nullable = false)
+	private Long categoriaGastoId;
+
 	@Column(name = "plantilla_gasto_id")
 	private Long plantillaId; 
 
@@ -56,6 +59,7 @@ public class GastoRecurrenteEntityJPA {
     
     public static GastoRecurrenteEntityJPA of(
     		Long id,
+    		Long categoriaGastoId,
     		Long plantillaId,
     		String descripcion,
             Integer diaVencimiento,
@@ -68,6 +72,7 @@ public class GastoRecurrenteEntityJPA {
     	GastoRecurrenteEntityJPA entity = new GastoRecurrenteEntityJPA();
     	
     	entity.id = id;
+    	entity.categoriaGastoId = categoriaGastoId;
     	entity.plantillaId = plantillaId;
     	entity.descripcion = descripcion;
     	entity.diaVencimiento = diaVencimiento;

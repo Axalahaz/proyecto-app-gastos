@@ -6,6 +6,7 @@ import { GastosNavigation } from "@/modules/gastos/components/GastosNavigation";
 
 import * as themes from "@/shared/theme";
 import type { LayoutConfig } from "@/routes/types/appLayoutTypes";
+import { ModuleFilter } from "@/shared/components/ModuleFilter/ModuleFilter";
 
 /*
 * Configuracion centralizada de rutas con sus componentes
@@ -16,12 +17,14 @@ export const appLayoutConfig: Record<string, LayoutConfig> = {
     balance: {
         header: BalanceHeader,
         sidebarPrincipal: BalanceNavigation,
+        filter: ModuleFilter,
         theme: themes.balanceTheme,
     },
 
     gastos: {
         header: GastosHeader,
         sidebarPrincipal: GastosNavigation,
+        filter: ModuleFilter,
         theme: themes.gastosTheme,
     },
 

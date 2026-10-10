@@ -1,11 +1,16 @@
+import { useState } from "react";
+
 import { useFilter } from "@/hooks/useFilter";
 import type { FilterType } from "@/context/typesFilter";
 import { FILTERS } from "@/context/typesFilter";
 
-import type { ThemeProps } from "@/shared/theme/themes";
-import { defaultTheme } from "@/shared/theme/defaultTheme";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { ModalCalendario } from "@/shared/components/ModuleFilter/ModalCalendario";
+import { filtrarFechaFormat } from "@/shared/utils/filtrarFechaFormat";
 
-import { FilterDateSelector } from "@/shared/components/ModuleFilter/FilterDateSelector"
+import type { ThemeProps } from "@/shared/theme/themes";
+import { defaultTheme } from "@/shared/theme";
 
 export const ModuleFilter = ({
     theme,
@@ -13,7 +18,11 @@ export const ModuleFilter = ({
 
     // ---------------
     // Obtengo el filtro de Fecha
-    const { active, setActive } = useFilter();
+    const { active, setActive, selectedDate} = useFilter();
+
+    // ---------------
+    // MODAL CALENDARIO
+    const [openCalendario, setOpenCalendario] = useState(false);
 
     // ---------------
     // Establesco referencias y comportamientos de los estilos
@@ -21,44 +30,63 @@ export const ModuleFilter = ({
         FILTERS.MENSUAL,
         FILTERS.DIARIO,
         FILTERS.ANUAL,
-        FILTERS.PERIODO,
     ] as const;
 
     const getStyles = (button: FilterType) => ({
-        borderColor: defaultTheme.colors[100],
-        backgroundColor: active === button ? theme.colors[700] : "transparent",
+        borderColor: active === button ? theme.colors[500] : defaultTheme.colors[100],
+        backgroundColor: active === button ? `${theme.colors[700]}` : "transparent",
         color: active === button ? theme.colors[100] : defaultTheme.colors[700] ,
     });
 
     const getScale = (button: FilterType) =>
         active === button 
-            ? "w-[40dvh] rounded-[30px] text-lg" 
-            : "w-[35dvh] text-sm ";
+            ? "w-[10vw] text-base rounded-t-[15px] border-t" 
+            : "w-[8vw] text-sm mt-1";
     // ---------------
-
     return (
-        <div className={`w-full py-2 flex flex-col items-center gap-2 `}>
+        <div 
+            className={`ms-5 pt-2 flex justify-center border-l`}
+            style={{
+                backgroundColor: theme.colors[100],
+                borderColor: `${theme.colors[500]}50`,
+            }}
+        >
 {/* BOTONES */}
+            <div className="flex-1 flex items-center justify-center">
                 {buttons.map((b) => (
-                    <div className={`w-full flex justify-center`}>
+                    <div 
+                        key={b.value}
+                        className={`flex justify-center`}
+                    >
                         <button 
-                            key={b.value}
                             onClick={() => setActive(b.value)}
-                            className={`${getScale(b.value)} 
-                            active:scale-120 border-t border-b py-1 transition-all`}
+                            className={`${getScale(b.value)} active:scale-80  transition-all`}
                             style={{ ...getStyles(b.value) }}
                         >
                             {b.label}
                         </button>
                     </div>
                 ))}
-
+            </div>
 {/* CALENDARIO */}
-            <div className="">
-                <FilterDateSelector 
-                    filter={active}
-                    theme={theme} 
-                />
+            <div className="flex-1 flex justify-center">
+                <button 
+                    className="flex items-center gap-2"
+                    onClick={() => setOpenCalendario(true)}
+                >
+                    <CalendarMonthIcon sx={{fontSize: 25, color: theme.colors[700]}}/> 
+                    <p className="text-sm">{filtrarFechaFormat(active, selectedDate)}</p>
+                    <ArrowDropDownIcon sx={{fontSize: 25, color: theme.colors[700]}}/>
+                </button>
+        
+                <div className="">
+                    <ModalCalendario 
+                        filter = {active}
+                        open={openCalendario}
+                        onClose={() => setOpenCalendario(false)}
+                        theme={theme}
+                    />
+                </div>
             </div>
         </div>
     );

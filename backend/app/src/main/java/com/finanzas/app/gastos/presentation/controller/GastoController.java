@@ -66,7 +66,6 @@ public class GastoController {
 		GastoResponse response = registrarGastoDesdeRecurrenteService.ejecutar(
 				request.getMonto(),
 				request.getGastoRecurrenteId(),
-				request.getCategoriaGastoId(),
 				request.getFechaVencimiento()
 				);
 		

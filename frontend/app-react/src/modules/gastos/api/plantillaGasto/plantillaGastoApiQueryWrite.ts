@@ -6,7 +6,7 @@ import type { EditarPlantillaGastoRequest } from "@/modules/gastos/dto/plantilla
 
 import type { PlantillaGasto } from "@/modules/gastos/dto/plantillaGasto/PlantillaGasto";
 import type { PlantillaGastoResponse } from "@/modules/gastos/dto/plantillaGasto/PlantillaGastoResponse";
-import { mapPlantillaGasto } from "@/modules/gastos/mappers/mapPlantillaGasto";
+import { mapPlantillaGasto } from "@/modules/gastos/api/mappers/mapPlantillaGasto";
 
 export const plantillaGastoApiQueryWrite = {
 

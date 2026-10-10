@@ -9,7 +9,7 @@ import type { RegistrarGastoDesdeRecurrente } from "@/modules/gastos/dto/gasto/R
 import type { RegistrarGastoDesdeRecurrenteRequest } from "@/modules/gastos/dto/gasto/RegistrarGastoDesdeRecurrenteRequest";
 import type { EditarGastoRequest } from "@/modules/gastos/dto/gasto/EditarGastoRequest";
 import type { VolverRecurrenteRequest } from "@/modules/gastos/dto/gasto/VolverRecurrenteRequest";
-import { mapGasto, mapRegistrarGasto } from "@/modules/gastos/mappers/mapGasto";
+import { mapGasto, mapRegistrarGasto } from "@/modules/gastos/api/mappers/mapGasto";
 
 export const gastoApiQueryWrite = {
 

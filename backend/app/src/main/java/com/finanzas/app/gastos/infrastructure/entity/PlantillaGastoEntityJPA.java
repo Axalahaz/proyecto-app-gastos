@@ -27,7 +27,7 @@ public class PlantillaGastoEntityJPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(name = "categoria_gasto_id")
+	@Column(name = "categoria_gasto_id", nullable = false)
 	private Long categoriaGastoId;
 	
 	@Column(nullable = false)

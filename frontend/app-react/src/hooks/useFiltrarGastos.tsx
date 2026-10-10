@@ -12,24 +12,26 @@ export const useFiltrarGastos = (
     selectedDate: Dayjs,
 ) => {
 
-    return gastos.filter((gasto) => {
+    const gastosFiltrados = gastos.filter((gasto) => {
         const fecha = gasto.fechaCreacion;
 
         switch (active) {
-        case FILTERS.DIARIO.value:
-            return esMismoDia(fecha, selectedDate);
+            case FILTERS.DIARIO.value:
+                return esMismoDia(fecha, selectedDate);
 
-        case FILTERS.MENSUAL.value:
-            return esMismoMes(fecha, selectedDate);
+            case FILTERS.MENSUAL.value:
+                return esMismoMes(fecha, selectedDate);
 
-        case FILTERS.ANUAL.value:
-            return esMismoAnio(fecha, selectedDate);
+            case FILTERS.ANUAL.value:
+                return esMismoAnio(fecha, selectedDate);
 
-        case FILTERS.PERIODO.value:
-            return true; //!! luego mejorar con rango personalizado
+            case FILTERS.PERIODO.value:
+                return true; //!! luego mejorar con rango personalizado
 
-        default:
-            return true;
+            default:
+                return true;
         }
     });
+    
+    return gastosFiltrados;
 };

@@ -17,6 +17,8 @@ public class GastoRecurrenteApplicationMapper {
     	
     	return GastoRecurrenteResponse.of(
     			gastoRecurrente.getId(), 
+    			gastoRecurrente.getCategoriaGastoId(), 
+    			gastoRecurrente.getPlantillaId(), 
     			gastoRecurrente.getDescripcion(),
         		gastoRecurrente.getPeriodicidad().getDiaVencimiento(),
         		gastoRecurrente.getPeriodicidad().getMesVencimiento(),

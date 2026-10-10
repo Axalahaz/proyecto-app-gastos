@@ -21,10 +21,6 @@ public class RegistrarGastoDesdeRecurrenteRequest {
 	@Positive(message = "El id de gasto recurrente debe ser positivo")
     private Long gastoRecurrenteId; 
 	
-	@NotNull(message = "La categoria de gasto es obligatoria")
-	@Positive(message = "La categoria de gasto debe ser positiva")
-    private Long categoriaGastoId;
-
 	@NotNull(message = "La fecha de Vencimiento a impactar es obligatoria")
 	private LocalDateTime fechaVencimiento; 
 }

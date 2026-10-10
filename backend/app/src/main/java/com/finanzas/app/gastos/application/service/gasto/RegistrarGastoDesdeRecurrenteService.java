@@ -46,16 +46,15 @@ public class RegistrarGastoDesdeRecurrenteService {
     public GastoResponse ejecutar(
     		BigDecimal monto, 
     		Long gastoRecurrenteId,
-    		Long categoriaGastoId,
     		LocalDateTime fechaVencimiento
     		) {
 
-    	CategoriaGasto categoria =
-    			categoriaRepository.buscarPorId(categoriaGastoId)
-    			.orElseThrow(() ->
-    			NotFoundException.of("Categoria Gasto", categoriaGastoId));
+    	GastoRecurrente gastoRecurrente = gastoRecurrenteQueryService.obtenerPorId(gastoRecurrenteId);
 
-        GastoRecurrente gastoRecurrente = gastoRecurrenteQueryService.obtenerPorId(gastoRecurrenteId);
+    	CategoriaGasto categoria =
+    			categoriaRepository.buscarPorId(gastoRecurrente.getCategoriaGastoId())
+    			.orElseThrow(() ->
+    			NotFoundException.of("Categoria Gasto", gastoRecurrente.getCategoriaGastoId()));
 
     	gastoRecurrente.validarRecurrenciaEstaActiva();
     	

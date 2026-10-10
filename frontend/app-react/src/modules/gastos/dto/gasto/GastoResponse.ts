@@ -1,12 +1,13 @@
-import type { estadoMovimiento } from "@/modules/gastos/types/typeGastos";
+import type { estadoMovimiento } from "@/shared/types/typesApp";
 
 export interface GastoResponse {
     id: number;
     categoriaGastoId: number;
-    gastoRecurrenteId: number;
+    plantillaId: number | null;
+    gastoRecurrenteId: number | null;
     monto: number;
     descripcion: string | null;
-    estadoMovimiento: estadoMovimiento;
+    estado: estadoMovimiento;
     fechaCreacion: string;
     fechaVencimiento: string | null;
     fechaCambioEstado: string | null;

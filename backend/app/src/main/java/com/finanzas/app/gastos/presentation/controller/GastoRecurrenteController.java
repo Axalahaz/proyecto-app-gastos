@@ -48,6 +48,7 @@ public class GastoRecurrenteController {
 			@Valid @RequestBody RegistrarGastoRecurrenteRequest request) {
 		
 		GastoRecurrenteResponse response = registrarGastoRecurrenteService.ejecutar(
+				request.getCategoriaGastoId(),
 				request.getPlantillaGastoRecurrenteId(),
 				request.getDescripcion(),
 				request.getDiaVencimiento(),

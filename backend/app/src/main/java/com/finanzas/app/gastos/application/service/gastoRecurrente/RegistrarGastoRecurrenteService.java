@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.application.mapper.GastoRecurrenteApplicationMapper;
 import com.finanzas.app.gastos.domain.entity.GastoRecurrente;
+import com.finanzas.app.gastos.domain.entity.PlantillaGasto;
 import com.finanzas.app.gastos.domain.factory.GastoRecurrenteFactory;
+import com.finanzas.app.gastos.domain.repository.categoriaGasto.CategoriaGastoRepository;
 import com.finanzas.app.gastos.domain.repository.gastoRecurrente.GastoRecurrenteRepository;
 import com.finanzas.app.gastos.domain.repository.plantillaGasto.PlantillaGastoRepository;
 import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
@@ -30,8 +32,10 @@ public class RegistrarGastoRecurrenteService {
     private final GastoRecurrenteRepository gastoRecurrenteRepository;
     private final GastoRecurrenteApplicationMapper gastoRecurrenteApplicationMapper;
 
+    private final CategoriaGastoRepository categoriaRepository;
 
     public GastoRecurrenteResponse ejecutar(
+    		Long categoriaGastoId,
     		Long plantillaId,
     		String descripcion, 
     		Integer diaVencimiento,
@@ -39,10 +43,21 @@ public class RegistrarGastoRecurrenteService {
     		Frecuencia frecuencia
     ) {
 
+    	// control de consistencia
+    	Long idCategoria = null;
+
+    	if (categoriaGastoId != null && categoriaRepository.existePorId(categoriaGastoId)) {
+    		idCategoria = categoriaGastoId;
+    	}
+
     	Long idPlantilla = null;
     	
     	if (plantillaId != null && plantillaRepository.existePorId(plantillaId)) {
-    	    idPlantilla = plantillaId;
+    		PlantillaGasto plantilla = plantillaRepository.buscarPorId(plantillaId).orElse(null);
+    		if(plantilla != null) {
+    			idPlantilla = plantilla.getId();
+    			idCategoria = plantilla.getCategoriaGastoId();
+    		}
     	}
 
         // ya existe?        
@@ -51,6 +66,7 @@ public class RegistrarGastoRecurrenteService {
         }
         
         GastoRecurrente gastoRecurrente = factory.of(
+        		idCategoria,
         		idPlantilla,
         		descripcion,
      		    frecuencia,

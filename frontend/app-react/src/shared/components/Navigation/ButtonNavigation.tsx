@@ -14,25 +14,22 @@ type Item = {
 interface ButtonFooterProps extends ThemeProps {
     item: Item;
     sizeClass?: string;
-    setActive: (i:string) => void;
 }
 
 export const ButtonSidebar = ({
     item,
     sizeClass,
-    setActive,
     theme,
 }: ButtonFooterProps) => {
     // Obtiene el nombre del modulo a redirigir
-    const active = useLocation().pathname === item.module;
+    const location = useLocation();
+    const active = location.pathname === item.module;
     
     // ---------------
     // Estado que indica accion de presion de boton
     const [pressed, setPressed] = useState(false);
     const isActive = active || pressed;
-    if(isActive) {
-        setActive(item.label)
-    }
+
     // !! tengo que agregarle efecto de seleccion
     return (
         <NavLink

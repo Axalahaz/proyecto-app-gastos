@@ -7,7 +7,7 @@ import type { EditarGastoRecurrenteSinPeriodicidadRequest } from "@/modules/gast
 
 import type { GastoRecurrente } from "@/modules/gastos/dto/gastoRecurrente/GastoRecurrente";
 import type { GastoRecurrenteResponse } from "@/modules/gastos/dto/gastoRecurrente/GastoRecurrenteResponse";
-import { mapGastoRecurrente } from "@/modules/gastos/mappers/mapGastoRecurrente";
+import { mapGastoRecurrente } from "@/modules/gastos/api/mappers/mapGastoRecurrente";
 
 export const gastoRecurrenteApiQueryWrite = {
 

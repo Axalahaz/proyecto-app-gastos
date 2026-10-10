@@ -57,6 +57,7 @@ public class VolverRecurrenteService {
         Fecha fechaCreacion = new Fecha(LocalDateTime.now());
 
         GastoRecurrente gastoRecurrente = factory.of(
+        		gasto.getCategoriaGastoId(),
         		null,
         		gasto.getDescripcion(), 
      		    frecuencia,

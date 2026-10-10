@@ -1,5 +1,4 @@
 import { DateCalendar } from "@mui/x-date-pickers";
-import { useFilter } from "@/hooks/useFilter";
 import { RangeDay } from "./RangeDay";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
@@ -7,6 +6,10 @@ import type { ThemeProps } from "@/shared/theme/themes";
 import { defaultTheme } from "@/shared/theme";
 
 interface Props extends ThemeProps {
+    from: Dayjs;
+    to: Dayjs;
+    setFrom: (date: Dayjs) => void;
+    setTo: (date: Dayjs) => void;
     common: {};
     className: string;
     sx: {};
@@ -14,19 +17,16 @@ interface Props extends ThemeProps {
 }
 
 export const RangeCalendario = ({
+    from,
+    to,
+    setFrom,
+    setTo,
     common,
     className,
     sx,
     buttonDays,
     theme,
 }: Props) => {
-
-    const {
-        from,
-        to,
-        setFrom,
-        setTo,
-    } = useFilter();
 
     const [step, setStep] = useState<"START" | "END">("START");
     const [hoveredDay, setHoveredDay] = useState<Dayjs | null>(null);

@@ -1,10 +1,10 @@
 import { api } from "@/api/axios";
 import { ENDPOINTS } from "@/api/endpoints";
-import type { tipoObjeto } from "@/modules/gastos/types/typeGastos";
+import type { tipoObjetoFilter } from "@/shared/types/typesApp";
 
 import type { PlantillaGasto } from "@/modules/gastos/dto/plantillaGasto/PlantillaGasto";
 import type { PlantillaGastoResponse } from "@/modules/gastos/dto/plantillaGasto/PlantillaGastoResponse";
-import { mapPlantillaGasto } from "@/modules/gastos/mappers/mapPlantillaGasto";
+import { mapPlantillaGasto } from "@/modules/gastos/api/mappers/mapPlantillaGasto";
 
 export const plantillaGastoApiQueryRead = {
 
@@ -16,21 +16,13 @@ export const plantillaGastoApiQueryRead = {
         return mapPlantillaGasto(response.data);
     },
 
-    async listarTodos(): Promise<PlantillaGasto[]> {
-        const response = await api.get<PlantillaGastoResponse[]>(
-            ENDPOINTS.plantillaGasto
-        );
-
-        return response.data.map(mapPlantillaGasto);
-    },
-
-    async listarPorEstado(
-        tipoObjeto: tipoObjeto
+    async listar(
+        tipoObjetoFilter: tipoObjetoFilter
     ): Promise<PlantillaGasto[]> {
         const response = await api.get<PlantillaGastoResponse[]>(
             ENDPOINTS.plantillaGasto,
             {
-                params: { filtro: tipoObjeto },
+                params: { filtro: tipoObjetoFilter },
             }
         );
 

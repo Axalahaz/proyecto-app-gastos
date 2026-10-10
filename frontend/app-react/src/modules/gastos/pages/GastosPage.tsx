@@ -1,26 +1,23 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useOutletContext } from "react-router-dom";
 
 import { useFilter } from "@/hooks/useFilter";
 import { useFiltrarGastos } from "@/hooks/useFiltrarGastos"
 import { useAcumuladoGastos } from "@/hooks/useAcumuladoGastos"
 
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import EditIcon from '@mui/icons-material/Edit';
-import BlurOnOutlinedIcon from '@mui/icons-material/BlurOnOutlined';
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
-import ToggleOnOutlinedIcon from '@mui/icons-material/ToggleOnOutlined';
-import ToggleOffOutlinedIcon from '@mui/icons-material/ToggleOffOutlined';
 
-import { MoneyCard } from "@/shared/components/MoneyCard";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+
+import { MoneyCard } from "@/modules/gastos/components/MoneyCard";
 import { TablaMoney } from "@/shared/components/TablaMoney";
-import { SIDEBAR } from "@/shared/types/typeSidebar";
-
-import { GastosRecurrenteCard } from "@/modules/gastos/components/GastosRecurrenteCard";
-import { CategoriasCard } from "@/modules/gastos/components/CategoriasCard";
 
 import type { Theme } from "@/shared/theme/themes";
-import { defaultTheme } from "@/shared/theme";
 
 import type {CategoriaGasto} from "@/modules/gastos/dto/categoria/CategoriaGasto";
 
@@ -30,12 +27,16 @@ import { useEstadoGastosRecurrentes } from "@/modules/gastos/hooks/useEstadoGast
 
 import type { GastoRecurrenteVencimiento } from "@/modules/gastos/dto/gastoRecurrente/GastoRecurrenteVencimiento";
 import type { GastoRecurrenteViewModel } from "@/modules/gastos/dto/gastoRecurrente/GastoRecurrenteViewModel";
+import { RadioButtonsGroup } from "../components/FiltroEstadoMovimiento";
+import { ESTADO_MOVIMIENTO, type estadoMovimiento } from "@/shared/types/typesApp";
+import { ModuleCategoria } from "../components/ModuleCategoriaGasto/ModuleCategoria";
+import { ModuleGastoRecurrente } from "../components/ModuleGastoRecurrente/ModuleGastoRecurrente";
 
-
+import { ModalCalculadora } from "../components/ModuleCalculadora/ModalCalculadora";
+import { FloatingAddGastos } from "../components/FloatingAddGastos";
+import { CheckboxBoton } from "@/shared/components/CheckboxBoton";
 
 export const GastosPage = () => {
-    console.log("---gastosPage---") //!!
-    
     // ---------------
     // THEME
     // * Trae el theme desde el contexto guardo para el outlet desde layout 
@@ -43,269 +44,320 @@ export const GastosPage = () => {
 
     // ---------------
     // API CONTEXT
-    const {
-        gastos, 
-        cargarGastos,
-        categoriasGastos,
-        cargarCategoriasGastos,
-        gastosRecurrentes,
-        cargarGastosRecurrentes,
-        abrirCalculadora,
-        sidebarMode,
-        cerrarCalculadora
-    } = useGastos();
+    const gastos = useGastos();
 
     useEffect(() => {
-        cargarGastos();
-        cargarCategoriasGastos();
-        cargarGastosRecurrentes();
+        gastos.cargarGastos();
+        gastos.cargarCategoriasGastos();
+        gastos.cargarGastosRecurrentes();
+        gastos.cargarPlantillasGastos();
     }, []);
 
-    console.log("---lista gastos: ", gastos); // !!!!!!
+    // ---------------
+    // GASTO ACUMULADO
 
     // * Filtrado por tiempo
     const { active, selectedDate} = useFilter();
-    const gastosFiltrados = useFiltrarGastos(gastos, active, selectedDate);
+    const gastosFiltrados = useFiltrarGastos(gastos.gastos, active, selectedDate);
     const gastosAcumulado = useAcumuladoGastos(gastosFiltrados);
-    
+
     // ---------------
     // GASTOS RECURRENTES
     // * Identitifica que hay scroll horizontal en gastos recurrentes
 
     const gastosRecurrentesActivos = useMemo(
-        () => gastosRecurrentes.filter(gr => gr.activo),
-        [gastosRecurrentes]
+        () => gastos.gastosRecurrentes.filter(gr => gr.activo),
+        [gastos.gastosRecurrentes]
     );
 
     const gastosRecurrentesActivosOrdenados: GastoRecurrenteVencimiento[] = useGastosRecurrentesOrdenados(gastosRecurrentesActivos);
     const gastosRecurrentesConEstado: GastoRecurrenteViewModel[] = useEstadoGastosRecurrentes(gastosRecurrentesActivosOrdenados);
 
-    const [paginaActual, setPaginaActual] = useState(0);
-    const totalPaginas = Math.ceil(gastosRecurrentesConEstado.length / 3);
-
-    // * actualizacion de scroll
-    const carruselRef = useRef<HTMLDivElement>(null);
-    const handleScroll = () => {
-        const container = carruselRef.current;
-        if (!container) return;
-
-        const maxScroll =
-            container.scrollWidth - container.clientWidth;
-
-        const progreso =
-            container.scrollLeft / maxScroll;
-
-        const pagina = Math.round(
-            progreso * (totalPaginas - 1)
-        );
-
-        setPaginaActual(pagina);
-    };
-
     // ---------------
-    // Section Tabla
-    // * Acciones para el filtrado de la tabla de gastos por categoria
-    const [selectCategoria, setSelectCategoria] = useState<CategoriaGasto>();
-    
-    const gastosAMostrar = sidebarMode === SIDEBAR.FILTER
-        ? selectCategoria && gastosFiltrados.filter(
-            gasto => gasto.categoriaGastoId === selectCategoria.id
-        )
-        : gastosFiltrados;
+    // CATEGORIAS
 
-    // ---------------
-    // Permite navegar hacia una ruta determinada
-    const navigate = useNavigate();
-    const sumarGasto = (categoria: CategoriaGasto) => {
-        navigate("/calculadora/gastos", {
-            state: {
-                categoria,
-            },
-        });
-    };
+    // * Filtrar lista
+    const [activeGastosPorCategoria, setActiveGastosPorCategoria] = useState(false); 
 
     const handleCategoriaClick = (categoria: CategoriaGasto) => {
-        setSelectCategoria(categoria);
-        sidebarMode === SIDEBAR.CALCULADORA && sumarGasto(categoria);
+        gastos.seleccionarCategoriaGasto(categoria);
+
+        if (seleccionandoCategoria) {
+            setSeleccionandoCategoria(false);
+            gastos.abrirCalculadora();
+            return;
+        }
+
+        setActiveGastosPorCategoria(true);
     };
 
-    const handleSidebardClick = () => {
-        sidebarMode === SIDEBAR.FILTER
-            ? abrirCalculadora()
-            : cerrarCalculadora()
-    }
-    
-    console.log("------fitlrado sidebar:",sidebarMode)
+    // ---------------
+    // ULTIMOS GASTOS
 
+    // * Filtrar por estado
+    const [checkFilterEstadoMovimiento, setCheckFilterEstadoMovimiento] = useState(false);
+    
+    // * Filtrar por Estado
+    const [filtroEstado, setFiltroEstado] = useState<estadoMovimiento | "TODOS">( 
+        ESTADO_MOVIMIENTO.ACTIVO               
+    );
+    
+    // * Datos a mostrar
+    const gastosAMostrar = activeGastosPorCategoria
+        ?  gastosFiltrados.filter(
+            g => g.categoriaGastoId === gastos.categoriaGastoSeleccionada?.id)
+        : gastosFiltrados;
+    
+
+    // ---------------
+    // NUEVO GASTO
+    const [seleccionandoCategoria, setSeleccionandoCategoria] = useState(false);
+    const handleNuevoGastoClick = () => {
+        gastos.prepararNuevoGasto();
+        setSeleccionandoCategoria(true);
+    };
+
+    // * Efecto resaltado transparente negro
+    const categoriasRef = useRef<HTMLElement | null>(null);
+    useEffect(() => {
+        if (!seleccionandoCategoria) return;
+
+        categoriasRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                categoriasRef.current &&
+                !categoriasRef.current.contains(event.target as Node)
+            ) {
+                setSeleccionandoCategoria(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [seleccionandoCategoria]);
+
+    // ------------------------
     return (
-        <div className="h-full flex flex-col gap-5">
+        <div className="h-dvh pb-5 px-5 flex flex-col gap-5">
 {/* Contenedor de Acumulado */}
-            <section className="">
+            <section className="flex justify-center -me-5">
                 <MoneyCard 
                     amount={gastosAcumulado}
-                    typeMoney="(Pesos argentinos)"
+                    typeMoney="Pesos argentinos"
                     subtitle="ACUMULADOS"
                     theme={theme}
-                    subtitleClassName="px-4 rounded-[50px]"
                 />
             </section>
 {/* Contenedor Gastos Fijos */}
             <section className="flex flex-col gap-2">
-                <div className="flex justify-between">
+                <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <AutoAwesomeIcon sx={{fontSize: 15, color: theme.colors[700]}}/>
-                        <h1 className="text-sm">GASTOS FIJOS</h1>
-                    </div>
-                    <button className="flex items-center gap-1 ">
-                        <span className="text-xs">Editar</span>
-                        <EditIcon 
+                        <AutoAwesomeOutlinedIcon
                             sx={{
-                                fontSize: 16,
+                                fontSize: 20,
                                 color: theme.colors[700],
                             }}
                         />
-                    </button>
+                        <h1 className="text-sm">GASTOS FIJOS</h1>
+                    </div>
+                    <div className="flex gap-5">
+                        <button className="flex items-center gap-1">
+                            <EditIcon
+                                sx={{
+                                    fontSize: 16,
+                                    color: theme.colors[700],
+                                }}
+                            />
+                            <span className="text-xs">Editar</span>
+                        </button>
+                        <button className="flex items-center gap-1">
+                            <AddOutlinedIcon
+                                sx={{
+                                    fontSize: 16,
+                                    color: theme.colors[700],
+                                }}
+                            />
+                            <span className="text-xs">Agregar</span>
+                        </button>
+                    </div>
                 </div>
-
-                <div
-                    ref={carruselRef}
-                    onScroll={handleScroll} 
-                    className="flex
-                    overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth"
-                >
-                    {gastosRecurrentesConEstado.map((gastoRecurrenteItem) => (
-                        <div 
-                            key={`gastoRecurrente-${gastoRecurrenteItem.gastoRecurrente.id}`}
-                            className="px-1 w-1/3 shrink-0 snap-start first:ms-0 flex"
-                        >
-                            <GastosRecurrenteCard gastoRecurrente={gastoRecurrenteItem} />
-                        </div>
-                    ))}
-                </div>
-                
-                <div className="flex justify-center gap-2"  >
-                    {Array.from({ length: totalPaginas }).map((_, index) => (
-                        <div
-                            key={`indiceRecurrente-${index}`}
-                            className={`w-2 h-2 rounded-full`}
-                            style={{
-                                background: `${
-                                    index === paginaActual
-                                    ? theme.colors[700]
-                                    : defaultTheme.colors[300]
-                                }`
-                            }}
-                        />
-                    ))}
-                </div>
+                <ModuleGastoRecurrente
+                    gastosRecurrentesConEstado={gastosRecurrentesConEstado}
+                    theme={theme}
+                />
             </section>
 {/* Contenedor de Categorias */}
-            <section className="flex flex-col -mt-2 gap-2">
-                <div className="flex justify-between">
+            <section 
+                ref={categoriasRef}
+                className={`flex flex-col z-50 
+                    ${seleccionandoCategoria && 
+                        `-m-2 p-2 transition-all duration-300 rounded-[10px] `
+                    }
+                `}
+                style={{
+                    backgroundColor: seleccionandoCategoria
+                        ? `${theme.colors[100]}`
+                        : "transparent",
+                    boxShadow: seleccionandoCategoria
+                        ? `0 0 10px 2px ${theme.colors[300]}`
+                        : "none",
+                }}
+            >
+                <div className="flex items-center justify-between">
                     <div className="flex gap-2  items-center">
+                        <AutoStoriesOutlinedIcon sx={{fontSize: 20,  color: theme.colors[700],}}  />
+                        <h1 className="text-sm">
+                            {seleccionandoCategoria
+                                ? "SELECCIONÁ UNA CATEGORÍA"
+                                : "CATEGORÍAS"
+                            }
+                        </h1>
+                    </div>
+                    {!seleccionandoCategoria && (
+                        <div className="flex gap-5">
+                            <button className="flex items-center gap-1">
+                                <EditIcon
+                                    sx={{
+                                        fontSize: 16,
+                                        color: theme.colors[700],
+                                    }}
+                                />
+                                <span className="text-xs">Editar</span>
+                            </button>
+                            <button className="flex items-center gap-1">
+                                <AddOutlinedIcon
+                                    sx={{
+                                        fontSize: 16,
+                                        color: theme.colors[700],
+                                    }}
+                                />
+                                <span className="text-xs">Agregar</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
+                <ModuleCategoria
+                    categoriasGastos = {gastos.categoriasGastos}
+                    onClick = {handleCategoriaClick}
+                    theme = {theme}
+                />
+                
+            </section>
+{/* Contenedor de Tabla de Items */}
+            <section className="flex flex-col gap-2 pb-10">
+                <div className="flex items-center justify-between">
+                    <div className="flex gap-2">
                         <PaymentsOutlinedIcon
                             sx={{
                                 fontSize: 20, 
                                 color: theme.colors[700],
                             }} 
                         />
-                        <h1 className="text-sm">
-                        {sidebarMode === SIDEBAR.CALCULADORA 
-                            && "AGREGAR POR CATEGORIA"
-                            || "SELECCIONAR CATEGORIA"
-                        }
-                        </h1>
+                        
+                        <h1 className="text-sm ">ULTIMOS GASTOS</h1>
                     </div>
-                    <button className="flex items-center gap-1 ">
-                        <span className="text-xs">Editar</span>
-                        <EditIcon 
-                            sx={{
-                                fontSize: 16,
-                                color: theme.colors[700],
+                    {activeGastosPorCategoria && 
+                        <h1 
+                            className="text-center text-sm text-bold"
+                            style={{
+                                color: `${theme.colors[500]}`,
                             }}
-                        />
-                    </button>
-                </div>
-
-                <div className="flex  overflow-x-auto no-scrollbar 
-                snap-x snap-mandatory scroll-smooth"
-                >
-                    {categoriasGastos.map((categoria) => (
-                        <button 
-                            key={`categoria-${categoria.id}`}
-                            className="shrink-0 px-2 first:ps-1"
-                            onClick={() => handleCategoriaClick(categoria)}
+                        > 
+                            {activeGastosPorCategoria
+                                && `• ${gastos.categoriaGastoSeleccionada?.nombre.toUpperCase()} •` 
+                            }
+                        </h1>
+                    }
+                    <div className="flex font-beiruti gap-3">
+                        <button
+                            onClick={() => {
+                                setActiveGastosPorCategoria(false);
+                                gastos.seleccionarCategoriaGasto(null);
+                            }}
+                            className="
+                                border rounded-[10px] px-2
+                                active:scale-80
+                                transition-all duration-200
+                                text-[var(--text-color)]
+                                border-[var(--border-color)]
+                                hover:bg-[var(--color-hover)]
+                                hover:text-[var(--text-hover)]
+                                hover:border-[var(--color-hover)]
+                            "
+                            style={{
+                                "--text-color": theme.colors[900],
+                                "--border-color": theme.colors[900],
+                                "--color-hover": theme.colors[700],
+                                "--text-hover": theme.colors[100],
+                            } as React.CSSProperties}
                         >
-                            <CategoriasCard categoria={categoria}/>
+                            VER TODOS
                         </button>
-                    ))}
-                </div>
-            </section>
-{/* Contenedor de Tabla de Items */}
-            <section className="flex flex-col justify-center min-h-0 gap-1">
-                <div className="flex items-center justify-between text-sm">
-                    <div className="flex-[2] flex items-center justify-end gap-1">
-                        <BlurOnOutlinedIcon
-                            sx={{
-                                fontSize: sidebarMode === SIDEBAR.CALCULADORA ? 20 : 15, 
-                                color: sidebarMode === SIDEBAR.CALCULADORA ? theme.colors[700] : theme.colors[300],
-                            }} 
-                        /> 
-                        <h1>Últimos gastos</h1>
-                    </div>
-                    <button 
-                        onClick={() => handleSidebardClick()}
-                        className= "flex-1 gap-1 active:scale-80"
-                    >
-                    {sidebarMode === SIDEBAR.FILTER
-                        && <ToggleOnOutlinedIcon
-                                sx={{
-                                    fontSize: 20,
-                                    color: theme.colors[700],
-                                }}
-                            />
-                        || <ToggleOffOutlinedIcon
-                                sx={{
-                                    fontSize: 20,
-                                    color: theme.colors[700],
-                                }}
-                            />
-                        }          
-                    </button>
-                    <div className="flex-[2] flex items-center justify-start gap-1">
-                        <h1>Por Categoria</h1>
-                        <BlurOnOutlinedIcon
-                            sx={{
-                                fontSize: sidebarMode === SIDEBAR.FILTER ? 20 : 15,  
-                                color: sidebarMode === SIDEBAR.FILTER ? theme.colors[700] : theme.colors[300],
-                            }} 
-                        /> 
+                        <CheckboxBoton  
+                            texto="Filtrar por Estado Movimiento"
+                            fontSize="1rem"
+                            fontFamily="var(--font-beiruti)"
+                            esActivo={checkFilterEstadoMovimiento}
+                            setEsActivo={setCheckFilterEstadoMovimiento}
+                            sizeCheckbox="small"
+                            icon={<FilterAltOffIcon />}
+                            checkedIcon={<FilterAltIcon />}
+                            theme={theme}
+                        />
                     </div>
                 </div>
-                <div>
-                    <h1 
-                        className="text-center text-xs text-bold"
-                        style={{
-                            color: `${theme.colors[500]}`,
-                        }}
-                    > 
-                        {sidebarMode === SIDEBAR.FILTER 
-                            ? (selectCategoria 
-                                ? `• ${selectCategoria?.nombre.toUpperCase()} •` 
-                                : "• Seleccionar categoria •") 
-                            : ""
-                        } 
-                    </h1>
-                </div>
+                {checkFilterEstadoMovimiento && 
+                    <div className="flex">
+                        <RadioButtonsGroup 
+                            filtroEstado={filtroEstado} 
+                            setFiltroEstado={setFiltroEstado} 
+                            theme={theme}
+                            />
+                    </div>
+                }
                 <TablaMoney
+                    onItemFila ={gastos.seleccionarGasto}
+                    filtroEstado={
+                        checkFilterEstadoMovimiento 
+                        ? filtroEstado
+                        : ESTADO_MOVIMIENTO.ACTIVO
+                    } 
                     items={gastosAMostrar}
-                    emptyMessage="No hay gastos en esta categoría"
+                    onEdit={gastos.abrirCalculadora}
                     theme={theme}
                     filaClassName="px-2 border-b-1 rounded-[5px]"
                     className="overflow-y-auto snap-x snap-mandatory scroll-smooth custom-scroll"
                 />
             </section>
 
+            {seleccionandoCategoria && (
+                <div
+                    className="fixed inset-0 z-40 pointer-events-none"
+                    style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.90)",
+                    }}
+                />
+            )}
+            <FloatingAddGastos 
+                active={seleccionandoCategoria}
+                onClick={handleNuevoGastoClick}
+                theme={theme} 
+            />
+
+            {gastos.activeCalculadora && 
+                <ModalCalculadora 
+                    open={gastos.activeCalculadora}
+                    onClose={gastos.cerrarCalculadora}
+                    theme= {theme}
+                />
+            }
         </div>
     );
 }
