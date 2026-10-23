@@ -1,0 +1,38 @@
+package com.finanzas.app.gastos.recurrentes.domain;
+
+import org.springframework.stereotype.Component;
+
+import com.finanzas.app.shared.domain.model.Frecuencia;
+import com.finanzas.app.shared.domain.vo.Fecha;
+
+/*
+ * Creacion de factory para varios casos de uso
+ * */
+@Component
+public class GastoRecurrenteFactory {
+
+    public GastoRecurrente of(
+    		Long categoriaGastoId,
+    		Long plantillaId,
+            String descripcion,
+            Frecuencia frecuencia,
+            Integer diaVencimiento,
+            Integer mesVencimiento,
+            Fecha fechaCreacion
+    ) {
+
+    	Periodicidad periodicidad =  new Periodicidad(
+    				frecuencia,
+    				diaVencimiento,
+    				mesVencimiento
+    				);
+
+        return GastoRecurrente.crear(
+        		categoriaGastoId,
+        		plantillaId,
+                descripcion,
+                periodicidad,
+                fechaCreacion
+        );
+    }
+}

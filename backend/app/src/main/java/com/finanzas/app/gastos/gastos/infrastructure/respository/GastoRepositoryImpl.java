@@ -1,0 +1,73 @@
+package com.finanzas.app.gastos.gastos.infrastructure.respository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Repository;
+
+import com.finanzas.app.gastos.gastos.domain.Gasto;
+import com.finanzas.app.gastos.gastos.domain.GastoRepository;
+import com.finanzas.app.gastos.gastos.infrastructure.GastoEntityJPA;
+import com.finanzas.app.gastos.gastos.infrastructure.GastoMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class GastoRepositoryImpl implements GastoRepository{
+	
+	private final GastoRepositoryJPA jpaRepository;
+	private final GastoMapper gastoMapper;
+	
+	@Override
+	public Gasto guardar(Gasto gasto) {
+		GastoEntityJPA gastoEntity = gastoMapper.mapToEntity(gasto);
+		GastoEntityJPA guardado = jpaRepository.save(gastoEntity);
+		return gastoMapper.mapToDomain(guardado);
+	}
+
+	@Override
+	public Optional<Gasto> buscarPorId(Long gastoId) {
+		return jpaRepository.findById(gastoId)
+				.map(gastoMapper::mapToDomain);
+	}
+
+
+
+	@Override
+	public List<Gasto> listarPorCategoria(Long categoriaGastoId) {
+		return jpaRepository.findByCategoriaGastoId(categoriaGastoId)
+				.stream()
+				.map(gastoMapper::mapToDomain)
+				.toList();
+	}
+
+	@Override
+	public List<Gasto> listarTodos() {
+		return jpaRepository.findAll()
+				.stream()
+				.map(gastoMapper::mapToDomain)
+				.toList();
+	}
+
+	@Override
+	public boolean existePagoActivoEnPeriodo(
+			Long gastoRecurrenteId,
+			LocalDateTime fechaInicio,
+			LocalDateTime fechaFin
+			) {
+		return jpaRepository.existePagoActivoEnPeriodo(
+				gastoRecurrenteId, fechaInicio, fechaFin);
+	}
+
+	@Override
+	public boolean existePorGastoRecurrenteId(Long gastoRecurrenteId) {
+		return jpaRepository.existsByGastoRecurrenteId(gastoRecurrenteId);
+	}
+
+	@Override
+	public void eliminar(Long gastoId) {
+		jpaRepository.deleteById(gastoId);		
+	}
+}

@@ -1,0 +1,31 @@
+package com.finanzas.app.gastos.recurrentes.application;
+
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Component;
+
+import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
+import com.finanzas.app.gastos.recurrentes.domain.GastoRecurrente;
+
+@Component
+public class GastoRecurrenteApplicationMapper {
+	
+    public GastoRecurrenteResponse mapToResponse(GastoRecurrente gastoRecurrente) {
+    	LocalDateTime fechaCambioActivo = gastoRecurrente.getFechaCambioActivo() != null
+                ? gastoRecurrente.getFechaCambioActivo().getValue()
+                : null;
+    	
+    	return GastoRecurrenteResponse.of(
+    			gastoRecurrente.getId(), 
+    			gastoRecurrente.getCategoriaGastoId(), 
+    			gastoRecurrente.getPlantillaId(), 
+    			gastoRecurrente.getDescripcion(),
+        		gastoRecurrente.getPeriodicidad().getDiaVencimiento(),
+        		gastoRecurrente.getPeriodicidad().getMesVencimiento(),
+        		gastoRecurrente.getPeriodicidad().getFrecuencia().toString(),
+        		gastoRecurrente.isActivo(),
+        		gastoRecurrente.getFechaCreacion().getValue(), 
+        		fechaCambioActivo
+        		);
+    }
+}
