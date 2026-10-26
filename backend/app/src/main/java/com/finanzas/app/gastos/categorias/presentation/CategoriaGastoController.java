@@ -15,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.finanzas.app.gastos.categorias.application.service.EditarCategoriaGastoCommandService;
-import com.finanzas.app.gastos.categorias.application.service.EliminarCategoriaGastoCommandService;
-import com.finanzas.app.gastos.categorias.application.service.ListarCategoriasGastosQueryService;
-import com.finanzas.app.gastos.categorias.application.service.ObtenerCategoriaGastoQueryService;
-import com.finanzas.app.gastos.categorias.application.service.RegistrarCategoriaGastoCommandService;
+import com.finanzas.app.gastos.categorias.application.service.read.ObtenerCategoriaGastoQueryService;
+import com.finanzas.app.gastos.categorias.application.service.write.EditarCategoriaGastoCommandService;
+import com.finanzas.app.gastos.categorias.application.service.write.EliminarCategoriaGastoCommandService;
+import com.finanzas.app.gastos.categorias.application.service.write.RegistrarCategoriaGastoCommandService;
+import com.finanzas.app.gastos.categorias.presentation.dto.CategoriaGastoResponse;
 import com.finanzas.app.gastos.categorias.presentation.dto.EditarCategoriaGastoRequest;
 import com.finanzas.app.gastos.categorias.presentation.dto.RegistrarCategoriaGastoRequest;
-import com.finanzas.app.shared.dto.context.CategoriaResponse;
 import com.finanzas.app.shared.presentation.filters.TipoObjetoFilter;
 
 import jakarta.validation.Valid;
@@ -38,17 +37,15 @@ public class CategoriaGastoController {
 	private final EditarCategoriaGastoCommandService editarCategoriaService;
 	private final EliminarCategoriaGastoCommandService eliminarCategoriaService;
 	private final ObtenerCategoriaGastoQueryService obtenerCategoriaService;
-	private final ListarCategoriasGastosQueryService listarCategoriasGastosService;
-
 	
 	// ----------------------------------------------------
 	// CREAR
 	
 	@PostMapping()
-	public ResponseEntity<CategoriaResponse> Crear(
+	public ResponseEntity<CategoriaGastoResponse> Crear(
 			@Valid @RequestBody RegistrarCategoriaGastoRequest request){
 		
-		CategoriaResponse response = registrarCategoriaService.ejecutar(
+		CategoriaGastoResponse response = registrarCategoriaService.ejecutar(
 				request.getNombre());
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(response);
@@ -58,11 +55,11 @@ public class CategoriaGastoController {
 	// EDITAR
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<CategoriaResponse> editar(
+	public ResponseEntity<CategoriaGastoResponse> editar(
 			@PathVariable("id") Long categoriaId,
 			@Valid @RequestBody EditarCategoriaGastoRequest request) {
 		
-		CategoriaResponse response = editarCategoriaService.ejecutar(
+		CategoriaGastoResponse response = editarCategoriaService.ejecutar(
 				categoriaId,
 				request.getNombre()
 				);
@@ -85,22 +82,10 @@ public class CategoriaGastoController {
 	// OBTENER
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoriaResponse> Obtener(
+	public ResponseEntity<CategoriaGastoResponse> Obtener(
 			@PathVariable("id") Long categoriaId){
 		
-		CategoriaResponse response = obtenerCategoriaService.ejecutar(categoriaId);
+		CategoriaGastoResponse response = obtenerCategoriaService.ejecutar(categoriaId);
 		return ResponseEntity.ok(response);
 	}
-
-	// ----------------------------------------------------
-	// LISTAR POR FILTRO
-	
-	@GetMapping("")
-	public ResponseEntity<List<CategoriaResponse>> listar(
-			@RequestParam(defaultValue = "TODOS") TipoObjetoFilter filtro){
-		
-		List<CategoriaResponse> response = listarCategoriasGastosService.ejecutar(filtro);
-		return ResponseEntity.ok(response);
-	}
-
 }

@@ -1,13 +1,15 @@
-package com.finanzas.app.gastos.categorias.application.service;
+package com.finanzas.app.gastos.categorias.application.service.write;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.categorias.application.CategoriaGastoApplicationMapper;
-import com.finanzas.app.gastos.categorias.application.CategoriaGastoFinder;
+import com.finanzas.app.gastos.categorias.application.CategoriaGastoApplicationQuery;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGasto;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGastoRepository;
-import com.finanzas.app.shared.dto.context.CategoriaResponse;
+import com.finanzas.app.gastos.categorias.presentation.dto.CategoriaGastoResponse;
+import com.finanzas.app.shared.application.security.UsuarioAutenticado;
+import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,17 +20,25 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class EditarCategoriaGastoCommandService {
 
-	private final CategoriaGastoFinder categoriaFinder;
+	private final CategoriaGastoApplicationQuery categoriaQuery;
 
     private final CategoriaGastoRepository categoriaRepository;
     private final CategoriaGastoApplicationMapper categoriaMapper;
+    
+    private final UsuarioAutenticado usuarioAutenticado;
 
-    public CategoriaResponse ejecutar(
+    public CategoriaGastoResponse ejecutar(
     		Long categoriaId,
     		String nombre
-    ) {
+    		) {
+    	
+    	Long usuarioId = usuarioAutenticado.obtenerId();
 
-    	CategoriaGasto categoria = categoriaFinder.obtenerPorId(categoriaId);
+    	CategoriaGasto categoria = categoriaQuery.obtenerPorId(categoriaId, usuarioId);
+    	
+    	if(categoria.esTipoSistema()) {
+    		throw new ConflictException("No se puede modificar una categoria del sistema");
+    	}
 
     	categoria.renombrar(nombre);
     	

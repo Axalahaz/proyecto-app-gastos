@@ -3,21 +3,26 @@ package com.finanzas.app.gastos.categorias.domain;
 import java.util.List;
 import java.util.Optional;
 
-import com.finanzas.app.shared.domain.model.TipoObjeto;
-
 public interface CategoriaGastoRepository {
 	
 	CategoriaGasto guardar(CategoriaGasto categoria);
-	
-	boolean existePorNombre(String nombre);
 
-	boolean existePorId(Long categoriaId);
+	// -------------------------------------------------------------
+	/*
+	 * Consultas:
+	 * - Consideran el usuario al que pertenece la categoría.
+	 * - Respetan el tipo de objeto: SISTEMA o USUARIO, según corresponda a la operación.
+	 */
+	// -------------------------------------------------------------
 
-	void eliminar(Long categoriaId);
+	// Verifica duplicados
+	boolean existePorNombre(String nombre, Long usuarioId);
 
-	Optional<CategoriaGasto> buscarPorId(Long categoriaId);
+	boolean existePorId(Long categoriaId, Long usuarioId);
+
+	Optional<CategoriaGasto> buscarPorId(Long categoriaId, Long usuarioId);
 	
-	List<CategoriaGasto> listarAll();
-	
-	List<CategoriaGasto> listarPorTipo(TipoObjeto tipo);
+	List<CategoriaGasto> listarTodos(Long usuarioId);
+
+	int eliminar(Long categoriaId, Long usuarioId);
 }

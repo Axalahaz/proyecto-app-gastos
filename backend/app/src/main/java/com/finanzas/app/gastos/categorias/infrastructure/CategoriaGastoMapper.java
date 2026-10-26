@@ -13,6 +13,7 @@ public class CategoriaGastoMapper {
     		) {
     	return CategoriaGastoEntityJPA.of(
     			categoriaGasto.getId(),
+    			categoriaGasto.getUsuarioId(),
     			categoriaGasto.getNombre(),
     			categoriaGasto.getTipo(),
     			categoriaGasto.getFechaCreacion().getValue()
@@ -22,6 +23,7 @@ public class CategoriaGastoMapper {
     public CategoriaGasto mapToDomain(CategoriaGastoEntityJPA entity) {
     	return CategoriaGasto.reconstruir(
     			entity.getId(),
+    			entity.getUsuarioId(),
     			entity.getNombre(),
     			entity.getTipo(),
     			new Fecha(entity.getFechaCreacion())

@@ -1,8 +1,8 @@
 package com.finanzas.app.gastos.categorias.domain;
 
-import com.finanzas.app.shared.domain.model.TipoObjeto;
+import com.finanzas.app.shared.domain.enums.TipoObjeto;
 import com.finanzas.app.shared.domain.vo.Fecha;
-import com.finanzas.app.shared.exception.extend.ValidationException;
+import com.finanzas.app.shared.exception.exceptionImpl.ValidationException;
 
 import lombok.Getter;
 
@@ -91,8 +91,8 @@ public class CategoriaGasto {
     // ----------------------------------
     // VALIDACIONES
     
-    public boolean esTipo(TipoObjeto tipo) {
-        return this.tipo == tipo;
+    public boolean esTipoSistema() {
+        return this.tipo == TipoObjeto.SISTEMA;
     }
     
     private void validarUsuario(Long usuarioId) {
