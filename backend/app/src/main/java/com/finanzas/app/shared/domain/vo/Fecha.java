@@ -2,7 +2,7 @@ package com.finanzas.app.shared.domain.vo;
 
 import java.time.LocalDateTime;
 
-import com.finanzas.app.shared.exception.extend.ValidationException;
+import com.finanzas.app.shared.exception.exceptionImpl.ValidationException;
 
 import lombok.Getter;
 

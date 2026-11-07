@@ -3,7 +3,7 @@ package com.finanzas.app.shared.domain.vo;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import com.finanzas.app.shared.exception.extend.ValidationException;
+import com.finanzas.app.shared.exception.exceptionImpl.ValidationException;
 
 import lombok.Getter;
 
