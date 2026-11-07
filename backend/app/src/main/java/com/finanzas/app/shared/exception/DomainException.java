@@ -2,7 +2,7 @@ package com.finanzas.app.shared.exception;
 
 import java.util.List;
 
-import com.finanzas.app.shared.error.ErrorType;
+import com.finanzas.app.shared.exception.model.ErrorType;
 
 import lombok.Getter;
 

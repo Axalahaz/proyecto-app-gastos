@@ -1,9 +1,9 @@
-package com.finanzas.app.shared.exception.extend;
+package com.finanzas.app.shared.exception.exceptionImpl;
 
 import java.util.List;
 
-import com.finanzas.app.shared.error.ErrorType;
 import com.finanzas.app.shared.exception.DomainException;
+import com.finanzas.app.shared.exception.model.ErrorType;
 
 public class TooManyRequestsException extends DomainException {
 

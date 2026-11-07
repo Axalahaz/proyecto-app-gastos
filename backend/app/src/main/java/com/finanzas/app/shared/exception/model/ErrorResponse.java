@@ -1,4 +1,4 @@
-package com.finanzas.app.shared.dto;
+package com.finanzas.app.shared.exception.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,9 +7,9 @@ import lombok.Getter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.finanzas.app.shared.error.ErrorType;
 
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 	
 	private int status;

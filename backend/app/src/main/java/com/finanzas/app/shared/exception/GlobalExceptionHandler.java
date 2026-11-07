@@ -12,9 +12,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.finanzas.app.shared.dto.ErrorResponse;
-import com.finanzas.app.shared.error.ErrorType;
-import com.finanzas.app.shared.exception.extend.TooManyRequestsException;
+import com.finanzas.app.shared.exception.exceptionImpl.TooManyRequestsException;
+import com.finanzas.app.shared.exception.model.ErrorResponse;
+import com.finanzas.app.shared.exception.model.ErrorType;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -164,14 +164,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception ex) {
 
-    	List<String> errores = ex.getMessage() != null
-    	        ? List.of(ex.getMessage())
-    	        : List.of();
+    	// Registrar el error completo en los logs del servidor.
+        // No devolver detalles internos al cliente.
     	
     	return buildResponse(
     			ErrorType.INTERNAL_SERVER_ERROR, 
     			"Error interno del servidor", 
-    			errores
+    			List.of("Se produjo un error inesperado")
 				);
     }
     

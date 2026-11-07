@@ -1,4 +1,4 @@
-package com.finanzas.app.shared.error;
+package com.finanzas.app.shared.exception.model;
 
 import org.springframework.http.HttpStatus;
 
