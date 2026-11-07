@@ -7,19 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.EditarGastoRecurrenteSinPeriodicidadRequest;
-import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.EditarPeriodicidadRequest;
-import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.GastoRecurrenteResponse;
-import com.finanzas.app.gastos.presentation.dto.gastoRecurrente.RegistrarGastoRecurrenteRequest;
-import com.finanzas.app.gastos.recurrentes.application.FiltroGastoRecurrente;
-import com.finanzas.app.gastos.recurrentes.application.service.ActivarGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.DesactivarGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.EditarGastoRecurrenteBasicoService;
-import com.finanzas.app.gastos.recurrentes.application.service.EditarGastoRecurrenteConPeriodicidadService;
-import com.finanzas.app.gastos.recurrentes.application.service.EliminarGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.ListarGastosRecurrentesService;
-import com.finanzas.app.gastos.recurrentes.application.service.ObtenerGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.RegistrarGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.application.service.read.ListarTodasConfGastosRecurrentesService;
+import com.finanzas.app.gastos.recurrentes.application.service.read.ObtenerConfGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.ActivarConfGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.DesactivarConfGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EditarConfGastoRecurrenteBasicoService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EditarConfGastoRecurrenteConPeriodicidadService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EliminarConfGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.RegistrarConfGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.presentation.dto.ConfGastoRecurrenteResponse;
+import com.finanzas.app.gastos.recurrentes.presentation.dto.EditarConfGastoRecurrenteSinPeriodicidadRequest;
+import com.finanzas.app.gastos.recurrentes.presentation.dto.RegistrarConfGastoRecurrenteRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,33 +26,32 @@ import lombok.RequiredArgsConstructor;
 @Validated
 @RestController
 @RequestMapping("/api/gasto-recurrente")
-public class GastoRecurrenteController {
+public class ConfGastoRecurrenteController {
 	
-	private final ActivarGastoRecurrenteService activarGastoRecurrenteService;
-	private final DesactivarGastoRecurrenteService desactivarGastoRecurrenteService;
-	private final EditarGastoRecurrenteBasicoService editarGastoRecurrenteBasicoService;
-	private final EditarGastoRecurrenteConPeriodicidadService editarGastoRecurrenteConPeriodicidadService;
-	private final EliminarGastoRecurrenteService eliminarGastoRecurrenteService;
-	private final ListarGastosRecurrentesService listarGastosRecurrentesService;
-	private final ObtenerGastoRecurrenteService obtenerGastoRecurrenteService;
-	private final RegistrarGastoRecurrenteService registrarGastoRecurrenteService;
-
+	private final ActivarConfGastoRecurrenteService activarConfGastoRecurrenteService;
+	private final DesactivarConfGastoRecurrenteService desactivarConfGastoRecurrenteService;
+	private final EditarConfGastoRecurrenteBasicoService editarConfGastoRecurrenteBasicoService;
+	private final EditarConfGastoRecurrenteConPeriodicidadService editarConfGastoRecurrenteConPeriodicidadService;
+	private final EliminarConfGastoRecurrenteService eliminarConfGastoRecurrenteService;
+	private final ObtenerConfGastoRecurrenteService obtenerConfGastoRecurrenteService;
+	private final ListarTodasConfGastosRecurrentesService listarTodasConfGastosRecurrentesService;
+	
+	private final RegistrarConfGastoRecurrenteService registrarConfGastoRecurrenteService;
 	
 	// ----------------------------------------------------
 	// REGISTRAR
 	
 	@PostMapping()
-	public ResponseEntity<GastoRecurrenteResponse> registrar(
-			@Valid @RequestBody RegistrarGastoRecurrenteRequest request) {
+	public ResponseEntity<ConfGastoRecurrenteResponse> registrar(
+			@Valid @RequestBody RegistrarConfGastoRecurrenteRequest request) {
 		
-		GastoRecurrenteResponse response = registrarGastoRecurrenteService.ejecutar(
-				request.getCategoriaGastoId(),
-				request.getPlantillaGastoRecurrenteId(),
-				request.getDescripcion(),
-				request.getDiaVencimiento(),
-				request.getMesVencimiento(),
-				request.getFrecuencia()
-				);
+		ConfGastoRecurrenteResponse response = registrarConfGastoRecurrenteService.ejecutar(
+				request.categoriaGastoId(),
+				request.descripcion(),
+				request.diaVencimiento(),
+				request.mesVencimiento(),
+				request.frecuencia()
+		);
 		
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(response);
@@ -64,28 +61,28 @@ public class GastoRecurrenteController {
 	// EDITAR
 	
 	@PatchMapping("/{id}/basico")
-	public ResponseEntity<GastoRecurrenteResponse> editarBasico(
+	public ResponseEntity<ConfGastoRecurrenteResponse> editarBasico(
 			@PathVariable("id") Long gastoRecurrenteId,
-			@Valid @RequestBody EditarGastoRecurrenteSinPeriodicidadRequest request) {
+			@Valid @RequestBody EditarConfGastoRecurrenteSinPeriodicidadRequest request) {
 		
-		GastoRecurrenteResponse response = editarGastoRecurrenteBasicoService.ejecutar(
+		ConfGastoRecurrenteResponse response = editarConfGastoRecurrenteBasicoService.ejecutar(
 				gastoRecurrenteId,
-				request.getDescripcion()
+				request.descripcion()
 				);
 		
 		return ResponseEntity.ok(response);
 	}
 	
 	@PatchMapping("/{id}/periodicidad")
-	public ResponseEntity<GastoRecurrenteResponse> editarConPeriodicidad(
+	public ResponseEntity<ConfGastoRecurrenteResponse> editarConPeriodicidad(
 			@PathVariable("id") Long gastoRecurrenteId,
-			@Valid @RequestBody EditarPeriodicidadRequest request) {
+			@Valid @RequestBody com.finanzas.app.gastos.recurrentes.presentation.dto.EditarPeriodicidadRequest request) {
 		
-		GastoRecurrenteResponse response = editarGastoRecurrenteConPeriodicidadService.ejecutar(
+		ConfGastoRecurrenteResponse response = editarConfGastoRecurrenteConPeriodicidadService.ejecutar(
 				gastoRecurrenteId,
-				request.getDiaVencimiento(),
-				request.getMesVencimiento(),
-				request.getFrecuencia()
+				request.diaVencimiento(),
+				request.mesVencimiento(),
+				request.frecuencia()
 				);
 		
 		return ResponseEntity.ok(response);
@@ -100,7 +97,7 @@ public class GastoRecurrenteController {
 	public ResponseEntity<Void> activar(
 			@PathVariable("id") Long gastoRecurrenteId) {
 		
-		activarGastoRecurrenteService.ejecutar(gastoRecurrenteId);
+		activarConfGastoRecurrenteService.ejecutar(gastoRecurrenteId);
 		
 		return ResponseEntity.noContent().build();
 	}
@@ -111,7 +108,7 @@ public class GastoRecurrenteController {
 	public ResponseEntity<Void> desactivar(
 			@PathVariable("id") Long gastoRecurrenteId) {
 		
-		desactivarGastoRecurrenteService.ejecutar(gastoRecurrenteId);
+		desactivarConfGastoRecurrenteService.ejecutar(gastoRecurrenteId);
 		
 		return ResponseEntity.noContent().build();
 	}
@@ -123,7 +120,7 @@ public class GastoRecurrenteController {
 	public ResponseEntity<Void> eliminar(
 			@PathVariable("id") Long gastoRecurrenteId) {
 		
-		eliminarGastoRecurrenteService.ejecutar(gastoRecurrenteId);
+		eliminarConfGastoRecurrenteService.ejecutar(gastoRecurrenteId);
 	
 		return ResponseEntity.noContent().build();
 	}
@@ -132,10 +129,10 @@ public class GastoRecurrenteController {
 	// OBTENER
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<GastoRecurrenteResponse> obtener(
+	public ResponseEntity<ConfGastoRecurrenteResponse> obtener(
 			@PathVariable("id") Long gastoRecurrenteId) {
 		
-		GastoRecurrenteResponse response = obtenerGastoRecurrenteService.ejecutar(gastoRecurrenteId);
+		ConfGastoRecurrenteResponse response = obtenerConfGastoRecurrenteService.ejecutar(gastoRecurrenteId);
 		
 		return ResponseEntity.ok(response);
 	}
@@ -144,10 +141,9 @@ public class GastoRecurrenteController {
 	// LISTAR
 	
 	@GetMapping()
-	public ResponseEntity<List<GastoRecurrenteResponse>> listarPorEstado(
-			@RequestParam(defaultValue = "TODOS") FiltroGastoRecurrente filtro) {
+	public ResponseEntity<List<ConfGastoRecurrenteResponse>> listarTodas() {
 		
-		List<GastoRecurrenteResponse> response = listarGastosRecurrentesService.ejecutar(filtro);
+		List<ConfGastoRecurrenteResponse> response = listarTodasConfGastosRecurrentesService.ejecutar();
 		
 		return ResponseEntity.ok(response);
 	}

@@ -1,18 +1,18 @@
 package com.finanzas.app.gastos.recurrentes.domain;
 
-import com.finanzas.app.shared.domain.model.Frecuencia;
-import com.finanzas.app.shared.exception.extend.ValidationException;
+import com.finanzas.app.shared.domain.enums.Frecuencia;
+import com.finanzas.app.shared.exception.exceptionImpl.ValidationException;
 
 import lombok.Getter;
 
 @Getter
-public class Periodicidad {
+public class PeriodicidadVO {
 
     private final Frecuencia frecuencia;
     private final Integer diaVencimiento;
     private final Integer mesVencimiento;
 
-    public Periodicidad(
+    public PeriodicidadVO(
             Frecuencia frecuencia,
             Integer diaVencimiento,
             Integer mesVencimiento

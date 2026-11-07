@@ -4,54 +4,57 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
-import com.finanzas.app.gastos.recurrentes.domain.GastoRecurrente;
-import com.finanzas.app.gastos.recurrentes.domain.Periodicidad;
+import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrente;
+import com.finanzas.app.gastos.recurrentes.domain.PeriodicidadVO;
+import com.finanzas.app.shared.domain.vo.CategoriaId;
+import com.finanzas.app.shared.domain.vo.Descripcion;
 import com.finanzas.app.shared.domain.vo.Fecha;
+import com.finanzas.app.shared.domain.vo.UsuarioId;
 
 @Component
-public class GastoRecurrenteMapper {
+public class ConfGastoRecurrenteMapper {
 
-    public GastoRecurrenteEntityJPA mapToEntity(GastoRecurrente gastoRecurrente) {
+    public ConfGastoRecurrenteEntityJPA mapToEntity(ConfGastoRecurrente gastoRecurrente) {
     	
-    	LocalDateTime fechaCambioActivo = gastoRecurrente.getFechaCambioActivo() != null
-    			? gastoRecurrente.getFechaCambioActivo().getValue()
+    	LocalDateTime fechaModificacion = gastoRecurrente.getFechaModificacion() != null
+    			? gastoRecurrente.getFechaModificacion().value()
     			: null;
     	
-        return GastoRecurrenteEntityJPA.of(
+        return ConfGastoRecurrenteEntityJPA.of(
         		gastoRecurrente.getId(),
-        		gastoRecurrente.getCategoriaGastoId(),
-        		gastoRecurrente.getPlantillaId(),
-        		gastoRecurrente.getDescripcion(), 
+        		gastoRecurrente.getUsuarioId().value(),
+        		gastoRecurrente.getDescripcion().value(), 
+        		gastoRecurrente.getCategoriaGastoId().value(),
+        		gastoRecurrente.getPeriodicidad().getFrecuencia(),
         		gastoRecurrente.getPeriodicidad().getDiaVencimiento(),
         		gastoRecurrente.getPeriodicidad().getMesVencimiento(),
-        		gastoRecurrente.getPeriodicidad().getFrecuencia(),
-        		gastoRecurrente.isActivo(),
-        		gastoRecurrente.getFechaCreacion().getValue(), 
-        		fechaCambioActivo
+        		gastoRecurrente.getEstado(),
+        		gastoRecurrente.getFechaCreacion().value(), 
+        		fechaModificacion
         );
 
     }
 
-    public GastoRecurrente mapToDomain(GastoRecurrenteEntityJPA entity) {
-    	Fecha fechaCambioActivo = entity.getFechaCambioActivo() != null
-    			? new Fecha(entity.getFechaCambioActivo())
+    public ConfGastoRecurrente mapToDomain(ConfGastoRecurrenteEntityJPA entity) {
+    	Fecha getFechaModificacion = entity.getFechaModificacion() != null
+    			? new Fecha(entity.getFechaModificacion())
     			: null;
     	
-    	Periodicidad periodicidad = new Periodicidad(
+    	PeriodicidadVO periodicidad = new PeriodicidadVO(
     			entity.getFrecuencia(),
     			entity.getDiaVencimiento(),
     			entity.getMesVencimiento()
     			);
     	
-    	return GastoRecurrente.reconstruir(
+    	return ConfGastoRecurrente.reconstruir(
     			entity.getId(),
-    			entity.getCategoriaGastoId(),
-    			entity.getPlantillaId(),
-    			entity.getDescripcion(),
+    			new UsuarioId(entity.getUsuarioId()),
+    			new Descripcion(entity.getDescripcion()),
+    			new CategoriaId(entity.getCategoriaGastoId()),
     			periodicidad,
-    			entity.isActivo(),
+    			entity.getEstado(),
     			new Fecha(entity.getFechaCreacion()),
-    			fechaCambioActivo
+    			getFechaModificacion
     			);
     }
     

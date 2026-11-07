@@ -5,56 +5,53 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.finanzas.app.gastos.recurrentes.domain.GastoRecurrente;
-import com.finanzas.app.gastos.recurrentes.domain.GastoRecurrenteRepository;
-import com.finanzas.app.gastos.recurrentes.infrastructure.GastoRecurrenteEntityJPA;
-import com.finanzas.app.gastos.recurrentes.infrastructure.GastoRecurrenteMapper;
+import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrente;
+import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
+import com.finanzas.app.gastos.recurrentes.infrastructure.ConfGastoRecurrenteEntityJPA;
+import com.finanzas.app.gastos.recurrentes.infrastructure.ConfGastoRecurrenteMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class GastoRecurrenteRepositoryImpl implements GastoRecurrenteRepository{
+public class ConfGastoRecurrenteRepositoryImpl implements ConfGastoRecurrenteRepository{
 	
-	private final GastoRecurrenteRepositoryJPA jpaRepository;
-	private final GastoRecurrenteMapper gastoRecurrenteMapper;
+	private final ConfGastoRecurrenteRepositoryJPA jpaRepository;
+	private final ConfGastoRecurrenteMapper confGastoRecurrenteMapper;
 	
 	@Override
-	public GastoRecurrente guardar(GastoRecurrente gastoRecurrente) {
-		GastoRecurrenteEntityJPA entity = gastoRecurrenteMapper.mapToEntity(gastoRecurrente);
-		GastoRecurrenteEntityJPA guardado = jpaRepository.save(entity);
-		return gastoRecurrenteMapper.mapToDomain(guardado);
+	public ConfGastoRecurrente guardar(ConfGastoRecurrente confGastoRecurrente) {
+		ConfGastoRecurrenteEntityJPA entity = confGastoRecurrenteMapper.mapToEntity(confGastoRecurrente);
+		ConfGastoRecurrenteEntityJPA guardado = jpaRepository.save(entity);
+		return confGastoRecurrenteMapper.mapToDomain(guardado);
 	}
 
 	@Override
-	public Optional<GastoRecurrente> buscar(Long gastoRecurrenteId) {
-		return jpaRepository.findById(gastoRecurrenteId)
-				.map(gastoRecurrenteMapper::mapToDomain);
+	public Optional<ConfGastoRecurrente> buscarPorId(Long confGastoRecurrenteId, Long usuarioId) {
+		return jpaRepository.buscarPorId(confGastoRecurrenteId, usuarioId)
+				.map(confGastoRecurrenteMapper::mapToDomain);
 	}
 
 	@Override
-	public List<GastoRecurrente> listarAll() {
-		return jpaRepository.findAll()
+	public List<ConfGastoRecurrente> listarTodos(Long usuarioId) {
+		return jpaRepository.findAllByUsuarioIdOrderByNombreAsc(usuarioId)
 				.stream()
-				.map(gastoRecurrenteMapper::mapToDomain)
+				.map(confGastoRecurrenteMapper::mapToDomain)
 				.toList();
 	}
-	
+
 	@Override
-	public List<GastoRecurrente> listarPorEstado(boolean estado) {
-		return jpaRepository.findByActivo(estado)
-				.stream()
-				.map(gastoRecurrenteMapper::mapToDomain)
-				.toList();
+	public boolean existePorDescripcion(String descripcion, Long usuarioId) {
+		return jpaRepository.existePorDescripcion(descripcion, usuarioId);
 	}
 	
 	@Override
-	public boolean existePorDescripcion(String descripcion) {
-		return jpaRepository.existsByDescripcion(descripcion);
+	public int eliminar(Long confGastoRecurrente, Long usuarioId) {
+		return jpaRepository.eliminar(confGastoRecurrente, usuarioId);		
 	}
-	
+
 	@Override
-	public void eliminar(Long gastoRecurrenteId) {
-		jpaRepository.deleteById(gastoRecurrenteId);		
+	public boolean existePorId(Long confGastoRecurrenteId, Long usuarioId) {
+		return jpaRepository.existePorId(confGastoRecurrenteId, usuarioId);
 	}
 }

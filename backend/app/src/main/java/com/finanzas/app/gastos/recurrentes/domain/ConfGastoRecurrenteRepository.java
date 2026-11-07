@@ -3,20 +3,21 @@ package com.finanzas.app.gastos.recurrentes.domain;
 import java.util.List;
 import java.util.Optional;
 
-// WRITE MODEL
-
-public interface GastoRecurrenteRepository {
+public interface ConfGastoRecurrenteRepository {
 	
-	Optional<GastoRecurrente> buscar(Long gastoRecurrenteId);
-	
-	GastoRecurrente guardar(GastoRecurrente gastoRecurrente);
+	ConfGastoRecurrente guardar(ConfGastoRecurrente gastoRecurrente);
+
+	// -------------------------------------------------------------
+	// Consideran el usuario al que pertenece la categoría.
+	// -------------------------------------------------------------
     
-    void eliminar(Long gastoRecurrenteId);
+	Optional<ConfGastoRecurrente> buscarPorId(Long confGastoRecurrenteId, Long usuarioId);
     
-    List<GastoRecurrente> listarAll();
+    List<ConfGastoRecurrente> listarTodos(Long usuarioId);
 
-    List<GastoRecurrente> listarPorEstado(boolean estado);
+    boolean existePorDescripcion(String descripcion, Long usuarioId);
+    
+    boolean existePorId(Long confGastoRecurrenteId, Long usuarioId);
 
-    boolean existePorDescripcion(String descripcion);
-
+    int eliminar(Long confGastoRecurrenteId, Long usuarioId);
 }
