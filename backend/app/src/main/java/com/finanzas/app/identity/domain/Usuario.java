@@ -39,7 +39,6 @@ public class Usuario {
     	
     	validarEmail(email);
     	validarPassword(passwordHash);
-    	validarFechaCreacion(fechaCreacion);
 
 		this.id = id;
 		this.nombreUsuario = nombreUsuario;
@@ -201,13 +200,6 @@ public class Usuario {
     private void validarPassword(String password) {
         if (password == null || password.isBlank()) {
             throw ValidationException.of("La contraseña es inválida");
-        }
-    }
-    
-    private void validarFechaCreacion(Fecha fecha) {
-        if (fecha == null) {
-            throw ValidationException.of(
-                "La fecha de creacion es obligatoria");
         }
     }
     

@@ -69,7 +69,7 @@ public class UserDetailsAdapter implements UserDetails {
      */
     public LocalDateTime getFechaCambioPassword() {
         return usuario.getFechaCambioPassword() != null
-                ? usuario.getFechaCambioPassword().getValue()
+                ? usuario.getFechaCambioPassword().value()
                         : null;
     }
     
@@ -88,13 +88,26 @@ public class UserDetailsAdapter implements UserDetails {
      */
     public LocalDateTime getFechaCambioEstado() {
         return usuario.getFechaCambioEstado() != null
-                ? usuario.getFechaCambioEstado().getValue()
+                ? usuario.getFechaCambioEstado().value()
                         : null;
     }
 
     /**
      * Obtiene el identificador utilizado por Spring Security
      * para reconocer al usuario durante el proceso de autenticación.
+     *
+     * En esta implementación se utiliza el ID
+     * como identificador de autenticacion.
+     *
+     * @return ID del usuario.
+     */
+    public Long getUserId() {
+    	return usuario.getId();
+    }
+    
+    /**
+     * Obtiene el identificador utilizado por Spring Security
+     * para reconocer al usuario durante el proceso de Login.
      *
      * En esta implementación se utiliza el correo electrónico
      * como identificador de acceso.

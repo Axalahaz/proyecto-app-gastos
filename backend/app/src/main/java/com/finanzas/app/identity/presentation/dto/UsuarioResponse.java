@@ -1,6 +1,6 @@
 package com.finanzas.app.identity.presentation.dto;
 
-import com.finanzas.app.shared.domain.vo.Fecha;
+import java.time.LocalDateTime;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ public class UsuarioResponse {
 	private String nombreUsuario;
     private String email;
     private Boolean activo;
-    private Fecha fechaCreacion;
-    private Fecha fechaModificacion;
-    private Fecha fechaCambioPassword;
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaModificacion;
+    private LocalDateTime fechaCambioPassword;
 }

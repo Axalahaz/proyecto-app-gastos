@@ -21,19 +21,19 @@ public class ObtenerUsuarioActualService {
 
     public UsuarioResponse ejecutar() {
 
-        Long userId = usuarioAutenticado.obtenerId();
+        Long usuarioId = usuarioAutenticado.obtenerId();
 
-        Usuario usuario = usuarioRepository.buscarPorId(userId)
-                .orElseThrow(() -> NotFoundException.of("Usuario", userId));
+        Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
+                .orElseThrow(() -> NotFoundException.of("Usuario", usuarioId));
 
         return UsuarioResponse.builder()
         		.id(usuario.getId())
         		.nombreUsuario(usuario.getNombreUsuario())
         		.email(usuario.getEmail())
         		.activo(usuario.isActivo())
-        		.fechaCreacion(usuario.getFechaCreacion())
-        		.fechaModificacion(usuario.getFechaModificacion())
-        		.fechaCambioPassword(usuario.getFechaCambioPassword())
+        		.fechaCreacion(usuario.getFechaCreacion().value())
+        		.fechaModificacion(usuario.getFechaModificacion().value())
+        		.fechaCambioPassword(usuario.getFechaCambioPassword().value())
         		.build();
     }
 }

@@ -10,7 +10,7 @@ import com.finanzas.app.shared.exception.exceptionImpl.NoAutenticadoException;
 
 /*
  * ADAPTADOR QUE PERMITE QUE LOS CU OBTENGAN EL ID DEL USUARIO AUTENTICADO 
- * SIN DEPENDER DE SPRINGSECURITY 
+ * SIN DEPENDER DE SPRING SECURITY 
  */
 
 @Component
@@ -22,8 +22,8 @@ public class SpringSecurityUsuarioAutenticado implements UsuarioAutenticado  {
     	// Recupera el usuario autenticado desde el contexto de seguridad
     	UserDetailsAdapter authPrincipal = obtenerAuthPrincipal();
     	
-    	// Se retorna el ID del usuario como username (String -> Long)
-    	return Long.valueOf(authPrincipal.getUsername()); 
+    	// Se retorna el ID del usuario
+    	return authPrincipal.getUserId(); 
     }
     
     // ------------------------------------------------------------------
@@ -32,12 +32,12 @@ public class SpringSecurityUsuarioAutenticado implements UsuarioAutenticado  {
     
     private UserDetailsAdapter obtenerAuthPrincipal() {
     
-    	/*
+    	/**
     	 * SecurityContextHolder: permite acceder al contexto de seguridad asociado a la ejecución actual.
     	 * getContext(): obtiene ese contexto.
     	 * getAuthentication(:) recupera la información de autenticación 
     	 * 	que Spring tiene registrada por 
-    	 * 	{@Link package com.finanzas.app.identity.infrastructure.security.jwt.JwtAuthenticationFilter}.
+    	 * 	{@link JwtAuthenticationFilter}.
     	 */
         Authentication auth = SecurityContextHolder
         		.getContext()

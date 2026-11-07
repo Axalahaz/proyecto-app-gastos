@@ -15,18 +15,18 @@ public class UsuarioMapper {
     	        usuario.getEmail(),
     	        usuario.getPasswordHash(),
     	        usuario.isActivo(),
-    	        usuario.getFechaCreacion().getValue(),
+    	        usuario.getFechaCreacion().value(),
     	        
     	        usuario.getFechaModificacion() != null
-                        ? usuario.getFechaModificacion().getValue()
+                        ? usuario.getFechaModificacion().value()
                         : null,
                         
                 usuario.getFechaCambioEstado() != null
-                        ? usuario.getFechaCambioEstado().getValue()
+                        ? usuario.getFechaCambioEstado().value()
                         : null,
 
                 usuario.getFechaCambioPassword() != null
-                        ? usuario.getFechaCambioPassword().getValue()
+                        ? usuario.getFechaCambioPassword().value()
                         : null,
                         
     	        usuario.getResetPasswordVersion()
