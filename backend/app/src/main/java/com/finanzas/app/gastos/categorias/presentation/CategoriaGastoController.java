@@ -1,7 +1,5 @@
 package com.finanzas.app.gastos.categorias.presentation;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finanzas.app.gastos.categorias.application.service.read.ObtenerCategoriaGastoQueryService;
@@ -22,7 +19,6 @@ import com.finanzas.app.gastos.categorias.application.service.write.RegistrarCat
 import com.finanzas.app.gastos.categorias.presentation.dto.CategoriaGastoResponse;
 import com.finanzas.app.gastos.categorias.presentation.dto.EditarCategoriaGastoRequest;
 import com.finanzas.app.gastos.categorias.presentation.dto.RegistrarCategoriaGastoRequest;
-import com.finanzas.app.shared.presentation.filters.TipoObjetoFilter;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
