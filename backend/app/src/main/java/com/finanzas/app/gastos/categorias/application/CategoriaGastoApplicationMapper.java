@@ -9,11 +9,11 @@ import com.finanzas.app.gastos.categorias.presentation.dto.CategoriaGastoRespons
 public class CategoriaGastoApplicationMapper {
 
     public CategoriaGastoResponse mapToResponse(CategoriaGasto categoriaGasto) {
-    	return CategoriaGastoResponse.of(
+    	return new CategoriaGastoResponse(
     			categoriaGasto.getId(),
     			categoriaGasto.getNombre(),
     			categoriaGasto.getTipo(),
-    			categoriaGasto.getFechaCreacion().getValue()
+    			categoriaGasto.getFechaCreacion().value()
     			);
     }
 }

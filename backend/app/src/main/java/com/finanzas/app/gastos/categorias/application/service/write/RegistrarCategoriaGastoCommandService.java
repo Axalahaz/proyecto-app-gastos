@@ -12,6 +12,7 @@ import com.finanzas.app.gastos.categorias.presentation.dto.CategoriaGastoRespons
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 import com.finanzas.app.shared.domain.enums.TipoObjeto;
 import com.finanzas.app.shared.domain.vo.Fecha;
+import com.finanzas.app.shared.domain.vo.UsuarioId;
 import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class RegistrarCategoriaGastoCommandService {
         }
         
     	CategoriaGasto categoria = CategoriaGasto.crear(
-    			usuarioId,
+    			new UsuarioId(usuarioId),
     			nombre,
     			TipoObjeto.USUARIO,
     		   	new Fecha(LocalDateTime.now())

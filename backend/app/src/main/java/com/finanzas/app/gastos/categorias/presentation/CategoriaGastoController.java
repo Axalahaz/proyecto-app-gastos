@@ -42,7 +42,7 @@ public class CategoriaGastoController {
 			@Valid @RequestBody RegistrarCategoriaGastoRequest request){
 		
 		CategoriaGastoResponse response = registrarCategoriaService.ejecutar(
-				request.getNombre());
+				request.nombre());
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(response);
 	}
@@ -57,7 +57,7 @@ public class CategoriaGastoController {
 		
 		CategoriaGastoResponse response = editarCategoriaService.ejecutar(
 				categoriaId,
-				request.getNombre()
+				request.nombre()
 				);
 		
 		return ResponseEntity.ok(response);

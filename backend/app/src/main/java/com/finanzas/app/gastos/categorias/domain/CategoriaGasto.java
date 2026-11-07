@@ -2,6 +2,7 @@ package com.finanzas.app.gastos.categorias.domain;
 
 import com.finanzas.app.shared.domain.enums.TipoObjeto;
 import com.finanzas.app.shared.domain.vo.Fecha;
+import com.finanzas.app.shared.domain.vo.UsuarioId;
 import com.finanzas.app.shared.exception.exceptionImpl.ValidationException;
 
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Getter;
 public class CategoriaGasto {
 
     private Long id;
-    private Long usuarioId;
+    private UsuarioId usuarioId;
     private String nombre;
     private TipoObjeto tipo;
     private Fecha fechaCreacion;
@@ -20,15 +21,13 @@ public class CategoriaGasto {
 
     private CategoriaGasto(
     		Long id,
-    		Long usuarioId,
+    		UsuarioId usuarioId,
     		String nombre,
     		TipoObjeto tipo,
     		Fecha fechaCreacion
     		) {
         
-    	validarUsuario(usuarioId);
         validarNombre(nombre);
-        validarFechaCreacion(fechaCreacion);
 
         this.id = id;
         this.usuarioId = usuarioId;
@@ -41,7 +40,7 @@ public class CategoriaGasto {
     // CREAR
     
     public static CategoriaGasto crear(
-    		Long usuarioId,
+    		UsuarioId usuarioId,
     		String nombre,
     		TipoObjeto tipo,
     		Fecha fechaCreacion
@@ -60,7 +59,7 @@ public class CategoriaGasto {
     
     public static CategoriaGasto reconstruir(
     		Long id,
-    		Long usuarioId,
+    		UsuarioId usuarioId,
     		String nombre,
     		TipoObjeto tipo,
     		Fecha fechaCreacion
@@ -94,13 +93,6 @@ public class CategoriaGasto {
     public boolean esTipoSistema() {
         return this.tipo == TipoObjeto.SISTEMA;
     }
-    
-    private void validarUsuario(Long usuarioId) {
-        if (usuarioId == null) {
-            throw ValidationException.of(
-                "El usuario es obligatorio");
-        }
-    }
 
     private void validarNombre(String nombre) {
         if (nombre == null || nombre.isBlank()) {
@@ -108,14 +100,9 @@ public class CategoriaGasto {
         }
 
         if (nombre.length() > 50) {
-            throw ValidationException.of("El nombre es demasiado largo");
+            throw ValidationException.of("El nombre es demasiado largo Max. 50 Caracteres");
         }
-    }
-    
-    private void validarFechaCreacion(Fecha fechaCreacion) {
-        if (fechaCreacion == null) {
-            throw ValidationException.of(
-                "La fecha de creacion es obligatoria");
-        }
+        
+        nombre = nombre.trim();
     }
 }

@@ -8,11 +8,8 @@ public interface CategoriaGastoRepository {
 	CategoriaGasto guardar(CategoriaGasto categoria);
 
 	// -------------------------------------------------------------
-	/*
-	 * Consultas:
-	 * - Consideran el usuario al que pertenece la categoría.
-	 * - Respetan el tipo de objeto: SISTEMA o USUARIO, según corresponda a la operación.
-	 */
+	// - Consideran el usuario al que pertenece la categoría.
+	// - Respetan el tipo de objeto: SISTEMA o USUARIO, según corresponda a la operación.
 	// -------------------------------------------------------------
 
 	// Verifica duplicados
