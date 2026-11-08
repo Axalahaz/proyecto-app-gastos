@@ -44,7 +44,7 @@ public class EliminarCategoriaGastoCommandService {
     	int filasEliminadas = categoriaRepository.eliminar(categoria.getId(), usuarioId);
     	
     	if(filasEliminadas == 0) {
-    		throw NotFoundException.of("No se pudo eliminar la categoria");
+    		throw NotFoundException.of("No se pudo encontro categoria para eliminar");
     	}
         
         log.info("Categoria Gasto {} eliminado correctamente", categoria.getId());
