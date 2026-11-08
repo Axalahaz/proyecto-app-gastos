@@ -10,17 +10,15 @@ import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.ConfGastoRecurrenteResponse;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 import com.finanzas.app.shared.domain.vo.Descripcion;
-import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 
 import lombok.RequiredArgsConstructor;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class EditarConfGastoRecurrenteBasicoService {
+public class EditarConfGastoRecurrenteBasicoCommandService {
 
 	private final ConfGastoRecurrenteApplicationQuery confGastoRecurrenteApplicationQuery;
-
     private final ConfGastoRecurrenteRepository gastoRecurrenteRepository;
     private final ConfGastoRecurrenteApplicationMapper mapperConf;
     
@@ -38,10 +36,8 @@ public class EditarConfGastoRecurrenteBasicoService {
     	ConfGastoRecurrente confGastoRecurrente = confGastoRecurrenteApplicationQuery
     			.obtenerPorId(gastoRecurrenteId, usuarioId);
 
-        // ya existe un gasto recurrente igual?
-        if (gastoRecurrenteRepository.existePorDescripcion(descripcion, usuarioId)) {
-        	throw new ConflictException("Gasto Recurrente.");
-        }
+        // Verifica la existencia de duplicados  
+    	confGastoRecurrenteApplicationQuery.existePorDescripcion(descripcion, usuarioId);
         
         // que parametro llego con valor para editar?
         

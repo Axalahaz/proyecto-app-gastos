@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class EditarConfGastoRecurrenteConPeriodicidadService {
+public class EditarConfGastoRecurrenteConPeriodicidadCommandService {
 
 	private final ConfGastoRecurrenteApplicationQuery confGastoRecurrenteApplicationQuery;
 	private final ConfGastoRecurrenteRepository confGastoRecurrenteRepository;
@@ -36,7 +36,7 @@ public class EditarConfGastoRecurrenteConPeriodicidadService {
         ConfGastoRecurrente confGastoRecurrente = confGastoRecurrenteApplicationQuery
         		.obtenerPorId(gastoRecurrenteId, usuarioId);
   
-        // que parametro llego con valor para editar?
+        // Se modifica segun los argumentos recibidos
         confGastoRecurrente.modificarPeriodicidad(
         		nuevaFrecuencia,
     			nuevoDiaVencimiento,

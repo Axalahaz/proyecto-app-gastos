@@ -18,26 +18,26 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class DesactivarConfGastoRecurrenteService {
+public class ActivarConfGastoRecurrenteCommandService {
 
 	private final ConfGastoRecurrenteApplicationQuery confGastoRecurrenteApplicationQuery;
     private final ConfGastoRecurrenteRepository confGastoRecurrenteRepository;
 
     private final UsuarioAutenticado usuarioAutenticado;
-
+    
     public void ejecutar(Long gastoRecurrenteId) {
-
+    	
     	Long usuarioId = usuarioAutenticado.obtenerId();
 
     	ConfGastoRecurrente confGastoRecurrente = confGastoRecurrenteApplicationQuery
         		.obtenerPorId(gastoRecurrenteId, usuarioId);
 
-        Fecha fechaCambioActivo = new Fecha(LocalDateTime.now());
+        Fecha fechaModificacion = new Fecha(LocalDateTime.now());
         
-        confGastoRecurrente.desactivar(fechaCambioActivo);
+        confGastoRecurrente.activar(fechaModificacion);
 
         confGastoRecurrenteRepository.guardar(confGastoRecurrente);
         
-        log.info("Configuracion Gasto Recurrente {} desactivado correctamente", confGastoRecurrente.getId());
+        log.info("Configuracion Gasto Recurrente {} activado correctamente", confGastoRecurrente.getId());
     }
 }

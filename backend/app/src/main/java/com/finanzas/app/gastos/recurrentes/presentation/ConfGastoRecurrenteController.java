@@ -7,14 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.finanzas.app.gastos.recurrentes.application.service.read.ListarTodasConfGastosRecurrentesService;
-import com.finanzas.app.gastos.recurrentes.application.service.read.ObtenerConfGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.write.ActivarConfGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.write.DesactivarConfGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.write.EditarConfGastoRecurrenteBasicoService;
-import com.finanzas.app.gastos.recurrentes.application.service.write.EditarConfGastoRecurrenteConPeriodicidadService;
-import com.finanzas.app.gastos.recurrentes.application.service.write.EliminarConfGastoRecurrenteService;
-import com.finanzas.app.gastos.recurrentes.application.service.write.RegistrarConfGastoRecurrenteService;
+import com.finanzas.app.gastos.recurrentes.application.service.read.ListarTodasConfGastosRecurrentesQueryService;
+import com.finanzas.app.gastos.recurrentes.application.service.read.ObtenerConfGastoRecurrenteQueryService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.ActivarConfGastoRecurrenteCommandService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.DesactivarConfGastoRecurrenteCommandService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EditarConfGastoRecurrenteBasicoCommandService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EditarConfGastoRecurrenteConPeriodicidadCommandService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EliminarConfGastoRecurrenteCommandService;
+import com.finanzas.app.gastos.recurrentes.application.service.write.RegistrarConfGastoRecurrenteCommandService;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.ConfGastoRecurrenteResponse;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.EditarConfGastoRecurrenteSinPeriodicidadRequest;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.RegistrarConfGastoRecurrenteRequest;
@@ -28,15 +28,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/gasto-recurrente")
 public class ConfGastoRecurrenteController {
 	
-	private final ActivarConfGastoRecurrenteService activarConfGastoRecurrenteService;
-	private final DesactivarConfGastoRecurrenteService desactivarConfGastoRecurrenteService;
-	private final EditarConfGastoRecurrenteBasicoService editarConfGastoRecurrenteBasicoService;
-	private final EditarConfGastoRecurrenteConPeriodicidadService editarConfGastoRecurrenteConPeriodicidadService;
-	private final EliminarConfGastoRecurrenteService eliminarConfGastoRecurrenteService;
-	private final ObtenerConfGastoRecurrenteService obtenerConfGastoRecurrenteService;
-	private final ListarTodasConfGastosRecurrentesService listarTodasConfGastosRecurrentesService;
+	private final ActivarConfGastoRecurrenteCommandService activarConfGastoRecurrenteService;
+	private final DesactivarConfGastoRecurrenteCommandService desactivarConfGastoRecurrenteService;
+	private final EditarConfGastoRecurrenteBasicoCommandService editarConfGastoRecurrenteBasicoService;
+	private final EditarConfGastoRecurrenteConPeriodicidadCommandService editarConfGastoRecurrenteConPeriodicidadService;
+	private final EliminarConfGastoRecurrenteCommandService eliminarConfGastoRecurrenteService;
+	private final ObtenerConfGastoRecurrenteQueryService obtenerConfGastoRecurrenteService;
+	private final ListarTodasConfGastosRecurrentesQueryService listarTodasConfGastosRecurrentesService;
 	
-	private final RegistrarConfGastoRecurrenteService registrarConfGastoRecurrenteService;
+	private final RegistrarConfGastoRecurrenteCommandService registrarConfGastoRecurrenteService;
 	
 	// ----------------------------------------------------
 	// REGISTRAR

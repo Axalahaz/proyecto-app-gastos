@@ -1,12 +1,11 @@
 package com.finanzas.app.gastos.recurrentes.application.service.write;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.finanzas.app.gastos.gastos.domain.GastoRepository;
+import com.finanzas.app.gastos.gastos.application.contract.GastoApplication;
 import com.finanzas.app.gastos.recurrentes.application.ConfGastoRecurrenteApplicationQuery;
 import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrente;
 import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
@@ -20,11 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class EliminarConfGastoRecurrenteService {
+public class EliminarConfGastoRecurrenteCommandService {
 	
 	private final ConfGastoRecurrenteApplicationQuery confGastoRecurrenteApplicationQuery;
     private final ConfGastoRecurrenteRepository confGastoRecurrenteRepository;
-    private final GastoRepository gastoRepository;
+    
+    private final GastoApplication gastoApplication;
     
     private final UsuarioAutenticado usuarioAutenticado;
 
@@ -39,8 +39,11 @@ public class EliminarConfGastoRecurrenteService {
         LocalDateTime tiempoLimite = LocalDateTime.now();
         confGastoRecurrente.validarEliminacion(tiempoLimite);
 
-        //
-        if (gastoRepository.existePorGastoRecurrenteId(confGastoRecurrente.getId())) {
+        // Validar que no se asociaron gastos
+        boolean existeGasto = gastoApplication
+        		.existePorConfGastoRecurrenteId(confGastoRecurrente.getId(), usuarioId);
+        
+        if (existeGasto) {
             throw new ConflictException(
             	"La configuracion ya posee gastos asociados y solo puede desactivarse."
             );
