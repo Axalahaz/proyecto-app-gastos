@@ -21,7 +21,9 @@ public class ObtenerCategoriaGastoQueryService {
     
     private final UsuarioAutenticado usuarioAutenticado;
 
-    public CategoriaGastoResponse ejecutar(Long categoriaGastoId) {
+    public CategoriaGastoResponse ejecutar(
+    		Long categoriaGastoId
+    		) {
     	
     	Long usuarioId = usuarioAutenticado.obtenerId();
     	

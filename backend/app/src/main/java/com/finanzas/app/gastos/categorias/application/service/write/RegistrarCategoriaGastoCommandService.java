@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RegistrarCategoriaGastoCommandService {
 
-    private final CategoriaGastoRepository categoriaRepository;
+	private final CategoriaGastoRepository categoriaRepository;
     private final CategoriaGastoApplicationMapper categoriaMapper;
 
     private final UsuarioAutenticado usuarioAutenticado;
@@ -36,7 +36,7 @@ public class RegistrarCategoriaGastoCommandService {
     	// control de duplicado
     	if (categoriaRepository.existePorNombre(nombre, usuarioId)) {
         	throw new ConflictException("Ya existe una Categoria con ese nombre");
-        }
+        }   
         
     	CategoriaGasto categoria = CategoriaGasto.crear(
     			new UsuarioId(usuarioId),

@@ -3,39 +3,60 @@ package com.finanzas.app.gastos.categorias.application;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finanzas.app.gastos.categorias.application.contract.CategoriaGastoApplication;
+import com.finanzas.app.gastos.categorias.application.contract.CategoriaGastoData;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGasto;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGastoRepository;
-import com.finanzas.app.shared.exception.exceptionImpl.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
-/*
- * Query que agrupa funciones de consulta recurridas por la mayoria de Services
+/**
+ * Implementa el contrato público del componente categorías,
+ * exponiendo las operaciones de aplicación disponibles para
+ * la comunicación con otros componentes.
  */
-
-@Transactional(readOnly  = true)
 @RequiredArgsConstructor
 @Component
-public class CategoriaGastoApplicationQuery {
+public class CategoriaGastoApplicationService implements CategoriaGastoApplication {
 
+	private final CategoriaGastoApplicationQuery categoriaQuery;
     private final CategoriaGastoRepository categoriaRepository;
+
+    // Verifica que la categoría pertenezca al usuario indicado.
+
+    @Override
+    @Transactional(readOnly  = true)
+	public CategoriaGastoData obtenerDatos(
+			Long categoriaGastoId, 
+			Long usuarioId
+			) {
+    	
+    	CategoriaGasto categoria = categoriaQuery.obtenerPorId(categoriaGastoId, usuarioId);
+		
+		CategoriaGastoData data = new CategoriaGastoData(
+				categoria.getId(),
+				categoria.getUsuarioId(),
+				categoria.getNombre()
+		);
+		
+		return data;
+	}
     
-    // -------------------------------------------------------------
- 	/*
- 	 * Consultas:
- 	 * - Consideran el usuario al que pertenece la categoría.
- 	 * - Respetan el tipo de objeto: SISTEMA o USUARIO, según corresponda a la operación.
- 	 */
- 	// -------------------------------------------------------------
-    
-    public CategoriaGasto obtenerPorId(Long categoriaGastoId, Long usuarioId) {
-        return categoriaRepository.buscarPorId(categoriaGastoId, usuarioId)
-                .orElseThrow(() -> NotFoundException.of("Categoría", categoriaGastoId));
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existePorNombre(
+	        String nombre,
+	        Long usuarioId
+    		) {
+        return categoriaRepository.existePorNombre(nombre, usuarioId);
     }
-    
-    public void existePorId(Long categoriaGastoId, Long usuarioId) {
-    	if (!categoriaRepository.existePorId(categoriaGastoId, usuarioId)) {
-            throw NotFoundException.of("Categoría", categoriaGastoId);
-        }    
+
+    @Override
+    @Transactional(readOnly = true)
+    public void existePorId(
+    		Long categoriaGastoId, 
+    		Long usuarioId
+    		) {
+    	categoriaQuery.existePorId(categoriaGastoId, usuarioId);
     }
 }
