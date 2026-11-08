@@ -47,8 +47,10 @@ public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrent
      		    diaVencimiento,
     		   	mesVencimiento
         );
-
-        return repository.guardar(confGastoRecurrente).getId();
+    	
+    	ConfGastoRecurrente guardado = repository.guardar(confGastoRecurrente);
+    	
+        return guardado.getId();
     }
     
     @Override
@@ -69,7 +71,8 @@ public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrent
             confGastoRecurrente.getCategoriaGastoId(),
             confGastoRecurrente.getPeriodicidad().getFrecuencia(),
             confGastoRecurrente.getPeriodicidad().getDiaVencimiento(),
-            confGastoRecurrente.getPeriodicidad().getMesVencimiento()
+            confGastoRecurrente.getPeriodicidad().getMesVencimiento(),
+            confGastoRecurrente.getEstado()
         );
     }
 }

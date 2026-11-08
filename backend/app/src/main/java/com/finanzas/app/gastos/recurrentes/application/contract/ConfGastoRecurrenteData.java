@@ -1,5 +1,6 @@
 package com.finanzas.app.gastos.recurrentes.application.contract;
 
+import com.finanzas.app.gastos.recurrentes.domain.EstadoConf;
 import com.finanzas.app.shared.domain.enums.Frecuencia;
 import com.finanzas.app.shared.domain.vo.CategoriaId;
 import com.finanzas.app.shared.domain.vo.Descripcion;
@@ -13,6 +14,7 @@ public record ConfGastoRecurrenteData(
     CategoriaId categoriaGastoId,
     Frecuencia frecuencia,
     Integer diaVencimiento,
-    Integer mesVencimiento
+    Integer mesVencimiento,
+    EstadoConf estado
     
 ) {}

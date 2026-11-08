@@ -197,14 +197,14 @@ public class ConfGastoRecurrente {
     // VALIDACION DE ESTADO
     
     private void validarConfRecurrenciaEstaInactiva() {
-    	if (this.estado.equals(EstadoConf.ACTIVA))  {
+    	if (this.estado == EstadoConf.ACTIVA)  {
             throw new ConflictException(
             		"No se puede operar sobre una recurrencia activa");
         }
     }
     
     public void validarConfRecurrenciaEstaActiva() {
-    	if (this.estado.equals(EstadoConf.INACTIVA))  {
+    	if (this.estado == EstadoConf.INACTIVA)  {
             throw new ConflictException(
             		"No se puede operar sobre una recurrencia inactiva");
         }

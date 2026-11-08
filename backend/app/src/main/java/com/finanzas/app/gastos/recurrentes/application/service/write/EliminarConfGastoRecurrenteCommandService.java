@@ -11,6 +11,7 @@ import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrente;
 import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
+import com.finanzas.app.shared.exception.exceptionImpl.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,10 @@ public class EliminarConfGastoRecurrenteCommandService {
             );
         }
         
-        confGastoRecurrenteRepository.eliminar(confGastoRecurrente.getId(), usuarioId);
+        int filasEliminadas = confGastoRecurrenteRepository.eliminar(confGastoRecurrente.getId(), usuarioId);
+        if (filasEliminadas == 0) {
+        	throw NotFoundException.of("No se encontro Configuracion Gasto Recurrente para eliminar");
+        }
         
         log.info("Configuracion Gasto Recurrente {} eliminado correctamente", confGastoRecurrente.getId());
     }
