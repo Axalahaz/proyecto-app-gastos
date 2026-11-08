@@ -10,19 +10,20 @@ public interface GastoRepository {
 	
 	Gasto guardar(Gasto gasto);
 	
-	Optional<Gasto> buscarPorId(Long gastoId);
+	// - Consideran el usuario al que pertenece la categoría.
+	
+	Optional<Gasto> buscarPorId(Long gastoId, Long usuarioId);
     
-    void eliminar(Long gastoId);
+    int eliminar(Long gastoId, Long usuarioId);
 
-    boolean existePorGastoRecurrenteId(Long gastoRecurrenteId);
+    boolean existePorConfGastoRecurrenteId(Long confGastoRecurrenteId, Long usuarioId);
     		
     boolean existePagoActivoEnPeriodo(
-    		Long gastoRecurrenteId,
+    		Long confGastoRecurrenteId,
 			LocalDateTime fechaInicio,
-			LocalDateTime fechaFin);
+			LocalDateTime fechaFin,
+			Long usuarioId);
 
-    List<Gasto> listarPorCategoria(Long categoriaGastoId);
-
-    List<Gasto> listarTodos();
+    List<Gasto> listarTodos(Long usuarioId);
 
 }

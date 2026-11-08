@@ -7,20 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.finanzas.app.gastos.gastos.application.service.AnularGastoService;
-import com.finanzas.app.gastos.gastos.application.service.EditarGastoService;
-import com.finanzas.app.gastos.gastos.application.service.EliminarGastoService;
-import com.finanzas.app.gastos.gastos.application.service.ListarGastosPorCategoriaService;
-import com.finanzas.app.gastos.gastos.application.service.ListarGastosTodosService;
-import com.finanzas.app.gastos.gastos.application.service.ObtenerGastoService;
-import com.finanzas.app.gastos.gastos.application.service.RegistrarGastoDesdeRecurrenteService;
-import com.finanzas.app.gastos.gastos.application.service.RegistrarGastoService;
-import com.finanzas.app.gastos.gastos.application.service.VolverRecurrenteService;
-import com.finanzas.app.gastos.presentation.dto.gasto.EditarGastoRequest;
-import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
-import com.finanzas.app.gastos.presentation.dto.gasto.RegistrarGastoDesdeRecurrenteRequest;
-import com.finanzas.app.gastos.presentation.dto.gasto.RegistrarGastoRequest;
-import com.finanzas.app.gastos.presentation.dto.gasto.VolverRecurrenteRequest;
+import com.finanzas.app.gastos.gastos.application.service.read.ListarGastosTodosQueryService;
+import com.finanzas.app.gastos.gastos.application.service.read.ObtenerGastoQueryService;
+import com.finanzas.app.gastos.gastos.application.service.write.AnularGastoCommandService;
+import com.finanzas.app.gastos.gastos.application.service.write.EditarGastoCommandService;
+import com.finanzas.app.gastos.gastos.application.service.write.EliminarGastoCommandService;
+import com.finanzas.app.gastos.gastos.application.service.write.RegistrarGastoDesdeRecurrenteCommandService;
+import com.finanzas.app.gastos.gastos.application.service.write.RegistrarGastoCommandService;
+import com.finanzas.app.gastos.gastos.application.service.write.VolverRecurrenteCommandService;
+import com.finanzas.app.gastos.gastos.presentation.dto.EditarGastoRequest;
+import com.finanzas.app.gastos.gastos.presentation.dto.GastoResponse;
+import com.finanzas.app.gastos.gastos.presentation.dto.RegistrarGastoDesdeRecurrenteRequest;
+import com.finanzas.app.gastos.gastos.presentation.dto.RegistrarGastoRequest;
+import com.finanzas.app.gastos.gastos.presentation.dto.VolverRecurrenteRequest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +30,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/gasto")
 public class GastoController {
 	
-	private final VolverRecurrenteService volverRecurrenteService;
-	private final AnularGastoService anularGastoService;
-	private final EditarGastoService editarGastoService;
-	private final EliminarGastoService eliminarGastoService;
-	private final ListarGastosPorCategoriaService listarGastosPorCategoriaService;
-	private final ListarGastosTodosService listarGastosTodosService;
-	private final ObtenerGastoService obtenerGastoService;
-	private final RegistrarGastoDesdeRecurrenteService registrarGastoDesdeRecurrenteService;
-	private final RegistrarGastoService registrarGastoService;
+	private final VolverRecurrenteCommandService volverRecurrenteService;
+	private final AnularGastoCommandService anularGastoService;
+	private final EditarGastoCommandService editarGastoService;
+	private final EliminarGastoCommandService eliminarGastoService;
+	private final ListarGastosTodosQueryService listarGastosTodosService;
+	private final ObtenerGastoQueryService obtenerGastoService;
+	private final RegistrarGastoDesdeRecurrenteCommandService registrarGastoDesdeRecurrenteService;
+	private final RegistrarGastoCommandService registrarGastoService;
 
 	// ----------------------------------------------------
 	// REGISTRAR
@@ -49,10 +47,9 @@ public class GastoController {
 			@Valid @RequestBody RegistrarGastoRequest request) {
 		
 		GastoResponse response = registrarGastoService.ejecutar(
-				request.getMonto(),
-				request.getDescripcion(),
-				request.getCategoriaGastoId(),
-				request.getPlantillaId()
+				request.importe(),
+				request.descripcion(),
+				request.categoriaGastoId()
 				);
 		
 		return ResponseEntity.status(HttpStatus.CREATED)
@@ -64,9 +61,9 @@ public class GastoController {
 			@Valid @RequestBody RegistrarGastoDesdeRecurrenteRequest request) {
 		
 		GastoResponse response = registrarGastoDesdeRecurrenteService.ejecutar(
-				request.getMonto(),
-				request.getGastoRecurrenteId(),
-				request.getFechaVencimiento()
+				request.importe(),
+				request.confGastoRecurrenteId(),
+				request.fechaPagoRecurrente()
 				);
 		
 		return ResponseEntity.status(HttpStatus.CREATED)
@@ -83,9 +80,9 @@ public class GastoController {
 		
 		GastoResponse response = editarGastoService.ejecutar(
 				gastoId,
-				request.getCategoriaGastoId(),
-				request.getMonto(),
-				request.getDescripcion()
+				request.importe(),
+				request.descripcion(),
+				request.categoriaGastoId()
 				);
 		
 		return ResponseEntity.ok(response);
@@ -101,9 +98,9 @@ public class GastoController {
 		
 		GastoResponse response = volverRecurrenteService.ejecutar(
 				gastoId,
-				request.getDiaVencimiento(),
-				request.getMesVencimiento(),
-				request.getFrecuencia()
+				request.diaVencimiento(),
+				request.mesVencimiento(),
+				request.frecuencia()
 				);
 		
 		return ResponseEntity.ok(response);
@@ -154,15 +151,6 @@ public class GastoController {
 	    List<GastoResponse> response = listarGastosTodosService.ejecutar();
 
 	    return ResponseEntity.ok(response);
-	}
-	
-	@GetMapping("/categoria/{id}")
-	public ResponseEntity<List<GastoResponse>> listarPorCategoria(
-			@PathVariable("id") Long categoriaId) {
-		
-		List<GastoResponse> response = listarGastosPorCategoriaService.ejecutar(categoriaId);
-		
-		return ResponseEntity.ok(response);
 	}
 	
 }

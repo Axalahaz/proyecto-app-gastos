@@ -1,4 +1,4 @@
-package com.finanzas.app.gastos.gastos.application.service;
+package com.finanzas.app.gastos.gastos.application.service.read;
 
 import java.util.List;
 
@@ -8,7 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.finanzas.app.gastos.gastos.application.GastoApplicationMapper;
 import com.finanzas.app.gastos.gastos.domain.Gasto;
 import com.finanzas.app.gastos.gastos.domain.GastoRepository;
-import com.finanzas.app.gastos.presentation.dto.gasto.GastoResponse;
+import com.finanzas.app.gastos.gastos.presentation.dto.GastoResponse;
+import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,14 +20,18 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
-public class ListarGastosTodosService {
+public class ListarGastosTodosQueryService {
 
     private final GastoRepository gastoRepository;
     private final GastoApplicationMapper mapper;
+    
+    private final UsuarioAutenticado usuarioAutenticado;
 
     public List<GastoResponse> ejecutar() {
-
-        List<Gasto> lista = gastoRepository.listarTodos();
+    	
+    	Long usuarioId = usuarioAutenticado.obtenerId();
+    	
+        List<Gasto> lista = gastoRepository.listarTodos(usuarioId);
 
         return lista.stream()
                 .map(mapper::mapToResponse)

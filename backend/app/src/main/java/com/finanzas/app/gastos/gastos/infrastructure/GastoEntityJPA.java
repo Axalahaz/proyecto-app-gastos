@@ -3,7 +3,7 @@ package com.finanzas.app.gastos.gastos.infrastructure;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.finanzas.app.shared.domain.model.EstadoMovimiento;
+import com.finanzas.app.shared.domain.enums.EstadoMovimiento;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,61 +40,62 @@ public class GastoEntityJPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(name = "categoria_gasto_id", nullable = false)
-	private Long categoriaGastoId;
+	@Column(name = "usuario_id", nullable = false)
+	private Long usuarioId;
 	
-	@Column(name = "plantilla_gasto_id")
-	private Long plantillaId; 
-
-	@Column(name = "gasto_recurrente_id")
-	private Long gastoRecurrenteId;
-	
-	@Column()
-	private String descripcion; // puede estar vacio
-
 	@Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal monto;
+	private BigDecimal importe;
+	
+	@Column(nullable = false)
+	private String descripcion; 
+	
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
 
+    @Column(name = "fecha_modificacion")
+    private LocalDateTime fechaModificacion;
+    
+    @Column(name = "fecha_pago_recurrente")
+    private LocalDateTime fechaPagoRecurrente;
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_movimiento", nullable = false)
     private EstadoMovimiento estado;
     
-    @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fechaCreacion;
+    @Column(name = "categoria_gasto_id", nullable = false)
+	private Long categoriaGastoId;
 
-    @Column(name = "fecha_vencimiento")
-    private LocalDateTime fechaVencimiento;
-
-    @Column(name = "fecha_cambio_estado")
-    private LocalDateTime fechaCambioEstado;
+	@Column(name = "configuracion_gasto_recurrente_id")
+	private Long confGastoRecurrenteId;
 
     // ----------------------------------
     // OF 
     
     public static GastoEntityJPA of(
     		Long id,
-    		Long categoriaGastoId,
-    		Long plantillaId,
-    		Long gastoRecurrenteId,
-    		BigDecimal monto,
+    		Long usuarioId,
+    		BigDecimal importe,
     		String descripcion,
-    		EstadoMovimiento estado,
     		LocalDateTime fechaCreacion,
-    		LocalDateTime fechaVencimiento,
-    		LocalDateTime fechaCambioEstado
+    		LocalDateTime fechaModificacion,
+    		LocalDateTime fechaPagoRecurrente,
+    		EstadoMovimiento estado,
+    		Long categoriaGastoId,
+    		Long confGastoRecurrenteId
     		) {
     	GastoEntityJPA entity = new GastoEntityJPA();
     	
     	entity.id = id;
-    	entity.categoriaGastoId = categoriaGastoId;
-    	entity.plantillaId = plantillaId;
-    	entity.gastoRecurrenteId = gastoRecurrenteId;
-    	entity.monto = monto;
+    	entity.usuarioId = usuarioId;
+    	entity.importe = importe;
     	entity.descripcion = descripcion;
-    	entity.estado = estado;
     	entity.fechaCreacion = fechaCreacion;
-    	entity.fechaVencimiento = fechaVencimiento;
-    	entity.fechaCambioEstado = fechaCambioEstado;
+    	entity.fechaModificacion = fechaModificacion;
+    	entity.fechaPagoRecurrente = fechaPagoRecurrente;
+    	entity.estado = estado;
+    	entity.categoriaGastoId = categoriaGastoId;
+    	entity.confGastoRecurrenteId = confGastoRecurrenteId;
+    	
     	return entity;
     }
 }

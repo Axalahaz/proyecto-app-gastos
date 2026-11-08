@@ -1,14 +1,14 @@
 package com.finanzas.app.gastos.gastos.domain;
 
-import com.finanzas.app.shared.domain.model.Movimiento;
+import java.time.LocalDateTime;
 
-import java.time.LocalDate;
-
-import com.finanzas.app.shared.domain.model.EstadoMovimiento;
+import com.finanzas.app.shared.domain.enums.EstadoMovimiento;
+import com.finanzas.app.shared.domain.vo.CategoriaId;
+import com.finanzas.app.shared.domain.vo.Descripcion;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
-import com.finanzas.app.shared.exception.extend.ConflictException;
-import com.finanzas.app.shared.exception.extend.ValidationException;
+import com.finanzas.app.shared.domain.vo.UsuarioId;
+import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 
 import lombok.Getter;
 
@@ -16,65 +16,72 @@ import lombok.Getter;
  * Es el gasto real
  * */
 @Getter
-public class Gasto extends Movimiento {
+public class Gasto {
 
     private Long id;
-    private Long categoriaGastoId;
-    private Long plantillaId;
-    private Long gastoRecurrenteId;
-    private Fecha fechaVencimiento;
+    private UsuarioId usuarioId;
+    private Money importe;
+    private Descripcion descripcion;
+    private Fecha fechaCreacion;
+    private Fecha fechaModificacion;
+    private Fecha fechaPagoRecurrente;
+    private EstadoMovimiento estado;
+    private CategoriaId categoriaGastoId;
+    private Long confGastoRecurrenteId;
 
     // ----------------------------------
     // CONSTRUCTOR
     
     private Gasto(
     	    Long id,
-    	    Long categoriaGastoId,
-    	    Long plantillaId,
-    	    Long gastoRecurrenteId,
-    	    Money monto, 
-    	    String descripcion, 
-    	    EstadoMovimiento estado,
+    	    UsuarioId  usuarioId,
+    	    Money importe, 
+    	    Descripcion descripcion, 
     	    Fecha fechaCreacion,
-    	    Fecha fechaVencimiento,
-    	    Fecha fechaCambioEstado
+    	    Fecha fechaModificacion,
+    	    Fecha fechaPagoRecurrente,
+    	    EstadoMovimiento estado,
+    	    CategoriaId categoriaGastoId,
+    	    Long confGastoRecurrenteId
     	) {
-        super(monto, descripcion, estado, fechaCreacion, fechaCambioEstado);
 
-        validarCategoria(categoriaGastoId);
-        
         this.id = id;
+        this.usuarioId = usuarioId;
+        this.importe = importe;
+        this.descripcion = descripcion;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaModificacion = fechaModificacion;
+        this.fechaPagoRecurrente = fechaPagoRecurrente;
+        this.estado = estado;
         this.categoriaGastoId = categoriaGastoId;
-        this.plantillaId = plantillaId;
-        this.gastoRecurrenteId = gastoRecurrenteId;
-        this.fechaVencimiento = fechaVencimiento;
+        this.confGastoRecurrenteId = confGastoRecurrenteId;
     }
     
     // ----------------------------------------------------
     // CREAR
     
     public static Gasto crear(
-    		Long categoriaGastoId,
-    		Long plantillaId,
-    		Long gastoRecurrenteId,
-    		Money monto, 
-    		String descripcion,
+    		UsuarioId usuarioId,
+    		Money importe, 
+    		Descripcion descripcion,
     	    Fecha fechaCreacion,
-    	    Fecha fechaVencimiento
+    	    Fecha fechaPagoRecurrente,
+    	    CategoriaId categoriaGastoId,
+    	    Long confGastoRecurrenteId
     	) {
 
     	return new Gasto(
     			null, 
-    			categoriaGastoId, 
-    			plantillaId,
-    			gastoRecurrenteId,
-    			monto, 
+    			usuarioId,
+    			importe, 
     			descripcion, 
-    			EstadoMovimiento.ACTIVO,
     			fechaCreacion,
-    			fechaVencimiento,
-    			null
-    			);
+    			null,
+    			fechaPagoRecurrente,
+    			EstadoMovimiento.ACTIVO,
+    			categoriaGastoId, 
+    			confGastoRecurrenteId
+    	);
     }
     
     // ----------------------------------------------------
@@ -82,28 +89,28 @@ public class Gasto extends Movimiento {
     
     public static Gasto reconstruir(
             Long id,
-            Long categoriaGastoId,
-            Long plantillaId,
-            Long gastoRecurrenteId,
-            Money monto,
-            String descripcion,
-            EstadoMovimiento estado,
+            UsuarioId usuarioId,
+            Money importe,
+            Descripcion descripcion,
             Fecha fechaCreacion,
-            Fecha fechaVencimiento,
-            Fecha fechaCambioEstado
+            Fecha fechaModificacion,
+            Fecha fechaPagoRecurrente,
+            EstadoMovimiento estado,
+            CategoriaId categoriaGastoId,
+            Long confGastoRecurrenteId
     	) {
     	
         return new Gasto(
                 id,
-                categoriaGastoId,
-                plantillaId,
-                gastoRecurrenteId,
-                monto,
+                usuarioId,
+                importe,
                 descripcion,
-                estado,
                 fechaCreacion,
-                fechaVencimiento,
-                fechaCambioEstado
+                fechaModificacion,
+                fechaPagoRecurrente,
+                estado,
+                categoriaGastoId,
+                confGastoRecurrenteId
         );
     }
     
@@ -112,84 +119,94 @@ public class Gasto extends Movimiento {
     // **********************************************************************************************
     
     // ----------------------------------------------------
-    // ESTADO
+    // ESTADO (no se puede activar)
     
-    public void anular(Fecha fechaCambioEstado) {
-    	validarEstadoNoAnulado();
-        cambiarEstado(EstadoMovimiento.ANULADO, fechaCambioEstado);
+    public void anular(Fecha fechaModificacion) {
+    	validarEstadoActivo();
+        this.estado = EstadoMovimiento.ANULADO;
+        this.fechaModificacion = fechaModificacion;
     }
-    
+
     // ----------------------------------------------------
     // EDITAR GASTO
 
     public void editar(
-    		Long categoriaGastoId, 
-    		Money nuevoMonto, 
-    		String nuevaDescripcion
+    		CategoriaId categoriaGastoId, 
+    		Money nuevoImporte, 
+    		Descripcion nuevaDescripcion
     	) {
     	
-    	validarEstadoNoAnulado();
+    	validarEstadoActivo();
     	
     	if(categoriaGastoId != null) actualizarCategoria(categoriaGastoId);
-    	if(nuevoMonto != null) actualizarMonto(nuevoMonto);
+    	if(nuevoImporte != null) actualizarMonto(nuevoImporte);
     	if(nuevaDescripcion != null) actualizarDescripcion(nuevaDescripcion);
     }
     
     //*
-    private void actualizarCategoria(Long categoriaGastoId) {
+    private void actualizarCategoria(CategoriaId categoriaGastoId) {
     	if (this.categoriaGastoId.equals(categoriaGastoId)) {
             return;
         }
-    	validarCategoria(categoriaGastoId);
         this.categoriaGastoId = categoriaGastoId;
     }
     
-    // ----------------------------------------------------
-    // GASTO RECURRENTE
+    protected void actualizarMonto(Money importe) {
+    	this.importe = importe;
+    }
     
-    public void asociarAGastoRecurrente(Long nuevoGastoRecurrenteId) {
-    	validarNoAsociadoAGastoRecurrente();
-    	this.gastoRecurrenteId = nuevoGastoRecurrenteId;
+    protected void actualizarDescripcion(Descripcion descripcion) {
+        this.descripcion = descripcion;
+    }
+    
+    // ----------------------------------------------------
+    // RECURRENTE
+    
+    public void asociarAGastoRecurrente(Long nuevoConfGastoRecurrenteId) {
+    	validarNoAsociadoConfGastoRecurrente();
+    	this.confGastoRecurrenteId = nuevoConfGastoRecurrenteId;
     }
     
     public boolean esRecurrente() {
-        return gastoRecurrenteId != null;
+        return confGastoRecurrenteId != null;
     }
     
     // ----------------------------------------------------
     // VALIDACION
+    // ----------------------------------------------------
     
-    public void validarEliminacion(LocalDate tiempo) {
-    	validarEstadoNoAnulado();
-    	if (!this.fechaCreacion.getValue().toLocalDate().equals(tiempo)) {
-    		throw new ConflictException(
-    				"Solo se pueden eliminar gastos creados hoy"
-    				);
-    	}
-    	if (this.gastoRecurrenteId != null) {
-    	    throw new ConflictException(
-    	            "Los gastos generados desde recurrentes solo pueden anularse"
-    	    );
-    	}
-    }
+    // VALIDACION DE ESTADO
     
-    public void validarEstadoNoAnulado() {
+    public void validarEstadoActivo() {
     	if (this.estado == EstadoMovimiento.ANULADO) {
             throw new ConflictException("No se puede operar sobre un gasto anulado");
         }
     }
     
-    private void validarNoAsociadoAGastoRecurrente() {
-    	if (this.gastoRecurrenteId != null) {
+    // VALIDACION ASOCIACION CONF RECURRENTE
+    
+    private void validarNoAsociadoConfGastoRecurrente() {
+    	if (this.confGastoRecurrenteId != null) {
     		throw new ConflictException(
-    				"El gasto ya esta asociado a un gasto recurrente"
+    				"El gasto ya esta asociado a una Configuracion Recurrente"
     				); 
     	}
     }
+
+    //****************
+    //!!!!!!!! VALIDACION DE EN EL DIA Y DENTRO DE UNA HORA    
     
-    private void validarCategoria(Long categoriaGastoId) {
-        if (categoriaGastoId == null) {
-            throw ValidationException.of("El gasto debe pertenecer a una categoría");
+    public void validarEliminacion(LocalDateTime tiempoActual) {
+    	validarEstadoActivo();
+    	LocalDateTime fechaCreacion = this.fechaCreacion.value();
+    	
+    	if (tiempoActual.isBefore(fechaCreacion)
+                || tiempoActual.isAfter(fechaCreacion.plusHours(1))) {
+            throw new ConflictException(
+                    "Solo se pueden eliminar gastos dentro de la primera hora desde su creación"
+            );
         }
     }
+    
+    //****************
 }

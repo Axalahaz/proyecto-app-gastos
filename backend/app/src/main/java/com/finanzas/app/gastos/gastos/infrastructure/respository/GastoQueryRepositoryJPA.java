@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.finanzas.app.gastos.gastos.infrastructure.GastoEntityJPA;
-import com.finanzas.app.shared.domain.model.EstadoMovimiento;
+import com.finanzas.app.shared.domain.enums.EstadoMovimiento;
 
 // READ MODEL / REPORTING
 

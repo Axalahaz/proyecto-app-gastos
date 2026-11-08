@@ -10,6 +10,7 @@ import com.finanzas.app.gastos.gastos.domain.Gasto;
 import com.finanzas.app.gastos.gastos.domain.GastoRepository;
 import com.finanzas.app.gastos.gastos.infrastructure.GastoEntityJPA;
 import com.finanzas.app.gastos.gastos.infrastructure.GastoMapper;
+import com.finanzas.app.gastos.recurrentes.domain.EstadoConf;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,24 +29,19 @@ public class GastoRepositoryImpl implements GastoRepository{
 	}
 
 	@Override
-	public Optional<Gasto> buscarPorId(Long gastoId) {
-		return jpaRepository.findById(gastoId)
+	public Optional<Gasto> buscarPorId(Long gastoId, Long usuarioId) {
+		return jpaRepository.findByIdAndUsuarioId(gastoId, usuarioId)
 				.map(gastoMapper::mapToDomain);
 	}
 
-
-
 	@Override
-	public List<Gasto> listarPorCategoria(Long categoriaGastoId) {
-		return jpaRepository.findByCategoriaGastoId(categoriaGastoId)
-				.stream()
-				.map(gastoMapper::mapToDomain)
-				.toList();
+	public int eliminar(Long gastoId, Long usuarioId) {
+		return jpaRepository.eliminar(gastoId, usuarioId, EstadoConf.ACTIVA);		
 	}
-
+	
 	@Override
-	public List<Gasto> listarTodos() {
-		return jpaRepository.findAll()
+	public List<Gasto> listarTodos(Long usuarioId) {
+		return jpaRepository.findByUsuarioId(usuarioId)
 				.stream()
 				.map(gastoMapper::mapToDomain)
 				.toList();
@@ -53,21 +49,19 @@ public class GastoRepositoryImpl implements GastoRepository{
 
 	@Override
 	public boolean existePagoActivoEnPeriodo(
-			Long gastoRecurrenteId,
+			Long confGastoRecurrenteId,
 			LocalDateTime fechaInicio,
-			LocalDateTime fechaFin
+			LocalDateTime fechaFin,
+			Long usuarioId
 			) {
 		return jpaRepository.existePagoActivoEnPeriodo(
-				gastoRecurrenteId, fechaInicio, fechaFin);
+				confGastoRecurrenteId, fechaInicio, fechaFin, usuarioId);
 	}
 
 	@Override
-	public boolean existePorGastoRecurrenteId(Long gastoRecurrenteId) {
-		return jpaRepository.existsByGastoRecurrenteId(gastoRecurrenteId);
+	public boolean existePorConfGastoRecurrenteId(Long confGastoRecurrenteId, Long usuarioId) {
+		return jpaRepository.existsByConfGastoRecurrenteIdAndUsuarioId(confGastoRecurrenteId, usuarioId);
 	}
 
-	@Override
-	public void eliminar(Long gastoId) {
-		jpaRepository.deleteById(gastoId);		
-	}
+	
 }

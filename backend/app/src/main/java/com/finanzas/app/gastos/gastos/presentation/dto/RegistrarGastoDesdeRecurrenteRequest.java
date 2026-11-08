@@ -1,26 +1,24 @@
 package com.finanzas.app.gastos.gastos.presentation.dto;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Getter;
 
-@Getter
-public class RegistrarGastoDesdeRecurrenteRequest {
-	
-	@NotNull(message = "El monto es obligatorio")
-    @Positive(message = "El monto debe ser positivo")
-	@Digits(integer = 10, fraction = 2, message = "Máximo 10 enteros y 2 decimales")
-    private BigDecimal monto;
+public record RegistrarGastoDesdeRecurrenteRequest(
 
-	@NotNull(message = "El id de gasto recurrente es obligatorio")
-	@Positive(message = "El id de gasto recurrente debe ser positivo")
-    private Long gastoRecurrenteId; 
-	
-	@NotNull(message = "La fecha de Vencimiento a impactar es obligatoria")
-	private LocalDateTime fechaVencimiento; 
-}
+    @NotNull(message = "El importe es obligatorio")
+    @Positive(message = "El importe debe ser positivo")
+    @Digits(integer = 12, fraction = 2, message = "Máximo 12 enteros y 2 decimales")
+    BigDecimal importe,
+
+    @NotNull(message = "El id de gasto recurrente es obligatorio")
+    @Positive(message = "El id de gasto recurrente debe ser positivo")
+    Long confGastoRecurrenteId,
+
+    @NotNull(message = "La fecha de pago recurrente a impactar es obligatoria")
+    LocalDateTime fechaPagoRecurrente
+    
+) {}
