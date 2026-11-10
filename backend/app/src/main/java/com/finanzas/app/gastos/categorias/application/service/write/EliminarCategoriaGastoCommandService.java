@@ -1,5 +1,7 @@
 package com.finanzas.app.gastos.categorias.application.service.write;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,7 +9,6 @@ import com.finanzas.app.gastos.categorias.application.CategoriaGastoApplicationQ
 import com.finanzas.app.gastos.categorias.domain.CategoriaGasto;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGastoRepository;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
-import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 import com.finanzas.app.shared.exception.exceptionImpl.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -36,10 +37,8 @@ public class EliminarCategoriaGastoCommandService {
 
     	CategoriaGasto categoria = categoriaQuery.obtenerPorId(categoriaId, usuarioId);
     
-    	if(categoria.esTipoSistema()) {
-    		throw new ConflictException(
-    				"No se puede eliminar una Categoria de Gasto propia del sistema");
-    	}
+    	LocalDateTime tiempoLimite = LocalDateTime.now();
+    	categoria.validarEliminacion(tiempoLimite);
 
     	int filasEliminadas = categoriaRepository.eliminar(categoria.getId(), usuarioId);
     	

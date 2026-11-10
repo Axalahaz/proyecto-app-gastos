@@ -63,5 +63,15 @@ public class GastoRepositoryImpl implements GastoRepository{
 		return jpaRepository.existsByConfGastoRecurrenteIdAndUsuarioId(confGastoRecurrenteId, usuarioId);
 	}
 
+	@Override
+	public int contadorTotalGastos(Long usuarioId) {
+		return jpaRepository.contadorTotalGastos(usuarioId);
+	}
+
+	@Override
+	public int eliminarDatosDeUsuario(Long usuarioId) {
+		return jpaRepository.eliminarDatosDeUsuario(usuarioId);
+	}
+
 	
 }

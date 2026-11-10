@@ -29,4 +29,7 @@ public interface ConfGastoRecurrenteApplication {
         Integer diaVencimiento,
         Integer mesVencimiento
     );
+    
+    // Comunicacion al eliminar datos asociados al usuario
+    void eliminarDatosDeUsuario(Long usuarioId);
 }

@@ -9,7 +9,6 @@ import com.finanzas.app.gastos.categorias.domain.CategoriaGasto;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGastoRepository;
 import com.finanzas.app.gastos.categorias.presentation.dto.CategoriaGastoResponse;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
-import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +35,7 @@ public class EditarCategoriaGastoCommandService {
 
     	CategoriaGasto categoria = categoriaQuery.obtenerPorId(categoriaId, usuarioId);
     	
-    	if(categoria.esTipoSistema()) {
-    		throw new ConflictException("No se puede modificar una categoria del sistema");
-    	}
+    	categoria.validarEsTipoUsuario();
 
     	categoria.renombrar(nombre);
     	

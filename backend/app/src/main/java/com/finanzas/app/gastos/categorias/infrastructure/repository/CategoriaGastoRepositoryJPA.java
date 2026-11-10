@@ -75,4 +75,34 @@ public interface CategoriaGastoRepositoryJPA extends JpaRepository<CategoriaGast
 			    @Param("usuarioId") Long usuarioId,
 			    @Param("tipoSistema") TipoObjeto tipoSistema
 			);
+	
+	// ---------------------------------------
+	// ELIMINACION DE DATOS AL BORRAR USUARIO
+	
+	@Query("""
+		    SELECT cg
+		    FROM CategoriaGastoEntityJPA cg
+		    WHERE cg.usuarioId = :usuarioId
+			    AND cg.tipo = :tipoSistema
+		""")
+	int contadorTotalCategoriaGasto(
+			@Param("usuarioId") Long usuarioId,
+			@Param("tipoSistema") TipoObjeto tipoSistema
+			);
+	
+	@Modifying(
+		    flushAutomatically = true,
+		    clearAutomatically = true
+		)
+	@Query("""
+		    DELETE FROM CategoriaGastoEntityJPA cg
+		    WHERE cg.usuarioId = :usuarioId
+			    AND cg.tipo = :tipoSistema
+		""")
+	int eliminarDatosDeUsuario(
+			@Param("usuarioId") Long usuarioId,
+			@Param("tipoSistema") TipoObjeto tipoSistema
+			);
+	
+	// ---------------------------------------
 }

@@ -37,7 +37,7 @@ public interface GastoRepositoryJPA extends JpaRepository<GastoEntityJPA, Long>{
 			@Param("hasta") LocalDateTime hasta,
 			@Param("usuarioId") Long usuarioId
 			);
-	
+
 	@Modifying
 	@Query("""
 		    DELETE FROM GastoEntityJPA g
@@ -50,4 +50,30 @@ public interface GastoRepositoryJPA extends JpaRepository<GastoEntityJPA, Long>{
 			@Param("usuarioId") Long usuarioId,
 			@Param("estado") EstadoConf estado
 			);
+
+	// ---------------------------------------
+	// ELIMINACION DE DATOS AL BORRAR USUARIO
+	
+	@Query("""
+		    SELECT g
+		    FROM GastoEntityJPA g
+		    WHERE g.usuarioId = :usuarioId
+		""")
+	int contadorTotalGastos(
+			@Param("usuarioId") Long usuarioId
+			);
+	
+	@Modifying(
+		    flushAutomatically = true,
+		    clearAutomatically = true
+		)
+	@Query("""
+		    DELETE FROM GastoEntityJPA g
+		    WHERE g.usuarioId = :usuarioId
+		""")
+	int eliminarDatosDeUsuario(
+			@Param("usuarioId") Long usuarioId
+			);
+	
+	// ---------------------------------------
 }

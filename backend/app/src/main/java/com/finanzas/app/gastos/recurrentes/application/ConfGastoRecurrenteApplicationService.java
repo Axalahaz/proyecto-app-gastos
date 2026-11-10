@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.recurrentes.application.contract.ConfGastoRecurrenteApplication;
 import com.finanzas.app.gastos.recurrentes.application.contract.ConfGastoRecurrenteData;
+import com.finanzas.app.gastos.recurrentes.application.service.write.EliminarTodosPorUsuarioConfGastoRecurrenteCommandService;
 import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrente;
 import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
 import com.finanzas.app.shared.domain.enums.Frecuencia;
@@ -19,6 +20,8 @@ public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrent
 	private final ConfGastoRecurrenteApplicationQuery confGastoRecurrenteApplicationQuery;
     private final ConfGastoRecurrenteRepository repository;
     private final ConfGastoRecurrenteFactory confGastoRecurrenteFactory;
+    
+	private final EliminarTodosPorUsuarioConfGastoRecurrenteCommandService eliminarDatosDeUsuarioService;
 
     @Override
     @Transactional(readOnly = true)
@@ -75,4 +78,10 @@ public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrent
             confGastoRecurrente.getEstado()
         );
     }
+    
+    @Override
+	@Transactional
+	public void eliminarDatosDeUsuario(Long usuarioId) {
+		eliminarDatosDeUsuarioService.ejecutar(usuarioId);
+	}
 }

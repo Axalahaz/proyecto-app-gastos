@@ -22,4 +22,8 @@ public interface CategoriaGastoRepository {
 	List<CategoriaGasto> listarTodos(Long usuarioId);
 
 	int eliminar(Long categoriaId, Long usuarioId);
+	
+	int contadorTotalCategoriaGasto(Long usuarioId);
+    
+	int eliminarDatosDeUsuario(Long usuarioId);
 }

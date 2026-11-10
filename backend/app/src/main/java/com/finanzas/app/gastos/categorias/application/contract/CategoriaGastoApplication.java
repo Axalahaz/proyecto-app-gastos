@@ -22,4 +22,8 @@ public interface CategoriaGastoApplication {
     		Long categoriaGastoId,  
     		Long usuarioId
     );
+    
+    // Comunicacion al eliminar datos asociados al usuario
+    // -Solo las categorias tipo de objeto: USUARIO
+    void eliminarDatosDeUsuario(Long usuarioId);
 }

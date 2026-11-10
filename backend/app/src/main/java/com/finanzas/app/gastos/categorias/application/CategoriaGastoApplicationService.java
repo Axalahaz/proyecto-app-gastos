@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.categorias.application.contract.CategoriaGastoApplication;
 import com.finanzas.app.gastos.categorias.application.contract.CategoriaGastoData;
+import com.finanzas.app.gastos.categorias.application.service.write.EliminarTodosPorUsuarioCategoriaGastoCommandService;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGasto;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGastoRepository;
 
@@ -19,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class CategoriaGastoApplicationService implements CategoriaGastoApplication {
 
-	private final CategoriaGastoApplicationQuery categoriaQuery;
-    private final CategoriaGastoRepository categoriaRepository;
+	private final CategoriaGastoApplicationQuery categoriaGastoApplicationQuery;
+    private final CategoriaGastoRepository categoriaGastoRepository;
+    
+	private final EliminarTodosPorUsuarioCategoriaGastoCommandService eliminarDatosDeUsuarioService;
 
     // Verifica que la categoría pertenezca al usuario indicado.
 
@@ -31,7 +34,7 @@ public class CategoriaGastoApplicationService implements CategoriaGastoApplicati
 			Long usuarioId
 			) {
     	
-    	CategoriaGasto categoria = categoriaQuery.obtenerPorId(categoriaGastoId, usuarioId);
+    	CategoriaGasto categoria = categoriaGastoApplicationQuery.obtenerPorId(categoriaGastoId, usuarioId);
 		
 		CategoriaGastoData data = new CategoriaGastoData(
 				categoria.getId(),
@@ -48,7 +51,7 @@ public class CategoriaGastoApplicationService implements CategoriaGastoApplicati
 	        String nombre,
 	        Long usuarioId
     		) {
-        return categoriaRepository.existePorNombre(nombre, usuarioId);
+        return categoriaGastoRepository.existePorNombre(nombre, usuarioId);
     }
 
     @Override
@@ -57,6 +60,12 @@ public class CategoriaGastoApplicationService implements CategoriaGastoApplicati
     		Long categoriaGastoId, 
     		Long usuarioId
     		) {
-    	categoriaQuery.existePorId(categoriaGastoId, usuarioId);
+    	categoriaGastoApplicationQuery.existePorId(categoriaGastoId, usuarioId);
+    }
+    
+    @Override
+    @Transactional
+    public void eliminarDatosDeUsuario(Long usuarioId) {
+    	eliminarDatosDeUsuarioService.ejecutar(usuarioId);
     }
 }

@@ -17,5 +17,8 @@ public interface GastoApplication {
 	    Long gastoId,
 	    Long usuarioId
 	);
+	
+	// Comunicacion al eliminar datos asociados al usuario
+    void eliminarDatosDeUsuario(Long usuarioId);
 
 }

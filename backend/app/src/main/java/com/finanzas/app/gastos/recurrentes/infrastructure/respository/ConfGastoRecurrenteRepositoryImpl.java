@@ -54,4 +54,14 @@ public class ConfGastoRecurrenteRepositoryImpl implements ConfGastoRecurrenteRep
 	public boolean existePorId(Long confGastoRecurrenteId, Long usuarioId) {
 		return jpaRepository.existePorId(confGastoRecurrenteId, usuarioId);
 	}
+	
+	@Override
+	public int contadorTotalConfGastoRecurrente(Long usuarioId) {
+		return jpaRepository.contadorTotalConfGastoRecurrente(usuarioId);
+	}
+
+	@Override
+	public int eliminarDatosDeUsuario(Long usuarioId) {
+		return jpaRepository.eliminarDatosDeUsuario(usuarioId);
+	}
 }

@@ -20,4 +20,8 @@ public interface ConfGastoRecurrenteRepository {
     boolean existePorId(Long confGastoRecurrenteId, Long usuarioId);
 
     int eliminar(Long confGastoRecurrenteId, Long usuarioId);
+    
+    int contadorTotalConfGastoRecurrente(Long usuarioId);
+    
+    int eliminarDatosDeUsuario(Long usuarioId);
 }

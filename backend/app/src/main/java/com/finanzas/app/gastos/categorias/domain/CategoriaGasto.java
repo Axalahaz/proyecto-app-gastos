@@ -1,8 +1,11 @@
 package com.finanzas.app.gastos.categorias.domain;
 
+import java.time.LocalDateTime;
+
 import com.finanzas.app.shared.domain.enums.TipoObjeto;
 import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.UsuarioId;
+import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 import com.finanzas.app.shared.exception.exceptionImpl.ValidationException;
 
 import lombok.Getter;
@@ -90,10 +93,13 @@ public class CategoriaGasto {
     // ----------------------------------
     // VALIDACIONES
     
-    public boolean esTipoSistema() {
-        return this.tipo == TipoObjeto.SISTEMA;
+    public void validarEsTipoUsuario() {
+        if(this.tipo == TipoObjeto.SISTEMA) {
+    		throw new ConflictException(
+    				"No se puede eliminar una Categoria de Gasto propia del sistema");
+    	}
     }
-
+    
     private void validarNombre(String nombre) {
         if (nombre == null || nombre.isBlank()) {
             throw ValidationException.of("El nombre de la categoría es obligatorio");
@@ -104,5 +110,20 @@ public class CategoriaGasto {
         }
         
         nombre = nombre.trim();
+    }
+    
+    //****************
+    //!!!!!!!! VALIDACION DE EN EL DIA Y DENTRO DE UNA HORA    
+    
+    public void validarEliminacion(LocalDateTime tiempoActual) {
+    	validarEsTipoUsuario();
+    	LocalDateTime fechaCreacion = this.fechaCreacion.value();
+    	
+    	if (tiempoActual.isBefore(fechaCreacion)
+                || tiempoActual.isAfter(fechaCreacion.plusHours(1))) {
+            throw new ConflictException(
+                    "Solo se puede eliminar categoria dentro de la primera hora desde su creación"
+            );
+        }
     }
 }
