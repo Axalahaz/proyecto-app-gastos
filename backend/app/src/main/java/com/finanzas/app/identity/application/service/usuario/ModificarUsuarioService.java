@@ -30,21 +30,22 @@ public class ModificarUsuarioService {
         Usuario usuario = usuarioRepository.buscarPorId(userId)
                 .orElseThrow(() -> NotFoundException.of("Usuario", userId));
 
-        Email emailVO = new Email(nuevoEmail);
-        
         // validar email único (si cambia)
-        if (emailVO != null && !usuario.getEmail().equals(emailVO)) {
-            usuarioRepository.buscarPorEmail(nuevoEmail)
-                    .ifPresent(_ -> {
-                        throw new ConflictException("El email ya está registrado");
-                    });
+        Email emailVO = null;
+
+        if (nuevoEmail != null) {
+        	emailVO = new Email(nuevoEmail);
+        	
+        	if (!usuario.getEmail().equals(emailVO)) {
+        		usuarioRepository.buscarPorEmail(emailVO.value())
+        		.ifPresent(_ -> {
+        			throw new ConflictException("El email ya está registrado");
+        		});
+        	}
         }
 
-        usuario.actualizarEmail(
+        usuario.editar(
         		emailVO,
-                new Fecha(LocalDateTime.now())
-        );
-        usuario.actualizarNombreUsuario(
         		nuevoNombreUsuario,
                 new Fecha(LocalDateTime.now())
         );

@@ -26,14 +26,14 @@ public class ObtenerUsuarioActualService {
         Usuario usuario = usuarioRepository.buscarPorId(usuarioId)
                 .orElseThrow(() -> NotFoundException.of("Usuario", usuarioId));
 
-        return UsuarioResponse.builder()
-        		.id(usuario.getId())
-        		.nombreUsuario(usuario.getNombreUsuario())
-        		.email(usuario.getEmail().value())
-        		.activo(usuario.isActivo())
-        		.fechaCreacion(usuario.getFechaCreacion().value())
-        		.fechaModificacion(usuario.getFechaModificacion().value())
-        		.fechaCambioPassword(usuario.getFechaCambioPassword().value())
-        		.build();
+        return new UsuarioResponse(
+        		usuario.getId(),
+        		usuario.getNombreUsuario(),
+        		usuario.getEmail().value(),
+        		usuario.isActivo(),
+        		usuario.getFechaCreacion().value(),
+        		usuario.getFechaModificacion().value(),
+        		usuario.getFechaCambioPassword().value()
+        		);
     }
 }
