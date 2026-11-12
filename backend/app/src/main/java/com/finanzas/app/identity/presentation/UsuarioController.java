@@ -45,8 +45,8 @@ public class UsuarioController {
             @Valid @RequestBody ModificarUsuarioRequest request) {
 
         modificarUsuarioService.ejecutar(
-        		request.getNombreUsuario(),
-                request.getEmail()
+        		request.nombreUsuario(),
+                request.email()
         );
 
         return ResponseEntity.noContent().build();
@@ -60,8 +60,8 @@ public class UsuarioController {
             @Valid @RequestBody CambiarPasswordRequest request) {
 
     	cambiarPasswordService.ejecutar(
-                request.getPasswordActual(),
-                request.getNuevaPassword()
+                request.passwordActual(),
+                request.nuevaPassword()
         );
 
         return ResponseEntity.noContent().build();

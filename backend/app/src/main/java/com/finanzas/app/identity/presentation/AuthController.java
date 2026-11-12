@@ -41,9 +41,9 @@ public class AuthController {
     		@Valid @RequestBody RegistrarUsuarioRequest request) {
     	
     	Usuario usuario = registrarUsuarioService.ejecutar(
-    			request.getNombreUsuario(),
-                request.getEmail(),
-                request.getPassword()
+    			request.nombreUsuario(),
+                request.email(),
+                request.password()
         );
         return ResponseEntity
     			.status(HttpStatus.CREATED)
@@ -60,8 +60,8 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request) {
 
         String token = loginUsuarioService.ejecutar(
-                request.getEmail(),
-                request.getPassword()
+                request.email(),
+                request.password()
         );
 
         return ResponseEntity.ok(new LoginResponse(token));
@@ -76,7 +76,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> recuperarPassword(
     		@Valid @RequestBody RecuperarPasswordRequest request) {
     	
-    	String token = solicitarRecuperacionPasswordService.ejecutar(request.getEmail());
+    	String token = solicitarRecuperacionPasswordService.ejecutar(request.email());
     	
     	return ResponseEntity
     			.ok(Map.of("tokenReset", token));
@@ -88,7 +88,7 @@ public class AuthController {
     public ResponseEntity<Void> resetearPassword(
     		@Valid @RequestBody ResetPasswordRequest request) {
     	
-    	resetearPasswordService.ejecutar(request.getPassword(), request.getToken());
+    	resetearPasswordService.ejecutar(request.password(), request.token());
     	
     	return ResponseEntity.noContent().build();
     }

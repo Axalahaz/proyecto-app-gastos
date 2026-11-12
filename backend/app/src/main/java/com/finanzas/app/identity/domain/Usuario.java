@@ -142,20 +142,25 @@ public class Usuario {
     // ----------------------------------------------------
     // ACTUALIZAR
     
-    public void actualizarEmail(Email nuevoEmail, Fecha ahora) {
-    	if(nuevoEmail != null) {
-    		this.email = nuevoEmail;
-    		this.fechaModificacion = ahora;
-    	}
-    		
+    public void editar(
+    		Email nuevoEmail,
+    		String nuevoNombreUsuario,
+    		Fecha ahora
+    	) {
+    	
+    	if (nuevoEmail != null) actualizarEmail(nuevoEmail);
+    	if (nuevoNombreUsuario != null) actualizarNombreUsuario(nuevoNombreUsuario);
+    	
+    	this.fechaModificacion = ahora;
     }
     
-    public void actualizarNombreUsuario(String nuevoNombreUsuario, Fecha ahora) {
-    	if(nuevoNombreUsuario != null) {
-    		validarNombreUsuario(nuevoNombreUsuario);
-    		this.nombreUsuario = nuevoNombreUsuario;
-    		this.fechaModificacion = ahora;
-    	}
+    public void actualizarEmail(Email nuevoEmail) {
+    	this.email = nuevoEmail;
+    }
+    
+    public void actualizarNombreUsuario(String nuevoNombreUsuario) {
+    	validarNombreUsuario(nuevoNombreUsuario);
+    	this.nombreUsuario = nuevoNombreUsuario;
     }
 
     
