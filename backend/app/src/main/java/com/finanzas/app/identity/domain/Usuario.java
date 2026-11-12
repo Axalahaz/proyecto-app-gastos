@@ -11,7 +11,7 @@ public class Usuario {
 
     private Long id;
     private String nombreUsuario;
-    private String email;
+    private Email email;
     private String passwordHash;
     private boolean activo;
     private Fecha fechaCreacion;
@@ -27,7 +27,7 @@ public class Usuario {
     private Usuario(
     		Long id,
     		String nombreUsuario, 
-            String email,
+    		Email email,
             String passwordHash,
             boolean activo,
             Fecha fechaCreacion,
@@ -37,8 +37,8 @@ public class Usuario {
     		Integer resetPasswordVersion
     		) {
     	
-    	validarEmail(email);
-    	validarPassword(passwordHash);
+    	validarPasswordHash(passwordHash);
+    	validarNombreUsuario(nombreUsuario);
 
 		this.id = id;
 		this.nombreUsuario = nombreUsuario;
@@ -60,8 +60,8 @@ public class Usuario {
     // CREAR (nuevos usuarios)
     
     public static Usuario crear(
-    		String email, 
     		String nombreUsuario, 
+    		Email email, 
     		String passwordHash, 
     		Fecha fechaCreacion) {
     	return new Usuario(
@@ -84,7 +84,7 @@ public class Usuario {
     public static Usuario reconstruir(
     	    Long id,
     	    String nombreUsuario,
-    	    String email,
+    	    Email email,
     	    String passwordHash,
     	    boolean activo,
     	    Fecha fechaCreacion,
@@ -142,9 +142,8 @@ public class Usuario {
     // ----------------------------------------------------
     // ACTUALIZAR
     
-    public void actualizarEmail(String nuevoEmail, Fecha ahora) {
+    public void actualizarEmail(Email nuevoEmail, Fecha ahora) {
     	if(nuevoEmail != null) {
-    		validarEmail(nuevoEmail);
     		this.email = nuevoEmail;
     		this.fechaModificacion = ahora;
     	}
@@ -185,24 +184,6 @@ public class Usuario {
     // ----------------------------------------------------
     // Validacion
     
-    private void validarNombreUsuario(String nombreUsuario) {
-        if (nombreUsuario == null || nombreUsuario.isBlank()) {
-            throw ValidationException.of("El nombre de usuario es inválido");
-        }
-    }
-    
-    private void validarEmail(String email) {
-        if (email == null || email.isBlank()) {
-            throw ValidationException.of("El email es inválido");
-        }
-    }
-    
-    private void validarPassword(String password) {
-        if (password == null || password.isBlank()) {
-            throw ValidationException.of("La contraseña es inválida");
-        }
-    }
-    
     private void validarUsuarioActivo() {
         if (!this.activo) {
         	throw new ForbiddenException("El usuario esta inactivo");
@@ -213,5 +194,24 @@ public class Usuario {
     	if (this.activo) {
     		throw new ForbiddenException("El usuario esta activo");
     	}
+    }
+    
+    // ----------------------------------------------------
+    // Validacion atributos
+    
+    private void validarNombreUsuario(String nombreUsuario) {
+        if (nombreUsuario == null || nombreUsuario.isBlank()) {
+            throw ValidationException.of("El nombre de usuario es inválido");
+        }
+        if (nombreUsuario.length() > 10) {
+            throw ValidationException.of("El nombre de usuario debe tener Max 10 caracteres");
+        }
+        nombreUsuario = nombreUsuario.trim();
+    }
+    
+    private void validarPasswordHash(String passwordHash) {
+        if (passwordHash == null || passwordHash.isBlank()) {
+            throw ValidationException.of("La contraseña es inválida");
+        }
     }
 }

@@ -116,7 +116,7 @@ public class UserDetailsAdapter implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return usuario.getEmail();
+        return usuario.getEmail().value();
     }
     
     /**

@@ -48,7 +48,7 @@ public class AuthController {
         return ResponseEntity
     			.status(HttpStatus.CREATED)
     			.body(
-    					Map.of("Email", usuario.getEmail())
+    					Map.of("Nombre de Usuario", usuario.getNombreUsuario())
     			);
     }
     

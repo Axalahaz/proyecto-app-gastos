@@ -29,7 +29,7 @@ public class ObtenerUsuarioActualService {
         return UsuarioResponse.builder()
         		.id(usuario.getId())
         		.nombreUsuario(usuario.getNombreUsuario())
-        		.email(usuario.getEmail())
+        		.email(usuario.getEmail().value())
         		.activo(usuario.isActivo())
         		.fechaCreacion(usuario.getFechaCreacion().value())
         		.fechaModificacion(usuario.getFechaModificacion().value())

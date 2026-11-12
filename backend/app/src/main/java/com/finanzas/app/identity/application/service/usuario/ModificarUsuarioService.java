@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finanzas.app.identity.domain.Email;
 import com.finanzas.app.identity.domain.Usuario;
 import com.finanzas.app.identity.domain.UsuarioRepository;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
@@ -29,16 +30,18 @@ public class ModificarUsuarioService {
         Usuario usuario = usuarioRepository.buscarPorId(userId)
                 .orElseThrow(() -> NotFoundException.of("Usuario", userId));
 
+        Email emailVO = new Email(nuevoEmail);
+        
         // validar email único (si cambia)
-        if (nuevoEmail != null && !usuario.getEmail().equals(nuevoEmail)) {
+        if (emailVO != null && !usuario.getEmail().equals(emailVO)) {
             usuarioRepository.buscarPorEmail(nuevoEmail)
-                    .ifPresent(u -> {
+                    .ifPresent(_ -> {
                         throw new ConflictException("El email ya está registrado");
                     });
         }
 
         usuario.actualizarEmail(
-                nuevoEmail,
+        		emailVO,
                 new Fecha(LocalDateTime.now())
         );
         usuario.actualizarNombreUsuario(

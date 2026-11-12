@@ -2,6 +2,7 @@ package com.finanzas.app.identity.infrastructure;
 
 import org.springframework.stereotype.Component;
 
+import com.finanzas.app.identity.domain.Email;
 import com.finanzas.app.identity.domain.Usuario;
 import com.finanzas.app.shared.domain.vo.Fecha;
 
@@ -12,7 +13,7 @@ public class UsuarioMapper {
     	UsuarioEntityJPA entity = UsuarioEntityJPA.of(
     			usuario.getId(),
     			usuario.getNombreUsuario(),
-    	        usuario.getEmail(),
+    	        usuario.getEmail().value(),
     	        usuario.getPasswordHash(),
     	        usuario.isActivo(),
     	        usuario.getFechaCreacion().value(),
@@ -38,7 +39,7 @@ public class UsuarioMapper {
     	return Usuario.reconstruir(
     	        entity.getId(),
     	        entity.getNombreUsuario(),
-    	        entity.getEmail(),
+    	        new Email(entity.getEmail()),
     	        entity.getPasswordHash(),
     	        entity.isActivo(),
     	        new Fecha(entity.getFechaCreacion()),

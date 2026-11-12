@@ -9,8 +9,8 @@ public record Descripcion(String value) {
             throw ValidationException.of("La descripcion es obligatoria");
         }
     	
-    	if (value.length() > 50) {
-            throw ValidationException.of("La descripcion es demasiado larga Max. 50 Caracteres");
+    	if (value.length() > 20) {
+            throw ValidationException.of("La descripcion es demasiado larga Max. 20 Caracteres");
         }
     	
     	value = value.trim();

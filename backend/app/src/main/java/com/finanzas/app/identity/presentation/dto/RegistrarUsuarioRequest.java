@@ -14,6 +14,7 @@ public class RegistrarUsuarioRequest {
 			regexp = "^\\S+$",
 			message = "El nombre de usuario no debe tener espacios"
 			)
+	@Size(max = 10, message = "El nombre de usuario debe tener Max 10 caracteres")
 	private String nombreUsuario;
 
 	@NotBlank(message = "El email es obligatorio")

@@ -15,7 +15,7 @@ public record RegistrarGastoRequest(
     BigDecimal importe,
 
     @NotNull(message = "La descripción es obligatoria")
-    @Size(max = 50, message = "Máximo 50 caracteres")
+    @Size(max = 20, message = "La descripción debe tener Max 20 caracteres")
     String descripcion,
 
     @NotNull(message = "La categoría de gasto es obligatoria")

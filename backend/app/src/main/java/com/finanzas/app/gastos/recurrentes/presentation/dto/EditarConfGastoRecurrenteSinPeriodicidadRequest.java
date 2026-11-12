@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record EditarConfGastoRecurrenteSinPeriodicidadRequest (
 
-	@Size(max = 50, message = "Máximo 50 caracteres")
+	@Size(max = 20, message = "La descripción debe tener Max 20 caracteres")
 	@NotNull
     String descripcion
 	

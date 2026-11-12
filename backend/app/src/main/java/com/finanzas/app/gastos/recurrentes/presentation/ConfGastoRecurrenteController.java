@@ -17,6 +17,7 @@ import com.finanzas.app.gastos.recurrentes.application.service.write.EliminarCon
 import com.finanzas.app.gastos.recurrentes.application.service.write.RegistrarConfGastoRecurrenteCommandService;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.ConfGastoRecurrenteResponse;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.EditarConfGastoRecurrenteSinPeriodicidadRequest;
+import com.finanzas.app.gastos.recurrentes.presentation.dto.EditarPeriodicidadRequest;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.RegistrarConfGastoRecurrenteRequest;
 
 import jakarta.validation.Valid;
@@ -76,7 +77,7 @@ public class ConfGastoRecurrenteController {
 	@PatchMapping("/{id}/periodicidad")
 	public ResponseEntity<ConfGastoRecurrenteResponse> editarConPeriodicidad(
 			@PathVariable("id") Long gastoRecurrenteId,
-			@Valid @RequestBody com.finanzas.app.gastos.recurrentes.presentation.dto.EditarPeriodicidadRequest request) {
+			@Valid @RequestBody EditarPeriodicidadRequest request) {
 		
 		ConfGastoRecurrenteResponse response = editarConfGastoRecurrenteConPeriodicidadService.ejecutar(
 				gastoRecurrenteId,
