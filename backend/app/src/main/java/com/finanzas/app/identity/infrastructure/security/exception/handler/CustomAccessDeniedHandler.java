@@ -7,13 +7,13 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finanzas.app.shared.exception.model.ErrorResponse;
 import com.finanzas.app.shared.exception.model.ErrorType;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.databind.json.JsonMapper;
 
 /*
  * AccessDeniedHandler: el usuario está autenticado, pero no tiene autorización para realizar la operación.
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 	
     @Override
     public void handle(
@@ -51,6 +51,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setCharacterEncoding("UTF-8");
 
         response.getWriter().write(
-        		objectMapper.writeValueAsString(error));
+        		jsonMapper.writeValueAsString(error));
     }
 }

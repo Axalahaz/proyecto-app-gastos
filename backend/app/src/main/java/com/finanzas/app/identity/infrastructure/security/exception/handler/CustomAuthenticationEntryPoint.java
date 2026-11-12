@@ -7,14 +7,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.finanzas.app.identity.infrastructure.security.exception.SecurityErrorMapper;
 import com.finanzas.app.shared.exception.model.ErrorResponse;
 import com.finanzas.app.shared.exception.model.ErrorType;
-import com.finanzas.app.identity.infrastructure.security.exception.SecurityErrorMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.databind.json.JsonMapper;
 
 /*
  * AuthenticationEntryPoint: el usuario no está autenticado correctamente.
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-	private final ObjectMapper objectMapper;
+	private final JsonMapper jsonMapper;
 	private final SecurityErrorMapper securityErrorMapper;
 	
     @Override
@@ -53,7 +53,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setCharacterEncoding("UTF-8");
 
         response.getWriter().write(
-        		objectMapper.writeValueAsString(error)
+        		jsonMapper.writeValueAsString(error)
         		);
     }
 }
