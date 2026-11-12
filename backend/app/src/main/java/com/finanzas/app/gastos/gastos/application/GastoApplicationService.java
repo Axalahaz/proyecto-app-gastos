@@ -1,6 +1,6 @@
 package com.finanzas.app.gastos.gastos.application;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.gastos.application.contract.GastoApplication;
@@ -11,7 +11,7 @@ import com.finanzas.app.gastos.gastos.domain.GastoRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class GastoApplicationService implements GastoApplication {
 

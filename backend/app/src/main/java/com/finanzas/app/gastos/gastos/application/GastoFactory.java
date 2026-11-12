@@ -3,6 +3,8 @@ package com.finanzas.app.gastos.gastos.application;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Component;
+
 import com.finanzas.app.gastos.gastos.domain.Gasto;
 import com.finanzas.app.shared.domain.vo.CategoriaId;
 import com.finanzas.app.shared.domain.vo.Descripcion;
@@ -10,6 +12,7 @@ import com.finanzas.app.shared.domain.vo.Fecha;
 import com.finanzas.app.shared.domain.vo.Money;
 import com.finanzas.app.shared.domain.vo.UsuarioId;
 
+@Component
 public class GastoFactory {
 	
 	public Gasto crear(

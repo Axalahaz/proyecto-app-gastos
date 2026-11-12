@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrenteApplication {
 
 	private final ConfGastoRecurrenteApplicationQuery confGastoRecurrenteApplicationQuery;
@@ -33,6 +32,7 @@ public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrent
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long crearDesdeGasto(
         Long usuarioId,
         String descripcion,
@@ -57,6 +57,7 @@ public class ConfGastoRecurrenteApplicationService implements ConfGastoRecurrent
     }
     
     @Override
+    @Transactional(readOnly = true)
     public ConfGastoRecurrenteData obtenerDatos(
         Long confGastoRecurrenteId,
         Long usuarioId

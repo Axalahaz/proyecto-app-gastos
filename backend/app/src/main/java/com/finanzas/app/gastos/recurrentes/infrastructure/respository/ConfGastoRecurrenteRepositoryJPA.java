@@ -14,7 +14,7 @@ import com.finanzas.app.gastos.recurrentes.infrastructure.ConfGastoRecurrenteEnt
 @Repository
 public interface ConfGastoRecurrenteRepositoryJPA extends JpaRepository<ConfGastoRecurrenteEntityJPA, Long>{
 	
-	List<ConfGastoRecurrenteEntityJPA> findAllByUsuarioIdOrderByNombreAsc(Long usuarioId);
+	List<ConfGastoRecurrenteEntityJPA> findAllByUsuarioIdOrderByDescripcionAsc(Long usuarioId);
 	
 	@Modifying
 	@Query("""

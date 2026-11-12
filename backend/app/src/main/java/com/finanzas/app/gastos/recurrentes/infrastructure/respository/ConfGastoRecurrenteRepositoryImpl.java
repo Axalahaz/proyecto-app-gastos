@@ -34,7 +34,7 @@ public class ConfGastoRecurrenteRepositoryImpl implements ConfGastoRecurrenteRep
 
 	@Override
 	public List<ConfGastoRecurrente> listarTodos(Long usuarioId) {
-		return jpaRepository.findAllByUsuarioIdOrderByNombreAsc(usuarioId)
+		return jpaRepository.findAllByUsuarioIdOrderByDescripcionAsc(usuarioId)
 				.stream()
 				.map(confGastoRecurrenteMapper::mapToDomain)
 				.toList();

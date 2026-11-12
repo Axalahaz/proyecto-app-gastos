@@ -35,7 +35,7 @@ public class CategoriaGastoEntityJPA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(name = "usuario_id", nullable = false)
+	@Column(name = "usuario_id")
 	private Long usuarioId;
     
 	@Column(nullable = false)
@@ -45,7 +45,7 @@ public class CategoriaGastoEntityJPA {
 	@Column(name = "tipo_objeto", nullable = false)
 	private TipoObjeto tipo;
 	
-	@Column(nullable = false)
+	@Column(name = "fecha_creacion", nullable = false)
 	private LocalDateTime fechaCreacion;
     
     // ----------------------------------

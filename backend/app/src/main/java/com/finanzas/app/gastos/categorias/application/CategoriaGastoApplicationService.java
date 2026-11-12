@@ -1,6 +1,6 @@
 package com.finanzas.app.gastos.categorias.application;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.gastos.categorias.application.contract.CategoriaGastoApplication;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * la comunicación con otros componentes.
  */
 @RequiredArgsConstructor
-@Component
+@Service
 public class CategoriaGastoApplicationService implements CategoriaGastoApplication {
 
 	private final CategoriaGastoApplicationQuery categoriaGastoApplicationQuery;
