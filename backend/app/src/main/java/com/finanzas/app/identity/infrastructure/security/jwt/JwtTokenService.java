@@ -37,9 +37,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtTokenService implements GeneradorTokenAcceso {
 	
-	// Tiempo de expiración de los tokens: 15 minutos.
-		private static final long EXPIRACION_TOKEN_MS =
-		        1000L * 60 * 15;
+	// Tiempo de expiración de los tokens.
+	private final long EXPIRACION_TOKEN_MS;
 		
 	/**
      * Clave criptográfica utilizada para firmar y verificar los tokens JWT.
@@ -64,9 +63,11 @@ public class JwtTokenService implements GeneradorTokenAcceso {
      *               los tokens JWT.
      */
 	public JwtTokenService(
-			@Value("${jwt.secret}") String secret
-		) {
+			@Value("${jwt.secret}") String secret,
+	        @Value("${jwt.expiration}") long expirationMs) {
+		
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.EXPIRACION_TOKEN_MS = expirationMs;
     }
 	
 	// -----------------------------------------------------
