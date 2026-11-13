@@ -1,4 +1,4 @@
-package com.finanzas.app.identity.application.port.out;
+package com.finanzas.app.identity.application.port.out.token;
 
 import com.finanzas.app.identity.domain.Usuario;
 

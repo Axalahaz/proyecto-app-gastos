@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.identity.application.port.out.AutenticadorUsuario;
-import com.finanzas.app.identity.application.port.out.GeneradorTokenAcceso;
+import com.finanzas.app.identity.application.port.out.token.GeneradorTokenAcceso;
 import com.finanzas.app.identity.domain.Usuario;
 
 import lombok.RequiredArgsConstructor;

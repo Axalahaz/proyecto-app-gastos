@@ -39,7 +39,7 @@ public class CambiarPasswordService {
         }
 
         // valido nueva contraseña
-        if (!passwordEncoder.matches(usuario.getPasswordHash(), nuevaPassword)) {
+        if (passwordActual.equals(nuevaPassword)) {
             throw new ConflictException("La nueva contraseña debe ser diferente a la actual");
         }
         

@@ -29,6 +29,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Filtro de autenticación basado en tokens JWT.
@@ -52,6 +53,7 @@ import lombok.RequiredArgsConstructor;
  * @see UserDetailsServiceImpl
  * @see CustomAuthenticationEntryPoint
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -113,7 +115,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				// Extraer id
 				Long usuarioId = Long.valueOf(claims.getSubject());
 				// Extraer fecha de emisión
-				Date issuedAt = claims.getIssuedAt();	
+				Date issuedAt = claims.getIssuedAt();
+				// Extraer reset
+				Integer resetVersion = claims.get("resetVersion", Integer.class);
 				
 				if (issuedAt == null) {
 					throw new BadCredentialsException("Token sin fecha válida");
@@ -129,14 +133,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				}
 
 				// Verificar si hubo cambios que invaliden el token. (invalidación de sesión)
+				Integer resetPasswordVersion = adapter.getResetPasswordVersion();
 				LocalDateTime passwordUpdatedAt = adapter.getFechaCambioPassword();
 		        LocalDateTime estadoUpdatedAt = adapter.getFechaCambioEstado();
-	
+		        
 		        // Invalidar tokens emitidos antes del último cambio de contraseña.
-		        if (passwordUpdatedAt != null &&
+		        if ((passwordUpdatedAt != null &&
 		                issuedAt.toInstant().isBefore(
-		                        passwordUpdatedAt.atZone(ZoneOffset.UTC).toInstant()
-		                )) {
+		                        passwordUpdatedAt.atZone(ZoneOffset.UTC).toInstant())) ||
+                        resetVersion < resetPasswordVersion
+		                ) {
 	
 		            throw new TokenInvalidoException(
 		                    "La contraseña fue modificada. Inicie sesión nuevamente"

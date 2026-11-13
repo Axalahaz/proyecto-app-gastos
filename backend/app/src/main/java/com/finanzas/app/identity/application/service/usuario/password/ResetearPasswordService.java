@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finanzas.app.identity.application.PasswordEncoder;
-import com.finanzas.app.identity.application.exception.InvalidCredentialsException;
+import com.finanzas.app.identity.application.port.out.token.TokenRecuperacionData;
+import com.finanzas.app.identity.application.port.out.token.ValidadorTokenRecuperacion;
 import com.finanzas.app.identity.domain.Usuario;
 import com.finanzas.app.identity.domain.UsuarioRepository;
-import com.finanzas.app.identity.infrastructure.security.jwt.JwtTokenService;
 import com.finanzas.app.shared.domain.vo.Fecha;
+import com.finanzas.app.shared.exception.exceptionImpl.ConflictException;
 import com.finanzas.app.shared.exception.exceptionImpl.ForbiddenException;
 import com.finanzas.app.shared.exception.exceptionImpl.NotFoundException;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,34 +24,29 @@ public class ResetearPasswordService {
 	
 	private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenService jwtTokenService;
+    private final ValidadorTokenRecuperacion validadorTokenRecuperacion;
     
 
     public void ejecutar(String nuevoPassword, String tokenReset) {
     	
-    	Claims claims;
-		try {
-			claims = jwtTokenService.obtenerClaimsTokenRecuperacionSeguro(tokenReset);
-		} catch (Exception e) {
-			throw new InvalidCredentialsException("Token inválido para recuperación");
-		}
+    	TokenRecuperacionData datos = validadorTokenRecuperacion.validarTokenRecuperacionSeguro(tokenReset);
 
-		String userId = claims.getSubject();
-		Integer versionToken = claims.get("resetVersion", Integer.class);
-
-    	Usuario usuario = usuarioRepository.buscarPorId(Long.valueOf(userId))
-    	        .orElseThrow(() -> NotFoundException.of("Usuario", userId));
+    	Usuario usuario = usuarioRepository.buscarPorId(datos.usuarioId())
+    	        .orElseThrow(() -> NotFoundException.of("Usuario", datos.usuarioId()));
     	
         // evita la reutilizacion del token si ya se cambio la contraseña
         // cada cambio de contraseña aumenta un contador la de version
-    	if (!usuario.getResetPasswordVersion().equals(versionToken)) {
+    	if (!usuario.getResetPasswordVersion().equals(datos.resetVersion())) {
     	    throw new ForbiddenException("Codigo de reseteo de contraseña usado.");
     	}
     	
-        String passwordSegura = passwordEncoder.encode(nuevoPassword); // encriptacion
+    	if (passwordEncoder.matches(nuevoPassword, usuario.getPasswordHash())) {
+    		throw new ConflictException("Elegir una contraseña diferente a la última");
+    	}
+
+    	String nuevaPasswordSegura = passwordEncoder.encode(nuevoPassword); // encriptacion
         
-        usuario.cambiarPassword(passwordSegura, new Fecha(LocalDateTime.now()));
-        usuario.incrementarResetPasswordVersion();
+        usuario.cambiarPassword(nuevaPasswordSegura, new Fecha(LocalDateTime.now()));
         
         usuarioRepository.guardar(usuario);
     }

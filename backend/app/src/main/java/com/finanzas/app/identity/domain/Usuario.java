@@ -167,18 +167,18 @@ public class Usuario {
     // ----------------------------------------------------
     // CAMBIAR PASSWORD
     
-    private void actualizarPassword(String nuevaPassword) {
-        this.passwordHash = nuevaPassword;
-    }
-    
-    public void cambiarPassword(String nuevaPassword, Fecha ahora) {
+    public void cambiarPassword(String nuevaPasswordHash, Fecha ahora) {
 
-    	actualizarPassword(nuevaPassword);
-    	
+    	if (nuevaPasswordHash == null || nuevaPasswordHash.isBlank()) {
+            throw ValidationException.of("El hash de la contraseña es obligatorio");
+        }
+
+        if (ahora == null) {
+            throw ValidationException.of("La fecha de cambio es obligatoria");
+        }
+        
+    	this.passwordHash = nuevaPasswordHash;
         this.fechaCambioPassword = ahora;
-    }
-    
-    public void incrementarResetPasswordVersion() {
         this.resetPasswordVersion++;
     }
     

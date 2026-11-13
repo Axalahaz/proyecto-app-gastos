@@ -8,7 +8,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.finanzas.app.identity.application.port.out.GeneradorTokenAcceso;
+import com.finanzas.app.identity.application.port.out.token.GeneradorTokenAcceso;
+import com.finanzas.app.identity.application.port.out.token.TokenRecuperacionData;
+import com.finanzas.app.identity.application.port.out.token.ValidadorTokenRecuperacion;
 import com.finanzas.app.identity.domain.Usuario;
 import com.finanzas.app.identity.infrastructure.security.exception.TokenInvalidoException;
 
@@ -35,7 +37,7 @@ import io.jsonwebtoken.security.Keys;
  * @see Usuario
  */
 @Service
-public class JwtTokenService implements GeneradorTokenAcceso {
+public class JwtTokenService implements GeneradorTokenAcceso, ValidadorTokenRecuperacion {
 	
 	// Tiempo de expiración de los tokens.
 	private final long EXPIRACION_TOKEN_MS;
@@ -88,6 +90,7 @@ public class JwtTokenService implements GeneradorTokenAcceso {
     	
         return Jwts.builder()
                 .setSubject(String.valueOf(usuario.getId()))	// identificador 
+                .claim("resetVersion", usuario.getResetPasswordVersion())	// sirve para invalidar el token al cambiar contraseña
                 .claim("purpose", "access")	// flag para saber que es token de acceso
                 .setIssuedAt(new Date())	// fecha de emisión
                 .setExpiration(
@@ -118,7 +121,7 @@ public class JwtTokenService implements GeneradorTokenAcceso {
 
         return Jwts.builder()
                 .setSubject(String.valueOf(usuario.getId()))
-                .claim("resetVersion", usuario.getResetPasswordVersion())	// sirve para invalidar el token de reset
+                .claim("resetVersion", usuario.getResetPasswordVersion())	// sirve para invalidar el token al cambiar contraseña
                 .claim("purpose", "reset") // flag para saber que es token de recuperación
                 .setIssuedAt(new Date())
                 .setExpiration(
@@ -186,7 +189,8 @@ public class JwtTokenService implements GeneradorTokenAcceso {
      * @throws TokenInvalidoException si el propósito del token
      *                                     no corresponde a la recuperación.
      */
-    public Claims obtenerClaimsTokenRecuperacionSeguro(String token) {
+    @Override
+    public TokenRecuperacionData validarTokenRecuperacionSeguro(String token) {
         Claims claims = extraerClaims(token);
 
         if (!"reset".equals(claims.get("purpose", String.class))) {
@@ -194,6 +198,10 @@ public class JwtTokenService implements GeneradorTokenAcceso {
         }
 
         // Expiración se valida automáticamente al extraer claims si usás parserBuilder()
-        return claims;
+        return new TokenRecuperacionData(
+                Long.valueOf(claims.getSubject()),
+                claims.get("resetVersion", Integer.class)
+            );
     }
+    
 }

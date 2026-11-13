@@ -55,6 +55,19 @@ public class UserDetailsAdapter implements UserDetails {
 	private final Usuario usuario;
     
 	/**
+	 * Obtiene el numero de version de reset generado al modificar la contraseña.
+	 *
+	 * Esta información permite comprobar si el token JWT fue emitido
+	 * antes de un cambio de contraseña y, por lo tanto,
+	 * debe considerarse inválido.
+	 *
+	 * @return numero de reset version.
+	 */
+	public Integer getResetPasswordVersion() {
+		return usuario.getResetPasswordVersion();
+	}
+	
+	/**
      * Obtiene la fecha y hora de la última modificación de la contraseña.
      *
      * Recupera el valor del objeto de dominio que representa
