@@ -1,5 +1,7 @@
 package com.finanzas.app.gastos.categorias.presentation;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.finanzas.app.gastos.categorias.application.service.read.ListarTodosCategoriasGastosQueryService;
 import com.finanzas.app.gastos.categorias.application.service.read.ObtenerCategoriaGastoQueryService;
 import com.finanzas.app.gastos.categorias.application.service.write.EditarCategoriaGastoCommandService;
 import com.finanzas.app.gastos.categorias.application.service.write.EliminarCategoriaGastoCommandService;
@@ -33,6 +36,7 @@ public class CategoriaGastoController {
 	private final EditarCategoriaGastoCommandService editarCategoriaService;
 	private final EliminarCategoriaGastoCommandService eliminarCategoriaService;
 	private final ObtenerCategoriaGastoQueryService obtenerCategoriaService;
+	private final ListarTodosCategoriasGastosQueryService listarTodosCategoriasGastosQueryService;
 	
 	// ----------------------------------------------------
 	// CREAR
@@ -83,5 +87,16 @@ public class CategoriaGastoController {
 		
 		CategoriaGastoResponse response = obtenerCategoriaService.ejecutar(categoriaId);
 		return ResponseEntity.ok(response);
+	}
+	
+	// ----------------------------------------------------
+	// LISTAR 
+	
+	@GetMapping()
+	public ResponseEntity<List<CategoriaGastoResponse>> listarTodos() {
+	
+	    List<CategoriaGastoResponse> response = listarTodosCategoriasGastosQueryService.ejecutar();
+	
+	    return ResponseEntity.ok(response);
 	}
 }
