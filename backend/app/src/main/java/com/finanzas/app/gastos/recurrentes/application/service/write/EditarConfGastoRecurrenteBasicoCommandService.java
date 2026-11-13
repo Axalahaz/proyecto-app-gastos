@@ -1,5 +1,7 @@
 package com.finanzas.app.gastos.recurrentes.application.service.write;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,7 @@ import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.ConfGastoRecurrenteResponse;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 import com.finanzas.app.shared.domain.vo.Descripcion;
+import com.finanzas.app.shared.domain.vo.Fecha;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,17 +34,20 @@ public class EditarConfGastoRecurrenteBasicoCommandService {
 
     	Long usuarioId = usuarioAutenticado.obtenerId();
     	
-    	Descripcion descripcionVO = new Descripcion(descripcion);
+    	Descripcion descripcionVO = descripcion != null
+    			? new Descripcion(descripcion)
+    			: null;
 
     	ConfGastoRecurrente confGastoRecurrente = confGastoRecurrenteApplicationQuery
     			.obtenerPorId(gastoRecurrenteId, usuarioId);
 
         // Verifica la existencia de duplicados  
-    	confGastoRecurrenteApplicationQuery.existePorDescripcion(descripcion, usuarioId);
+    	confGastoRecurrenteApplicationQuery.existePorDescripcion(descripcionVO.value(), usuarioId);
         
-        // que parametro llego con valor para editar?
-        
-        confGastoRecurrente.editarDescripcion(descripcionVO);
+        confGastoRecurrente.editarDescripcion(
+        		descripcionVO,
+        		new Fecha(LocalDateTime.now())
+        		);
  
         ConfGastoRecurrente actualizado = gastoRecurrenteRepository.guardar(confGastoRecurrente);
 

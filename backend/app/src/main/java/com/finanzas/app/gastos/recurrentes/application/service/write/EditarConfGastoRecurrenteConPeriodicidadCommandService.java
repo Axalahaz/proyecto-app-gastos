@@ -1,5 +1,7 @@
 package com.finanzas.app.gastos.recurrentes.application.service.write;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,7 @@ import com.finanzas.app.gastos.recurrentes.domain.ConfGastoRecurrenteRepository;
 import com.finanzas.app.gastos.recurrentes.presentation.dto.ConfGastoRecurrenteResponse;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 import com.finanzas.app.shared.domain.enums.Frecuencia;
+import com.finanzas.app.shared.domain.vo.Fecha;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,7 +43,8 @@ public class EditarConfGastoRecurrenteConPeriodicidadCommandService {
         confGastoRecurrente.modificarPeriodicidad(
         		nuevaFrecuencia,
     			nuevoDiaVencimiento,
-    			nuevoMesVencimiento
+    			nuevoMesVencimiento,
+    			new Fecha(LocalDateTime.now())
         );
 
         ConfGastoRecurrente actualizado = confGastoRecurrenteRepository.guardar(confGastoRecurrente);

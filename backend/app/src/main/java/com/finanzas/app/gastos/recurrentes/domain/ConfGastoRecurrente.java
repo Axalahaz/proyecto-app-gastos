@@ -136,29 +136,30 @@ public class ConfGastoRecurrente {
     public void modificarPeriodicidad(
     		Frecuencia nuevaFrecuencia,
     		Integer nuevoDiaVencimiento,
-            Integer nuevoMesVencimiento
+            Integer nuevoMesVencimiento,
+            Fecha ahora
         ) {
+    	validarConfRecurrenciaEstaActiva();
     	this.periodicidad = calcularNuevaPeriodicidad(
     			nuevaFrecuencia,
     			nuevoDiaVencimiento,
     			nuevoMesVencimiento
     			);
+    	this.fechaModificacion = ahora;
     }
     
     // ----------------------------------------------------
     // EDITAR
 
-    public void editarDescripcion(Descripcion nuevaDescripcion) {
+    public void editarDescripcion(Descripcion nuevaDescripcion, Fecha ahora) {
 
     	validarConfRecurrenciaEstaActiva();
-    	
-    	if (nuevaDescripcion != null) {
-    		if (this.descripcion.equals(nuevaDescripcion)) {
-    			return;
-    		}
-    		
-    		this.descripcion = nuevaDescripcion;
-    	}
+		if (this.descripcion.equals(nuevaDescripcion)) {
+			return;
+		}
+		
+		this.descripcion = nuevaDescripcion;
+		this.fechaModificacion = ahora;
     }
 
     // ----------------------------------------------------
