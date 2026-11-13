@@ -17,12 +17,12 @@ public record RegistrarConfGastoRecurrenteRequest(
 	@Size(max = 20, message = "La descripción debe tener Max 20 caracteres")
     String descripcion,
 
+    @NotNull(message = "El dia de vencimiento es obligatorio")
     @Positive(message = "El día de vencimiento debe ser positivo")
     @Min(1)
     @Max(31)
     Integer diaVencimiento,
-
-    @NotNull(message = "El mes de vencimiento es obligatorio")
+    
     @Positive(message = "El mes de vencimiento debe ser positivo")
     @Min(1)
     @Max(12)
