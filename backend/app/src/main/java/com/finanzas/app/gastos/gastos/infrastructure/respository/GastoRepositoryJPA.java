@@ -54,15 +54,6 @@ public interface GastoRepositoryJPA extends JpaRepository<GastoEntityJPA, Long>{
 	// ---------------------------------------
 	// ELIMINACION DE DATOS AL BORRAR USUARIO
 	
-	@Query("""
-		    SELECT g
-		    FROM GastoEntityJPA g
-		    WHERE g.usuarioId = :usuarioId
-		""")
-	int contadorTotalGastos(
-			@Param("usuarioId") Long usuarioId
-			);
-	
 	@Modifying(
 		    flushAutomatically = true,
 		    clearAutomatically = true

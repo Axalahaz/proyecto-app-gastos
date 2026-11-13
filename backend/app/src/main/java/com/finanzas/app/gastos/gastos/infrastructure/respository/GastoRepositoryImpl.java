@@ -64,11 +64,6 @@ public class GastoRepositoryImpl implements GastoRepository{
 	}
 
 	@Override
-	public int contadorTotalGastos(Long usuarioId) {
-		return jpaRepository.contadorTotalGastos(usuarioId);
-	}
-
-	@Override
 	public int eliminarDatosDeUsuario(Long usuarioId) {
 		return jpaRepository.eliminarDatosDeUsuario(usuarioId);
 	}

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.finanzas.app.gastos.categorias.domain.CategoriaGastoRepository;
 import com.finanzas.app.shared.application.security.UsuarioAutenticado;
 import com.finanzas.app.shared.exception.exceptionImpl.ForbiddenException;
-import com.finanzas.app.shared.exception.exceptionImpl.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +28,12 @@ public class EliminarTodosPorUsuarioCategoriaGastoCommandService {
     	
     	Long authId = usuarioAutenticado.obtenerId();
 
-    	if(usuarioId != authId) {
+    	if(!usuarioId.equals(authId)) {
     		throw new ForbiddenException("No se tiene permiso para eliminar datos");
     	}
     		
-    	int contador = categoriaRepository.contadorTotalCategoriaGasto(usuarioId);
-        
         int filasEliminadas = categoriaRepository.eliminarDatosDeUsuario(usuarioId);
-    	
-    	if (filasEliminadas == 0) {
-        	throw NotFoundException.of("No se encontron Categorias Gastos para eliminar");
-        }
         
-        if (filasEliminadas != contador) {
-        	throw NotFoundException.of("Eliminacion incompleta");
-        }
-        
-        log.info("Categorias Gastos eliminados correctamente para el usuario {}", usuarioId);
+        log.info("{} Categorias Gastos eliminados correctamente para el usuario {}", filasEliminadas, usuarioId);
     }
 }

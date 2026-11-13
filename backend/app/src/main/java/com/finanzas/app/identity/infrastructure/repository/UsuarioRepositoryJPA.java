@@ -21,6 +21,6 @@ public interface UsuarioRepositoryJPA extends JpaRepository<UsuarioEntityJPA, Lo
     		WHERE u.id = :usuarioId
     	""")
     int eliminarPorId(
-    		@Param("id") Long usuarioId
+    		@Param("usuarioId") Long usuarioId
     		);
 }

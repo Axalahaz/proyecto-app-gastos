@@ -30,10 +30,17 @@ public class EliminarUsuarioService {
 
         Long usuarioId = usuarioAutenticado.obtenerId();
         
+        log.info("Iniciando eliminación del usuario {}", usuarioId);
+        
         // Eliminar información de los componentes.
         gastoApplication.eliminarDatosDeUsuario(usuarioId);
+        log.info("Gastos eliminados.");
+        
         confGastoRecurrenteApplication.eliminarDatosDeUsuario(usuarioId);
+        log.info("Configuraciones recurrentes eliminadas.");
+        
         categoriaApplication.eliminarDatosDeUsuario(usuarioId);
+        log.info("Categorías eliminadas.");
 
         int filasEliminadas = usuarioRepository.eliminar(usuarioId);
         

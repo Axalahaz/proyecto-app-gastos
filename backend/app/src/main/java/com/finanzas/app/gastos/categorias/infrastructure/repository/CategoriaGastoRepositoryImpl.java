@@ -57,11 +57,6 @@ public class CategoriaGastoRepositoryImpl implements CategoriaGastoRepository {
 	public boolean existePorId(Long categoriaId, Long usuarioId) {
 		return jpaRepository.existePorId(categoriaId, usuarioId, TipoObjeto.SISTEMA);
 	}
-	
-	@Override
-	public int contadorTotalCategoriaGasto(Long usuarioId) {
-		return jpaRepository.contadorTotalCategoriaGasto(usuarioId, TipoObjeto.USUARIO);
-	}
 
 	@Override
 	public int eliminarDatosDeUsuario(Long usuarioId) {

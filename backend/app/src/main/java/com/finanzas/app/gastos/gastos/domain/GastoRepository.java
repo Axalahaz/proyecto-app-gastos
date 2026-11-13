@@ -26,7 +26,5 @@ public interface GastoRepository {
 
     List<Gasto> listarTodos(Long usuarioId);
     
-    int contadorTotalGastos(Long usuarioId);
-    
     int eliminarDatosDeUsuario(Long usuarioId);
 }

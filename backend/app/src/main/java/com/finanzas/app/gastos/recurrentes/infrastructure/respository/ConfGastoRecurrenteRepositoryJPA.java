@@ -62,16 +62,7 @@ public interface ConfGastoRecurrenteRepositoryJPA extends JpaRepository<ConfGast
 	
 	// ---------------------------------------
 	// ELIMINACION DE DATOS AL BORRAR USUARIO
-	
-	@Query("""
-		    SELECT cgr
-		    FROM ConfGastoRecurrenteEntityJPA cgr
-		    WHERE cgr.usuarioId = :usuarioId
-		""")
-	int contadorTotalConfGastoRecurrente(
-			@Param("usuarioId") Long usuarioId
-			);
-	
+
 	@Modifying(
 		    flushAutomatically = true,
 		    clearAutomatically = true

@@ -23,7 +23,5 @@ public interface CategoriaGastoRepository {
 
 	int eliminar(Long categoriaId, Long usuarioId);
 	
-	int contadorTotalCategoriaGasto(Long usuarioId);
-    
 	int eliminarDatosDeUsuario(Long usuarioId);
 }

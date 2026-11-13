@@ -21,7 +21,5 @@ public interface ConfGastoRecurrenteRepository {
 
     int eliminar(Long confGastoRecurrenteId, Long usuarioId);
     
-    int contadorTotalConfGastoRecurrente(Long usuarioId);
-    
     int eliminarDatosDeUsuario(Long usuarioId);
 }
