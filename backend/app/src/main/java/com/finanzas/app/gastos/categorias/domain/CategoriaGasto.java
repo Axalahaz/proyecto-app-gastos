@@ -96,7 +96,7 @@ public class CategoriaGasto {
     public void validarEsTipoUsuario() {
         if(this.tipo == TipoObjeto.SISTEMA) {
     		throw new ConflictException(
-    				"No se puede eliminar una Categoria de Gasto propia del sistema");
+    				"No se puede operar en una Categoria de Gasto propia del sistema");
     	}
     }
     
@@ -105,11 +105,9 @@ public class CategoriaGasto {
             throw ValidationException.of("El nombre de la categoría es obligatorio");
         }
 
-        if (nombre.length() > 50) {
-            throw ValidationException.of("El nombre es demasiado largo Max. 50 Caracteres");
+        if (nombre.length() > 20) {
+            throw ValidationException.of("El nombre es demasiado largo Max. 20 Caracteres");
         }
-        
-        nombre = nombre.trim();
     }
     
     //****************

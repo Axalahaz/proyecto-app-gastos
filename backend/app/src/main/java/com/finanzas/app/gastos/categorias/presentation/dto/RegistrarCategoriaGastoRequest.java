@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 public record RegistrarCategoriaGastoRequest (
 	
 	@NotNull(message = "El nombre es obligatorio")
-	@Size(max = 50, message = "Máximo 50 caracteres")
+	@Size(max = 20, message = "Máximo 20 caracteres")
     String nombre
 	
 ) {}

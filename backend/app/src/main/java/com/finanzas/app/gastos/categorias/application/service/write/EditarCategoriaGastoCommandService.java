@@ -36,8 +36,10 @@ public class EditarCategoriaGastoCommandService {
     	CategoriaGasto categoria = categoriaQuery.obtenerPorId(categoriaId, usuarioId);
     	
     	categoria.validarEsTipoUsuario();
+    	
+    	String nombreTrim = nombre.trim();
 
-    	categoria.renombrar(nombre);
+    	categoria.renombrar(nombreTrim);
     	
     	CategoriaGasto guardada = categoriaRepository.guardar(categoria);
         

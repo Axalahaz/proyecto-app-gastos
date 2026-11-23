@@ -33,14 +33,17 @@ public class RegistrarCategoriaGastoCommandService {
     	
     	Long usuarioId = usuarioAutenticado.obtenerId();
 
+    	String nombreTrim = nombre.trim();
+
     	// control de duplicado
-    	if (categoriaRepository.existePorNombre(nombre, usuarioId)) {
+    	if (categoriaRepository.existePorNombre(nombreTrim, usuarioId)) {
         	throw new ConflictException("Ya existe una Categoria con ese nombre");
         }   
+    	
         
     	CategoriaGasto categoria = CategoriaGasto.crear(
     			new UsuarioId(usuarioId),
-    			nombre,
+    			nombreTrim,
     			TipoObjeto.USUARIO,
     		   	new Fecha(LocalDateTime.now())
         );

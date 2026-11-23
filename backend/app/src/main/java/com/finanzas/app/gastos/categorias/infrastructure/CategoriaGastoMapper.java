@@ -22,9 +22,13 @@ public class CategoriaGastoMapper {
     }
 
     public CategoriaGasto mapToDomain(CategoriaGastoEntityJPA entity) {
+    	UsuarioId usuarioId = entity.getUsuarioId() != null
+    	        ? new UsuarioId(entity.getUsuarioId())
+    	        : null;
+    	
     	return CategoriaGasto.reconstruir(
     			entity.getId(),
-    			new UsuarioId(entity.getUsuarioId()),
+    			usuarioId,
     			entity.getNombre(),
     			entity.getTipo(),
     			new Fecha(entity.getFechaCreacion())
